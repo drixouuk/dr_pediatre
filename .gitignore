@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+dist/
+
+# Env & DB
+.env
+.env.local
+*.db
+
+# AI assistants (générés par uipro init)
+.agent/
+.claude/
+.codebuddy/
+.codex/
+.continue/
+.cursor/
+.gemini/
+.kiro/
+.opencode/
+.qoder/
+.trae/
+.windsurf/
+
+# Kilo store (DB locale)
+home/
