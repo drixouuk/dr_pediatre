@@ -26,3 +26,4 @@ dist/
 
 # Kilo store (DB locale)
 home/
+.github/
