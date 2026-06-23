@@ -22,13 +22,13 @@ export default async function Footer({ locale }: Props) {
     <footer className="bg-primary-800 text-white">
       <div className="h-2 bg-gradient-to-b from-cream-100 to-primary-800" />
       <div className="mx-auto max-w-container px-4 py-6 md:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
+        <div className="flex flex-col items-center gap-3 text-center md:flex-row md:justify-between">
           <p className="text-sm font-medium text-stone-300">
             Dr Guinane Aicha <span className="text-stone-500">—</span>{' '}
             <span className="font-normal text-stone-200">{f('specialty')}</span>
           </p>
 
-          <nav className="flex items-center gap-4 text-sm">
+          <nav className="flex items-center justify-center gap-4 text-sm">
             {navLinks.map(({ href, key }) => (
               <Link
                 key={key}
