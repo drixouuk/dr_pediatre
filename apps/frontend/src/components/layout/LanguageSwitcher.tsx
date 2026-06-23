@@ -1,46 +1,48 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { usePathname, useRouter } from '@/i18n/navigation'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu'
+import { Globe } from 'lucide-react'
 
 const localeCodes = ['fr', 'ar', 'en', 'tzm'] as const
 
-type Props = {
-  currentLocale: string
-}
-
-export default function LanguageSwitcher({ currentLocale }: Props) {
+export default function LanguageSwitcher() {
+  const locale = useLocale()
   const t = useTranslations('lang')
   const pathname = usePathname()
   const router = useRouter()
 
   return (
-    <nav aria-label="Language switcher" className="flex items-center gap-1">
-      {localeCodes.map((code) => {
-        const isActive = code === currentLocale
-        return (
-          <button
-            key={code}
-            onClick={() => router.replace(pathname, { locale: code })}
-            className={`
-              inline-flex items-center justify-center rounded-lg px-2.5 py-1.5
-              text-xs font-medium leading-none
-              transition-colors duration-200
-              min-h-[36px] min-w-[36px]
-              cursor-pointer
-              ${code === 'tzm' ? 'font-tifinagh' : ''}
-              ${
-                isActive
-                  ? 'bg-primary-600 text-white'
-                  : 'text-stone-600 hover:bg-cream-200 hover:text-primary-700'
-              }
-            `}
-            aria-current={isActive ? 'true' : undefined}
-          >
-            {t(code)}
-          </button>
-        )
-      })}
-    </nav>
+    <DropdownMenu>
+      <DropdownMenuTrigger className="inline-flex size-8 items-center justify-center rounded-full text-stone-600 hover:bg-cream-200 hover:text-primary-700 transition-colors duration-200 cursor-pointer">
+        <Globe className="size-4" />
+        <span className="sr-only">Switch language</span>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-32">
+        {localeCodes.map((code) => {
+          const isActive = code === locale
+          return (
+            <DropdownMenuItem
+              key={code}
+              onSelect={() => router.replace(pathname, { locale: code })}
+              className={`${code === 'tzm' ? 'font-tifinagh' : ''} ${
+                isActive ? 'bg-primary-50 font-medium text-primary-700' : ''
+              }`}
+            >
+              <span className="flex-1">{t(code)}</span>
+              {isActive && (
+                <span className="text-primary-600 text-xs">✓</span>
+              )}
+            </DropdownMenuItem>
+          )
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

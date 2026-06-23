@@ -80,7 +80,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <body className={`${bodyFont} flex min-h-full flex-col bg-cream-100 text-stone-800 antialiased`}>
         <NextIntlClientProvider>
-          <Header locale={locale} />
+          <Header />
           {children}
           <Footer locale={locale} />
         </NextIntlClientProvider>

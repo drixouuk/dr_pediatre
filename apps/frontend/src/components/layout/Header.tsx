@@ -1,52 +1,62 @@
+'use client'
+
 import { Link } from '@/i18n/navigation'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
+import { useScrollDirection } from '@/hooks/use-scroll-direction'
 import LanguageSwitcher from './LanguageSwitcher'
+import { Button } from '@/components/ui/button'
 
-type Props = {
-  locale: string
-}
+const navLinks = [
+  { href: '/', key: 'home' },
+  { href: '/presentation', key: 'presentation' },
+  { href: '/services', key: 'services' },
+  { href: '/infos', key: 'infos' },
+  { href: '/contact', key: 'contact' },
+] as const
 
-export default async function Header({ locale }: Props) {
-  const nav = await getTranslations({ locale, namespace: 'nav' })
-  const h = await getTranslations({ locale, namespace: 'header' })
-
-  const navLinks = [
-    { href: '/', label: nav('home') },
-    { href: '/presentation', label: nav('presentation') },
-    { href: '/services', label: nav('services') },
-    { href: '/infos', label: nav('infos') },
-    { href: '/contact', label: nav('contact') },
-  ]
+export default function Header() {
+  const t = useTranslations('nav')
+  const h = useTranslations('header')
+  const isHidden = useScrollDirection()
 
   return (
-    <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-container items-center justify-between px-4 py-3 md:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-lg font-semibold text-primary-700 hover:text-primary-600 transition-colors duration-200"
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
+        isHidden ? '-translate-y-full' : 'translate-y-0'
+      }`}
+    >
+      <div className="mx-auto mt-4 max-w-container px-4 md:px-6 lg:px-8">
+        <nav
+          className="flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3 shadow-sm backdrop-blur-md md:px-6"
+          aria-label="Main navigation"
         >
-          <span className="hidden sm:inline">{h('doctorName')}</span>
-          <span className="sm:hidden">{h('doctorNameShort')}</span>
-          <span className="hidden text-sm font-normal text-stone-500 md:inline">
-            {h('specialty')}
-          </span>
-        </Link>
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-lg font-semibold text-primary-700 hover:text-primary-600 transition-colors duration-200"
+          >
+            <span className="hidden sm:inline">{h('doctorName')}</span>
+            <span className="sm:hidden">{h('doctorNameShort')}</span>
+          </Link>
 
-        <div className="flex items-center gap-4">
-          <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
-            {navLinks.map(({ href, label }) => (
+          <div className="hidden items-center gap-1 md:flex">
+            {navLinks.map(({ href, key }) => (
               <Link
                 key={href}
                 href={href}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-stone-600 hover:bg-cream-200 hover:text-primary-700 transition-colors duration-200"
               >
-                {label}
+                {t(key)}
               </Link>
             ))}
-          </nav>
+          </div>
 
-          <LanguageSwitcher currentLocale={locale} />
-        </div>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <Button className="hidden bg-cta-600 text-white hover:bg-cta-700 md:inline-flex">
+              Rendez-vous
+            </Button>
+          </div>
+        </nav>
       </div>
     </header>
   )
