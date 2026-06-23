@@ -43,8 +43,8 @@ export default async function Footer({ locale }: Props) {
           <p className="text-sm text-stone-400">{i('address_line3')}</p>
         </div>
 
-        <p className="mt-4 text-center text-xs text-stone-600">
-          &copy; 2025 Dr Guinane Aicha &mdash; Tous droits r&eacute;serv&eacute;s
+        <p className="mt-4 text-center text-xs text-stone-400">
+          {f('copyright')}
         </p>
       </div>
     </footer>
