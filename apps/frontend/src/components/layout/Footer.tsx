@@ -19,7 +19,8 @@ export default async function Footer({ locale }: Props) {
   ] as const
 
   return (
-    <footer className="border-t border-stone-700/50 bg-primary-950 text-white">
+    <footer className="bg-stone-700 text-white">
+      <div className="h-8 bg-gradient-to-b from-cream-100 to-stone-700" />
       <div className="mx-auto max-w-container px-4 py-6 md:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
           <p className="text-sm font-medium text-stone-300">
