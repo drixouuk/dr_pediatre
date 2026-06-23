@@ -21,13 +21,13 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
-        isHidden ? '-translate-y-full' : 'translate-y-0'
+      className={`fixed top-0 left-1/2 z-50 -translate-x-1/2 w-[calc(100%-2rem)] transition-transform duration-300 md:w-[calc(100%-3rem)] ${
+        isHidden ? '-translate-y-[calc(100%+16px)]' : 'translate-y-0'
       }`}
     >
-      <div className="mx-auto mt-4 max-w-container">
+      <div className="mt-4">
         <nav
-          className="mx-4 flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3 shadow-sm backdrop-blur-md md:mx-6 md:px-6 lg:mx-8"
+          className="flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3 shadow-sm backdrop-blur-md md:px-6"
           aria-label="Main navigation"
         >
           <Link

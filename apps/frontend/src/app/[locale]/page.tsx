@@ -20,7 +20,7 @@ export default async function HomePage({ params }: Props) {
               {t('tagline')}
             </h1>
 
-            <p className="max-w-lg text-lg leading-relaxed text-stone-500">
+            <p className="max-w-md text-lg leading-relaxed text-stone-500">
               Pédiatre à Inezgane, dédiée à la santé et au bien-être des enfants.
             </p>
 
@@ -50,24 +50,8 @@ export default async function HomePage({ params }: Props) {
           </div>
 
           <div className="relative flex items-center justify-center">
-            <div className="absolute -left-6 -top-6 size-64 rounded-full bg-primary-100/60 md:size-80" />
-            <div className="relative aspect-square w-full max-w-md overflow-hidden rounded-3xl bg-primary-50 shadow-lg">
-              <div className="flex h-full items-center justify-center text-primary-200">
-                <svg
-                  className="size-32"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={0.8}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                  />
-                </svg>
-              </div>
-            </div>
+            <div className="absolute -left-6 -top-6 z-0 size-64 rounded-full bg-primary-100/60 md:size-80" />
+            <div className="relative z-10 aspect-square w-full max-w-md overflow-hidden rounded-3xl bg-gradient-to-br from-primary-100 to-primary-200 shadow-lg" />
           </div>
         </div>
       </section>
