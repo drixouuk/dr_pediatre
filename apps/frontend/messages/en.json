@@ -35,7 +35,7 @@
   },
   "presentation": {
     "title": "Your trusted pediatrician in Inezgane",
-    "body": "Dr. Guinane Aicha is a pediatrician graduated from the Faculty of Medicine of Casablanca, with over 10 years of experience caring for children from birth to adolescence. Based in Inezgane, she supports families in the Souss-Massa region with attentive, compassionate medicine.\n\nBelieving that every child is unique, she adapts her approach to each situation, always taking time to explain and reassure both parents and children.",
+    "body": "Dr. Guinane Aicha is a pediatrician graduated from the Faculty of Medicine of Casablanca, with over 10 years of experience caring for children from birth to adolescence. Based in Inezgane, she supports families in the Souss-Massa region with attentive, compassionate medicine.\n\nBelieving that every child is unique, she adapts her approach to each situation, always taking time to explain and reassure both parents and children.\n\nFormer physician at Ibn Rochd University Hospital in Casablanca and former head of the pediatric department at the Regional Hospital of Bejaad (Bouguerif).",
     "languages": "Consultations in French, Arabic, Darija and Tamazight"
   },
   "services": {
@@ -74,6 +74,7 @@
     "address_line2": "Nassim Building, 1st floor, office 4",
     "address_line3": "Inezgane, Morocco",
     "phone": "+212528838618",
+    "email": "dr.aichaguinane@gmail.com",
     "hours_title": "Office hours",
     "hours_note": "Closed on Sundays",
     "fees_title": "Fees",

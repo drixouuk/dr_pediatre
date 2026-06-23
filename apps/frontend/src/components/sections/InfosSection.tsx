@@ -11,7 +11,7 @@ const schedule = [
   { dayKey: "wed", morning: "09h–16h30" },
   { dayKey: "thu", morning: "09h–16h30" },
   { dayKey: "fri", morning: "09h–16h30" },
-  { dayKey: "sat", morning: "09h–12h", afternoon: "—" },
+  { dayKey: "sat", morning: "09h–13h", afternoon: "—" },
 ] as const;
 
 export default async function InfosSection({ locale }: Props) {
@@ -75,7 +75,7 @@ export default async function InfosSection({ locale }: Props) {
                   </span>
                   <span className="text-stone-500">
                     {row.morning}
-                    {'afternoon' in row && (
+                    {"afternoon" in row && (
                       <>
                         <span className="mx-2 text-stone-300">/</span>
                         {row.afternoon}

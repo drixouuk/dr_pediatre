@@ -35,7 +35,7 @@
   },
   "presentation": {
     "title": "Votre pédiatre de confiance à Inezgane",
-    "body": "Docteure Guinane Aicha est pédiatre diplômée de la Faculté de Médecine de Casablanca, avec plus de 10 ans d'expérience auprès des enfants de la naissance à l'adolescence. Installée à Inezgane, elle accompagne les familles de la région Souss-Massa avec une médecine attentive, bienveillante et à l'écoute.\n\nConvaincue que chaque enfant est unique, elle adapte son approche à chaque situation, en prenant le temps d'expliquer et de rassurer parents et enfants.",
+    "body": "Docteure Guinane Aicha est pédiatre diplômée de la Faculté de Médecine de Casablanca, avec plus de 10 ans d'expérience auprès des enfants de la naissance à l'adolescence. Installée à Inezgane, elle accompagne les familles de la région Souss-Massa avec une médecine attentive, bienveillante et à l'écoute.\n\nConvaincue que chaque enfant est unique, elle adapte son approche à chaque situation, en prenant le temps d'expliquer et de rassurer parents et enfants.\n\nAncienne médecin au CHU Ibn Rochd de Casablanca et ancienne chef du service de pédiatrie à l'Hôpital Régional de Bejaad (Bouguerif).",
     "languages": "Consultations en français, arabe, darija et tamazight"
   },
   "services": {
@@ -74,6 +74,7 @@
     "address_line2": "Immeuble Nassim, 1er étage, bureau 4",
     "address_line3": "Inezgane, Maroc",
     "phone": "+212528838618",
+    "email": "dr.aichaguinane@gmail.com",
     "hours_title": "Horaires de consultation",
     "hours_note": "Fermé le dimanche",
     "fees_title": "Tarifs",
