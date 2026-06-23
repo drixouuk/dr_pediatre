@@ -29,7 +29,66 @@
     "cta_primary": "Book an appointment",
     "cta_secondary": "Learn more",
     "badge_conventionnee": "Contracted pediatrician",
-    "badge_langues": "4 languages"
+    "badge_langues": "4 languages",
+    "badge_location": "Inezgane, Morocco"
+  },
+  "presentation": {
+    "title": "Your trusted pediatrician in Inezgane",
+    "body": "Dr. Guinane Aicha is a pediatrician graduated from the Faculty of Medicine of Casablanca, with over 10 years of experience caring for children from birth to adolescence. Based in Inezgane, she supports families in the Souss-Massa region with attentive, compassionate medicine.\n\nBelieving that every child is unique, she adapts her approach to each situation, always taking time to explain and reassure both parents and children.",
+    "languages": "Consultations in French, Arabic, Darija and Tamazight"
+  },
+  "services": {
+    "title": "Our services",
+    "subtitle": "Complete care for your child",
+    "items": {
+      "nourrisson": {
+        "title": "Infant consultation",
+        "description": "Development monitoring, growth charts, breastfeeding and nutrition advice"
+      },
+      "vaccins": {
+        "title": "Vaccinations",
+        "description": "Full vaccination schedule according to the Moroccan national program"
+      },
+      "suivi": {
+        "title": "Regular check-ups",
+        "description": "Annual health check-ups, school follow-up, psychomotor development"
+      },
+      "urgences": {
+        "title": "Urgent consultations",
+        "description": "Fever, gastroenteritis, ENT infections, allergies — walk-in subject to availability"
+      },
+      "nutrition": {
+        "title": "Pediatric nutrition",
+        "description": "Personalized advice for balanced nutrition at every age"
+      },
+      "certificats": {
+        "title": "Medical certificates",
+        "description": "Health certificates, sports fitness, nursery and school certificates"
+      }
+    }
+  },
+  "infos": {
+    "title": "Practical information",
+    "address_line1": "Face au souk Al Houria, door 10",
+    "address_line2": "Nassim Building, 1st floor, office 4",
+    "address_line3": "Inezgane, Morocco",
+    "phone": "—",
+    "hours_title": "Office hours",
+    "hours_note": "Closed on Sundays",
+    "fees_title": "Fees",
+    "fees": "Consultation: 150 MAD — Covered by CNOPS/CNSS",
+    "payment": "Cash only"
+  },
+  "contact": {
+    "title": "Contact us",
+    "name_label": "Full name",
+    "phone_label": "Phone",
+    "message_label": "Message",
+    "send": "Send",
+    "success": "Your message has been sent. We will get back to you as soon as possible.",
+    "name_placeholder": "Your name",
+    "phone_placeholder": "Your phone number",
+    "message_placeholder": "Your message"
   },
   "ui": {
     "phone": "Phone"

@@ -29,7 +29,66 @@
     "cta_primary": "Prendre rendez-vous",
     "cta_secondary": "En savoir plus",
     "badge_conventionnee": "Pédiatre conventionnée",
-    "badge_langues": "4 langues"
+    "badge_langues": "4 langues",
+    "badge_location": "Inezgane, Maroc"
+  },
+  "presentation": {
+    "title": "Votre pédiatre de confiance à Inezgane",
+    "body": "Docteure Guinane Aicha est pédiatre diplômée de la Faculté de Médecine de Casablanca, avec plus de 10 ans d'expérience auprès des enfants de la naissance à l'adolescence. Installée à Inezgane, elle accompagne les familles de la région Souss-Massa avec une médecine attentive, bienveillante et à l'écoute.\n\nConvaincue que chaque enfant est unique, elle adapte son approche à chaque situation, en prenant le temps d'expliquer et de rassurer parents et enfants.",
+    "languages": "Consultations en français, arabe, darija et tamazight"
+  },
+  "services": {
+    "title": "Nos services",
+    "subtitle": "Une prise en charge complète de votre enfant",
+    "items": {
+      "nourrisson": {
+        "title": "Consultation nourrisson",
+        "description": "Suivi du développement, courbes de croissance, conseils allaitement et nutrition"
+      },
+      "vaccins": {
+        "title": "Vaccinations",
+        "description": "Calendrier vaccinal complet selon le programme national marocain"
+      },
+      "suivi": {
+        "title": "Suivi pédiatrique régulier",
+        "description": "Bilans de santé annuels, suivi scolaire, développement psychomoteur"
+      },
+      "urgences": {
+        "title": "Consultations urgentes",
+        "description": "Fièvre, gastro-entérite, infections ORL, allergies — sans rendez-vous selon disponibilité"
+      },
+      "nutrition": {
+        "title": "Nutrition & diététique",
+        "description": "Conseils personnalisés pour une alimentation équilibrée à chaque âge"
+      },
+      "certificats": {
+        "title": "Certificats médicaux",
+        "description": "Certificats de bonne santé, aptitude sportive, crèche et école"
+      }
+    }
+  },
+  "infos": {
+    "title": "Informations pratiques",
+    "address_line1": "Face au souk Al Houria, porte 10",
+    "address_line2": "Immeuble Nassim, 1er étage, bureau 4",
+    "address_line3": "Inezgane, Maroc",
+    "phone": "—",
+    "hours_title": "Horaires de consultation",
+    "hours_note": "Fermé le dimanche",
+    "fees_title": "Tarifs",
+    "fees": "Consultation : 150 MAD — Conventionnée CNOPS/CNSS",
+    "payment": "Paiement en espèces uniquement"
+  },
+  "contact": {
+    "title": "Nous contacter",
+    "name_label": "Nom complet",
+    "phone_label": "Téléphone",
+    "message_label": "Message",
+    "send": "Envoyer",
+    "success": "Votre message a bien été envoyé. Nous vous répondrons dans les plus brefs délais.",
+    "name_placeholder": "Votre nom",
+    "phone_placeholder": "Votre numéro de téléphone",
+    "message_placeholder": "Votre message"
   },
   "ui": {
     "phone": "Tél"
