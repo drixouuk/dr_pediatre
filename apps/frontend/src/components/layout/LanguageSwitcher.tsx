@@ -28,6 +28,7 @@ export default function LanguageSwitcher({ currentLocale }: Props) {
               transition-colors duration-200
               min-h-[36px] min-w-[36px]
               cursor-pointer
+              ${code === 'tzm' ? 'font-tifinagh' : ''}
               ${
                 isActive
                   ? 'bg-primary-600 text-white'
