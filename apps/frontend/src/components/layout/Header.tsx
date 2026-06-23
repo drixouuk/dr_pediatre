@@ -51,7 +51,7 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <Button className="hidden bg-cta-600 text-white hover:bg-cta-700 md:inline-flex">
+          <Button className="hidden bg-cta-700 text-white hover:bg-cta-800 md:inline-flex">
             {t('cta')}
           </Button>
         </div>

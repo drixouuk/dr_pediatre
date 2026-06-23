@@ -33,7 +33,7 @@ export default async function HomePage({ params }: Props) {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <Button className="bg-cta-600 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-700">
+              <Button className="bg-cta-700 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-800">
                 {t("cta_primary")}
               </Button>
               <Button
@@ -44,7 +44,7 @@ export default async function HomePage({ params }: Props) {
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-stone-400">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-stone-600">
               <span className="inline-flex items-center gap-1.5">
                 <span className="size-1.5 rounded-full bg-primary-400" />
                 {t("badge_conventionnee")}

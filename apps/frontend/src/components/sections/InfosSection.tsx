@@ -86,7 +86,7 @@ export default async function InfosSection({ locale }: Props) {
               ))}
             </div>
 
-            <p className="text-sm text-stone-400">{t("hours_note")}</p>
+            <p className="text-sm text-stone-500">{t("hours_note")}</p>
           </div>
         </div>
 

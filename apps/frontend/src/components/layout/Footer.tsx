@@ -25,7 +25,7 @@ export default async function Footer({ locale }: Props) {
         <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
           <p className="text-sm font-medium text-stone-300">
             Dr Guinane Aicha <span className="text-stone-500">—</span>{' '}
-            <span className="font-normal text-stone-400">{f('specialty')}</span>
+            <span className="font-normal text-stone-200">{f('specialty')}</span>
           </p>
 
           <nav className="flex items-center gap-4 text-sm">
@@ -33,17 +33,17 @@ export default async function Footer({ locale }: Props) {
               <Link
                 key={key}
                 href={href}
-                className="text-stone-400 transition-colors duration-200 hover:text-white"
+                className="text-stone-200 transition-colors duration-200 hover:text-white"
               >
                 {n(key)}
               </Link>
             ))}
           </nav>
 
-          <p className="text-sm text-stone-400">{i('address_line3')}</p>
+          <p className="text-sm text-stone-200">{i('address_line3')}</p>
         </div>
 
-        <p className="mt-4 text-center text-xs text-stone-400">
+        <p className="mt-4 text-center text-xs text-stone-200">
           {f('copyright')}
         </p>
       </div>
