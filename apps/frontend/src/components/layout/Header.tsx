@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-4 left-4 right-4 z-50 transition-transform duration-300 ${
+      className={`navbar-floating transition-transform duration-300 ${
         isHidden ? '-translate-y-[calc(100%+2rem)]' : 'translate-y-0'
       }`}
     >

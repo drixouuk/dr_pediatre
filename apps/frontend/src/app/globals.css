@@ -140,6 +140,14 @@
   --sidebar-ring: #14B8A6;
 }
 
+.navbar-floating {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 50;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
