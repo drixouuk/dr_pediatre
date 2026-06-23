@@ -30,7 +30,7 @@ export default function LanguageSwitcher() {
           return (
             <DropdownMenuItem
               key={code}
-              onSelect={() => router.replace(pathname, { locale: code })}
+              onClick={() => router.replace(pathname, { locale: code })}
               className={`${code === 'tzm' ? 'font-tifinagh' : ''} ${
                 isActive ? 'bg-primary-50 font-medium text-primary-700' : ''
               }`}
