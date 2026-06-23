@@ -22,7 +22,7 @@ export default async function HomePage({ params }: Props) {
               Pédiatre · Inezgane, Maroc
             </div>
 
-            <h1 className="font-heading text-4xl font-bold leading-tight text-stone-800 md:text-5xl lg:text-6xl">
+            <h1 className="font-heading text-4xl font-bold leading-tight text-stone-800 max-w-lg md:text-5xl lg:text-6xl">
               {t("tagline")}
             </h1>
 
