@@ -22,7 +22,8 @@
     "tzm": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
   },
   "hero": {
-    "welcome": "Bienvenue"
+    "welcome": "Bienvenue",
+    "tagline": "La santé de vos enfants, entre de bonnes mains"
   },
   "ui": {
     "phone": "Tél"

@@ -25,9 +25,9 @@ export default function Header() {
         isHidden ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
-      <div className="mx-auto mt-4 max-w-container px-4 md:px-6 lg:px-8">
+      <div className="mx-auto mt-4 max-w-container">
         <nav
-          className="flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3 shadow-sm backdrop-blur-md md:px-6"
+          className="mx-4 flex items-center justify-between rounded-2xl bg-white/80 px-4 py-3 shadow-sm backdrop-blur-md md:mx-6 md:px-6 lg:mx-8"
           aria-label="Main navigation"
         >
           <Link
