@@ -1,25 +1,22 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { usePathname, useRouter } from '@/i18n/navigation'
 
-const locales = [
-  { code: 'fr', label: 'Français' },
-  { code: 'ar', label: 'العربية' },
-  { code: 'en', label: 'English' },
-  { code: 'tzm', label: 'ⵜⴰⵎⴰⵣⵉⵖⵜ' },
-] as const
+const localeCodes = ['fr', 'ar', 'en', 'tzm'] as const
 
 type Props = {
   currentLocale: string
 }
 
 export default function LanguageSwitcher({ currentLocale }: Props) {
+  const t = useTranslations('lang')
   const pathname = usePathname()
   const router = useRouter()
 
   return (
     <nav aria-label="Language switcher" className="flex items-center gap-1">
-      {locales.map(({ code, label }) => {
+      {localeCodes.map((code) => {
         const isActive = code === currentLocale
         return (
           <button
@@ -39,7 +36,7 @@ export default function LanguageSwitcher({ currentLocale }: Props) {
             `}
             aria-current={isActive ? 'true' : undefined}
           >
-            {label}
+            {t(code)}
           </button>
         )
       })}

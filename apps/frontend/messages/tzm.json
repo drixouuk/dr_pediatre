@@ -1,1 +1,30 @@
-{}
+{
+  "nav": {
+    "home": "ⴰⵙⵏⵓⴱⴳ",
+    "presentation": "ⵖⴼ ⵜⵙⵏⵉⵊⵉⵜ",
+    "services": "ⵜⵉⵡⵓⵔⵉⵡⵉⵏ",
+    "infos": "ⵉⵏⵖⵎⵉⵙⵏ",
+    "contact": "ⴰⵎⵢⴰⵡⴰⴹ"
+  },
+  "header": {
+    "doctorName": "ⴷⵓⴽⵜⵓⵔ ⴳⵉⵏⴰⵏ ⵄⴰⵢⵛⴰ",
+    "doctorNameShort": "ⴷⵓⴽⵜⵓⵔ ⴳⵉⵏⴰⵏ",
+    "specialty": "ⵜⵙⵏⵉⵊⵉⵜ ⵏ ⵜⴰⵔⵡⴰ"
+  },
+  "footer": {
+    "specialty": "ⵜⵙⵏⵉⵊⵉⵜ ⵏ ⵜⴰⵔⵡⴰ",
+    "location": "ⵉⵏⵣⴳⴰⵏ, ⵍⵎⵖⵔⵉⴱ"
+  },
+  "lang": {
+    "fr": "Français",
+    "en": "English",
+    "ar": "العربية",
+    "tzm": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
+  },
+  "hero": {
+    "welcome": "ⴰⵣⵓⵍ"
+  },
+  "ui": {
+    "phone": "ⵜⵉⵍⵉⴼⵓⵏ"
+  }
+}

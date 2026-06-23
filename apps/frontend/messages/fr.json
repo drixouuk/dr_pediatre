@@ -1,1 +1,30 @@
-{}
+{
+  "nav": {
+    "home": "Accueil",
+    "presentation": "Présentation",
+    "services": "Services",
+    "infos": "Infos",
+    "contact": "Contact"
+  },
+  "header": {
+    "doctorName": "Dr Guinane Aicha",
+    "doctorNameShort": "Dr Guinane",
+    "specialty": "Pédiatre"
+  },
+  "footer": {
+    "specialty": "Pédiatre",
+    "location": "Inezgane, Maroc"
+  },
+  "lang": {
+    "fr": "Français",
+    "en": "English",
+    "ar": "العربية",
+    "tzm": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
+  },
+  "hero": {
+    "welcome": "Bienvenue"
+  },
+  "ui": {
+    "phone": "Tél"
+  }
+}

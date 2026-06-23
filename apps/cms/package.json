@@ -4,18 +4,24 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "payload dev",
-    "build": "payload build",
-    "generate:types": "payload generate:types",
-    "migrate": "payload migrate"
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "seed": "tsx src/seed.ts",
+    "generate:types": "payload generate:types"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.85.1",
     "@payloadcms/next": "^3.85.1",
     "@payloadcms/richtext-lexical": "^3.85.1",
-    "payload": "^3.85.1"
+    "next": "^16.2.9",
+    "payload": "^3.85.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tsx": "^4.22.4",
     "typescript": "^5.9.3"
   }
 }

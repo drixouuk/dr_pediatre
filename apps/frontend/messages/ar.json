@@ -1,1 +1,30 @@
-{}
+{
+  "nav": {
+    "home": "الرئيسية",
+    "presentation": "نبذة عن الطبيبة",
+    "services": "الخدمات",
+    "infos": "معلومات",
+    "contact": "اتصل بنا"
+  },
+  "header": {
+    "doctorName": "د. غينان عائشة",
+    "doctorNameShort": "د. غينان",
+    "specialty": "طبيبة أطفال"
+  },
+  "footer": {
+    "specialty": "طبيبة أطفال",
+    "location": "إنزكان، المغرب"
+  },
+  "lang": {
+    "fr": "Français",
+    "en": "English",
+    "ar": "العربية",
+    "tzm": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
+  },
+  "hero": {
+    "welcome": "مرحباً"
+  },
+  "ui": {
+    "phone": "الهاتف"
+  }
+}

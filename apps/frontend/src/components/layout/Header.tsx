@@ -1,19 +1,23 @@
 import { Link } from '@/i18n/navigation'
+import { getTranslations } from 'next-intl/server'
 import LanguageSwitcher from './LanguageSwitcher'
-
-const navLinks = [
-  { href: '/', label: 'Accueil' },
-  { href: '/presentation', label: 'Présentation' },
-  { href: '/services', label: 'Services' },
-  { href: '/infos', label: 'Infos' },
-  { href: '/contact', label: 'Contact' },
-] as const
 
 type Props = {
   locale: string
 }
 
-export default function Header({ locale }: Props) {
+export default async function Header({ locale }: Props) {
+  const nav = await getTranslations({ locale, namespace: 'nav' })
+  const h = await getTranslations({ locale, namespace: 'header' })
+
+  const navLinks = [
+    { href: '/', label: nav('home') },
+    { href: '/presentation', label: nav('presentation') },
+    { href: '/services', label: nav('services') },
+    { href: '/infos', label: nav('infos') },
+    { href: '/contact', label: nav('contact') },
+  ]
+
   return (
     <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-container items-center justify-between px-4 py-3 md:px-6 lg:px-8">
@@ -21,10 +25,10 @@ export default function Header({ locale }: Props) {
           href="/"
           className="flex items-center gap-2 text-lg font-semibold text-primary-700 hover:text-primary-600 transition-colors duration-200"
         >
-          <span className="hidden sm:inline">Dr Guinane Aicha</span>
-          <span className="sm:hidden">Dr Guinane</span>
+          <span className="hidden sm:inline">{h('doctorName')}</span>
+          <span className="sm:hidden">{h('doctorNameShort')}</span>
           <span className="hidden text-sm font-normal text-stone-500 md:inline">
-            Pédiatre
+            {h('specialty')}
           </span>
         </Link>
 

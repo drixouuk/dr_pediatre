@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm run /^dev:/",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:cms": "pnpm --filter drpediatre-cms dev",
+    "build": "pnpm run /^build:/",
+    "build:frontend": "pnpm --filter frontend build",
+    "build:cms": "pnpm --filter drpediatre-cms build",
+    "seed": "pnpm --filter drpediatre-cms seed",
+    "lint": "pnpm run /^lint:/"
+  }
+}

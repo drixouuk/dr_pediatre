@@ -1,16 +1,11 @@
-# Dependencies
 node_modules/
-
-# Next.js
 .next/
 dist/
-
-# Env & DB
 .env
 .env.local
 *.db
+*.db-journal
 
-# AI assistants (générés par uipro init)
 .agent/
 .claude/
 .codebuddy/
@@ -24,6 +19,5 @@ dist/
 .trae/
 .windsurf/
 
-# Kilo store (DB locale)
 home/
 .github/
