@@ -79,13 +79,13 @@
     "fees": "ⵜⴰⵙⵇⴰⵎⵓⵜ: 150 ⴷⵔⵀⵎ — ⵜⴻⵜⵜⴰⵡⵉ ⴷⴷⵔⴰⵔⵉⵢⵉⵏ CN OPS/CNSS",
     "payment": "ⴰⴷⴼⵓ ⵙ ⵉⴷⵔⵉⵎⵏ ⴳⴰⵏ ⴰⵏⵖⵉⴼ",
     "days": {
-      "mon": "Aynas",
-      "tue": "Asinas",
-      "wed": "Akras",
-      "thu": "Akwas",
-      "fri": "Asimwas",
-      "sat": "Asiḍyas",
-      "sun": "Asamas"
+      "mon": "ⴰⵢⵏⴰⵙ",
+      "tue": "ⴰⵙⵉⵏⴰⵙ",
+      "wed": "ⴰⴽⵔⴰⵙ",
+      "thu": "ⴰⴽⵡⴰⵙ",
+      "fri": "ⴰⵙⵉⵎⵡⴰⵙ",
+      "sat": "ⴰⵙⵉⴹⵢⴰⵙ",
+      "sun": "ⴰⵙⴰⵎⴰⵙ"
     }
   },
   "contact": {

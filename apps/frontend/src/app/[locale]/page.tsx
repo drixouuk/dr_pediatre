@@ -16,7 +16,7 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <main className="flex-1">
-      <section className="flex min-h-screen items-center bg-cream-100 px-4 pt-24 pb-16 md:px-6 lg:px-8">
+      <section className="flex min-h-screen items-center bg-cream-100 px-4 pt-24 pb-16 transition-colors duration-300 md:px-6 lg:px-8">
         <div className="mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-2 md:gap-16">
           <div className="flex flex-col gap-6">
             <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 ring-1 ring-primary-200">
@@ -65,9 +65,20 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
+      <div className="h-16 bg-gradient-to-b from-cream-100 to-white" />
+
       <PresentationSection locale={locale} />
+
+      <div className="h-16 bg-gradient-to-b from-white to-cream-100" />
+
       <ServicesSection locale={locale} />
+
+      <div className="h-16 bg-gradient-to-b from-cream-100 to-white" />
+
       <InfosSection locale={locale} />
+
+      <div className="h-16 bg-gradient-to-b from-white to-cream-100" />
+
       <ContactSection locale={locale} />
     </main>
   );
