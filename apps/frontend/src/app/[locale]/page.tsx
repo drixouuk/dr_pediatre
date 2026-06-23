@@ -1,5 +1,9 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
+import PresentationSection from "@/components/sections/PresentationSection";
+import ServicesSection from "@/components/sections/ServicesSection";
+import InfosSection from "@/components/sections/InfosSection";
+import ContactSection from "@/components/sections/ContactSection";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -9,20 +13,18 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
-  const nav = await getTranslations({ locale, namespace: "nav" });
 
   return (
     <main className="flex-1">
       <section className="flex min-h-screen items-center bg-cream-100 px-4 pt-24 pb-16 md:px-6 lg:px-8">
         <div className="mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-2 md:gap-16">
-          {/* Texte */}
           <div className="flex flex-col gap-6">
             <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 ring-1 ring-primary-200">
               <span className="size-1.5 rounded-full bg-primary-500" />
-              Pédiatre · Inezgane, Maroc
+              {t("badge_location")}
             </div>
 
-            <h1 className="font-heading text-4xl font-bold leading-tight text-stone-800 max-w-lg md:text-5xl lg:text-6xl">
+            <h1 className="font-heading max-w-lg text-4xl font-bold leading-tight text-stone-800 md:text-5xl lg:text-6xl">
               {t("tagline")}
             </h1>
 
@@ -31,12 +33,12 @@ export default async function HomePage({ params }: Props) {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <Button className="bg-cta-600 px-6 py-3 text-base text-white hover:bg-cta-700 shadow-sm">
+              <Button className="bg-cta-600 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-700">
                 {t("cta_primary")}
               </Button>
               <Button
                 variant="outline"
-                className="px-6 py-3 text-base border-stone-300 text-stone-700 hover:bg-cream-200"
+                className="border-stone-300 px-6 py-3 text-base text-stone-700 hover:bg-cream-200"
               >
                 {t("cta_secondary")}
               </Button>
@@ -55,17 +57,18 @@ export default async function HomePage({ params }: Props) {
             </div>
           </div>
 
-          {/* Image placeholder */}
           <div className="relative hidden md:flex items-center justify-center">
-            {/* Cercle décoratif arrière */}
             <div className="absolute -left-8 -top-8 size-72 rounded-full bg-amber-100/40" />
-            {/* Cercle décoratif avant */}
             <div className="absolute -right-4 -bottom-4 size-48 rounded-full bg-primary-100/50" />
-            {/* Card principale */}
             <div className="relative z-10 aspect-[4/5] w-full max-w-sm overflow-hidden rounded-3xl bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200 shadow-xl" />
           </div>
         </div>
       </section>
+
+      <PresentationSection locale={locale} />
+      <ServicesSection locale={locale} />
+      <InfosSection locale={locale} />
+      <ContactSection locale={locale} />
     </main>
   );
 }
