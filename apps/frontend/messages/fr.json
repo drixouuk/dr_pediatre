@@ -15,7 +15,7 @@
   "footer": {
     "specialty": "Pédiatre",
     "location": "Inezgane, Maroc",
-    "copyright": "© 2025 Dr Guinane Aicha — Tous droits réservés"
+    "copyright": "© 2026 Dr Guinane Aicha — Tous droits réservés"
   },
   "lang": {
     "fr": "Français",
@@ -77,7 +77,7 @@
     "hours_title": "Horaires de consultation",
     "hours_note": "Fermé le dimanche",
     "fees_title": "Tarifs",
-    "fees": "Consultation : 150 MAD — Conventionnée CNOPS/CNSS",
+    "fees": "Consultation : 250 MAD — Conventionnée CNOPS/CNSS",
     "payment": "Paiement en espèces uniquement",
     "days": {
       "mon": "Lundi",
