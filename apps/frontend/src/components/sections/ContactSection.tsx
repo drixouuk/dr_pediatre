@@ -93,7 +93,7 @@ export default function ContactSection({ locale }: Props) {
 
           <Button
             type="submit"
-            className="w-full bg-primary-600 py-3 text-base text-white hover:bg-primary-700"
+            className="w-full bg-primary-700 py-3 text-base text-white hover:bg-primary-800"
           >
             {t('send')}
           </Button>
