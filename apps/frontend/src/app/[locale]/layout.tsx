@@ -78,7 +78,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       dir={dir}
       className={`${figtree.variable} ${fontVars} ${notoSansTifinagh.variable} h-full`}
     >
-      <body className={`${bodyFont} flex min-h-full flex-col bg-cream-100 text-stone-800 antialiased`}>
+      <body className={`${bodyFont} flex min-h-full flex-col bg-cream-100 text-stone-800 antialiased pt-20`}>
         <NextIntlClientProvider>
           <Header />
           {children}
