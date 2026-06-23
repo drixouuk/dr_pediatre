@@ -18,7 +18,7 @@ export default async function InfosSection({ locale }: Props) {
   const t = await getTranslations({ locale, namespace: 'infos' })
 
   return (
-    <section className="scroll-mt-24 bg-white px-4 py-20 md:px-6 md:py-28 lg:px-8">
+    <section id="infos" className="scroll-mt-24 bg-white px-4 py-20 md:px-6 md:py-28 lg:px-8">
       <div className="mx-auto max-w-container">
         <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
           {t('title')}

@@ -8,10 +8,10 @@ import { Button } from '@/components/ui/button'
 
 const navLinks = [
   { href: '/', key: 'home' },
-  { href: '/presentation', key: 'presentation' },
-  { href: '/services', key: 'services' },
-  { href: '/infos', key: 'infos' },
-  { href: '/contact', key: 'contact' },
+  { href: '/#presentation', key: 'presentation' },
+  { href: '/#services', key: 'services' },
+  { href: '/#infos', key: 'infos' },
+  { href: '/#contact', key: 'contact' },
 ] as const
 
 export default function Header() {

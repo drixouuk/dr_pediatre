@@ -8,7 +8,7 @@ export default async function PresentationSection({ locale }: Props) {
   const t = await getTranslations({ locale, namespace: 'presentation' })
 
   return (
-    <section className="scroll-mt-24 bg-white px-4 py-20 md:px-6 md:py-28 lg:px-8">
+    <section id="presentation" className="scroll-mt-24 bg-white px-4 py-20 md:px-6 md:py-28 lg:px-8">
       <div className="mx-auto max-w-container">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-heading text-3xl font-bold text-stone-800 md:text-4xl">
