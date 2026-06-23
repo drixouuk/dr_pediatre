@@ -19,23 +19,20 @@ export default async function PresentationSection({ locale }: Props) {
             {t("title")}
           </h2>
 
-          <div className="mt-8 space-y-6 text-left text-base leading-relaxed text-stone-600 md:text-lg">
-            {/* Introduction */}
+          <div className="mt-8 space-y-6 text-start text-base leading-relaxed text-stone-600 md:text-lg">
             <p>{t("intro")}</p>
 
-            {/* Bloc Parcours d'excellence */}
             <div className="space-y-3">
               <h3 className="font-heading font-semibold text-stone-700">
                 {t("section1_title")} :
               </h3>
-              <ul className="list-disc space-y-2 ps-6 text-stone-600">
-                <li>{t("experience_chu")}</li>
-                <li>{t("experience_biougra")}</li>
-                <li>{t("diploma")}</li>
+              <ul className="list-disc space-y-2 ps-6 rtl:ps-0 rtl:list-inside text-stone-600">
+                <li className="rtl:text-right text-start">{t("experience_chu")}</li>
+                <li className="rtl:text-right text-start">{t("experience_biougra")}</li>
+                <li className="rtl:text-right text-start">{t("diploma")}</li>
               </ul>
             </div>
 
-            {/* Bloc Approche humaine */}
             <div className="space-y-3">
               <h3 className="font-heading font-semibold text-stone-700">
                 {t("section2_title")} :
