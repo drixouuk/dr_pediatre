@@ -4,7 +4,8 @@
     "presentation": "نبذة عن الطبيبة",
     "services": "الخدمات",
     "infos": "معلومات",
-    "contact": "اتصل بنا"
+    "contact": "اتصل بنا",
+    "cta": "موعد"
   },
   "header": {
     "doctorName": "د. غينان عائشة",
@@ -23,7 +24,12 @@
   },
   "hero": {
     "welcome": "مرحباً",
-    "tagline": "صحة أطفالكم في أيدٍ أمينة"
+    "tagline": "صحة أطفالكم في أيدٍ أمينة",
+    "subtitle": "طبيبة أطفال في إنزكان، مكرسة لصحة ورفاهية الأطفال.",
+    "cta_primary": "حجز موعد",
+    "cta_secondary": "اعرف المزيد",
+    "badge_conventionnee": "طبيبة متعاقدة",
+    "badge_langues": "4 لغات"
   },
   "ui": {
     "phone": "الهاتف"

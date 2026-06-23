@@ -4,7 +4,8 @@
     "presentation": "About",
     "services": "Services",
     "infos": "Information",
-    "contact": "Contact"
+    "contact": "Contact",
+    "cta": "Appointment"
   },
   "header": {
     "doctorName": "Dr Guinane Aicha",
@@ -23,7 +24,12 @@
   },
   "hero": {
     "welcome": "Welcome",
-    "tagline": "Your children's health, in caring hands"
+    "tagline": "Your children's health, in caring hands",
+    "subtitle": "Pediatrician in Inezgane, dedicated to children's health and well-being.",
+    "cta_primary": "Book an appointment",
+    "cta_secondary": "Learn more",
+    "badge_conventionnee": "Contracted pediatrician",
+    "badge_langues": "4 languages"
   },
   "ui": {
     "phone": "Phone"

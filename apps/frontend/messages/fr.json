@@ -4,7 +4,8 @@
     "presentation": "Présentation",
     "services": "Services",
     "infos": "Infos",
-    "contact": "Contact"
+    "contact": "Contact",
+    "cta": "Rendez-vous"
   },
   "header": {
     "doctorName": "Dr Guinane Aicha",
@@ -23,7 +24,12 @@
   },
   "hero": {
     "welcome": "Bienvenue",
-    "tagline": "La santé de vos enfants, entre de bonnes mains"
+    "tagline": "La santé de vos enfants, entre de bonnes mains",
+    "subtitle": "Pédiatre à Inezgane, dédiée à la santé et au bien-être des enfants.",
+    "cta_primary": "Prendre rendez-vous",
+    "cta_secondary": "En savoir plus",
+    "badge_conventionnee": "Pédiatre conventionnée",
+    "badge_langues": "4 langues"
   },
   "ui": {
     "phone": "Tél"

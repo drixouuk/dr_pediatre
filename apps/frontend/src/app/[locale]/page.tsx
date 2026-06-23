@@ -1,60 +1,71 @@
-import { setRequestLocale, getTranslations } from 'next-intl/server'
-import { Button } from '@/components/ui/button'
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { Button } from "@/components/ui/button";
 
 type Props = {
-  params: Promise<{ locale: string }>
-}
+  params: Promise<{ locale: string }>;
+};
 
 export default async function HomePage({ params }: Props) {
-  const { locale } = await params
-  setRequestLocale(locale)
-
-  const t = await getTranslations({ locale, namespace: 'hero' })
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "hero" });
+  const nav = await getTranslations({ locale, namespace: "nav" });
 
   return (
     <main className="flex-1">
-      <section className="flex min-h-[calc(100vh-5rem)] items-center bg-cream-100 px-4 md:px-6 lg:px-8">
-        <div className="mx-auto grid w-full max-w-container items-center gap-12 md:grid-cols-2 md:gap-16">
+      <section className="flex min-h-screen items-center bg-cream-100 px-4 pt-24 pb-16 md:px-6 lg:px-8">
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-2 md:gap-16">
+          {/* Texte */}
           <div className="flex flex-col gap-6">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 ring-1 ring-primary-200">
+              <span className="size-1.5 rounded-full bg-primary-500" />
+              Pédiatre · Inezgane, Maroc
+            </div>
+
             <h1 className="font-heading text-4xl font-bold leading-tight text-stone-800 md:text-5xl lg:text-6xl">
-              {t('tagline')}
+              {t("tagline")}
             </h1>
 
             <p className="max-w-md text-lg leading-relaxed text-stone-500">
-              Pédiatre à Inezgane, dédiée à la santé et au bien-être des enfants.
+              {t("subtitle")}
             </p>
 
-            <div className="flex flex-wrap gap-4">
-              <Button className="bg-cta-600 px-6 py-3 text-base text-white hover:bg-cta-700">
-                Prendre rendez-vous
+            <div className="flex flex-wrap gap-3">
+              <Button className="bg-cta-600 px-6 py-3 text-base text-white hover:bg-cta-700 shadow-sm">
+                {t("cta_primary")}
               </Button>
-              <Button variant="outline" className="px-6 py-3 text-base">
-                En savoir plus
+              <Button
+                variant="outline"
+                className="px-6 py-3 text-base border-stone-300 text-stone-700 hover:bg-cream-200"
+              >
+                {t("cta_secondary")}
               </Button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-stone-500">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-stone-400">
               <span className="inline-flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-primary-500" />
-                Pédiatre conventionnée
+                <span className="size-1.5 rounded-full bg-primary-400" />
+                {t("badge_conventionnee")}
               </span>
+              <span className="text-stone-300">·</span>
               <span className="inline-flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-primary-500" />
-                Inezgane, Maroc
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-primary-500" />
-                4 langues
+                <span className="size-1.5 rounded-full bg-primary-400" />
+                {t("badge_langues")}
               </span>
             </div>
           </div>
 
-          <div className="relative flex items-center justify-center">
-            <div className="absolute -left-6 -top-6 z-0 size-64 rounded-full bg-primary-100/60 md:size-80" />
-            <div className="relative z-10 aspect-square w-full max-w-md overflow-hidden rounded-3xl bg-gradient-to-br from-primary-100 to-primary-200 shadow-lg" />
+          {/* Image placeholder */}
+          <div className="relative hidden md:flex items-center justify-center">
+            {/* Cercle décoratif arrière */}
+            <div className="absolute -left-8 -top-8 size-72 rounded-full bg-amber-100/40" />
+            {/* Cercle décoratif avant */}
+            <div className="absolute -right-4 -bottom-4 size-48 rounded-full bg-primary-100/50" />
+            {/* Card principale */}
+            <div className="relative z-10 aspect-[4/5] w-full max-w-sm overflow-hidden rounded-3xl bg-gradient-to-br from-primary-50 via-primary-100 to-primary-200 shadow-xl" />
           </div>
         </div>
       </section>
     </main>
-  )
+  );
 }

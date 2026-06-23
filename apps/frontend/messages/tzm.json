@@ -4,7 +4,8 @@
     "presentation": "ⵖⴼ ⵜⵙⵏⵉⵊⵉⵜ",
     "services": "ⵜⵉⵡⵓⵔⵉⵡⵉⵏ",
     "infos": "ⵉⵏⵖⵎⵉⵙⵏ",
-    "contact": "ⴰⵎⵢⴰⵡⴰⴹ"
+    "contact": "ⴰⵎⵢⴰⵡⴰⴹ",
+    "cta": "ⵜⵉⵎⵉⵔⵉⵜ"
   },
   "header": {
     "doctorName": "ⴷⵓⴽⵜⵓⵔ ⴳⵉⵏⴰⵏ ⵄⴰⵢⵛⴰ",
@@ -23,7 +24,12 @@
   },
   "hero": {
     "welcome": "ⴰⵣⵓⵍ",
-    "tagline": "ⴰⵙⵍⴰⵎ ⵏ ⵉⵣⵣⵉⴽⵉⵡⵏ, ⴷⴻⴳ ⵉⴼⴰⵙⵙⵏ ⵉⵎⴰⵏⴻⵏ"
+    "tagline": "ⴰⵙⵍⴰⵎ ⵏ ⵉⵣⵣⵉⴽⵉⵡⵏ, ⴷⴻⴳ ⵉⴼⴰⵙⵙⵏ ⵉⵎⴰⵏⴻⵏ",
+    "subtitle": "ⴰⵎⵙⵏⴰⵍ ⵏ ⵉⵣⵣⵉⴽⵉⵡⵏ ⴷⴻⴳ ⵉⵏⵣⴳⴰⵏ",
+    "cta_primary": "ⴰⵙⵏⵓⴱⴳ ⵏ ⵜⵎⵉⵔⵉⵜ",
+    "cta_secondary": "ⵙⵙⵉⵏ ⴰⵎⵓⵔ",
+    "badge_conventionnee": "ⴰⵎⵙⵏⴰⵍ ⵉⵙⵎⵓⵏ",
+    "badge_langues": "4 ⵜⵓⵜⵍⴰⵢⵉⵏ"
   },
   "ui": {
     "phone": "ⵜⵉⵍⵉⴼⵓⵏ"
