@@ -35,7 +35,13 @@
   },
   "presentation": {
     "title": "Votre pédiatre de confiance à Inezgane",
-    "body": "Dr Guinane Aicha est une pédiatre expérimentée avec plus de 20 ans de pratique dédiée au bien-être des enfants, de la naissance à l'adolescence.\n\nUn parcours d'excellence :\n\n    Ancienne médecin au CHU Ibn Rochd de Casablanca.\n    Ancienne cheffe du service de pédiatrie à l'Hôpital Régional de Biougra.\n    Diplômée de la Faculté de Médecine de Casablanca.\n\nUne approche humaine au quotidien :\nAujourd'hui installée à Inezgane, elle accompagne les familles de la région Souss-Massa avec une médecine attentive, bienveillante et à l'écoute. Convaincue que chaque enfant est unique, elle prend toujours le temps d'expliquer et de rassurer, en adaptant ses soins à chaque situation.",
+    "intro": "Dr Guinane Aicha est une pédiatre expérimentée avec plus de 20 ans de pratique dédiée au bien-être des enfants, de la naissance à l'adolescence.",
+    "section1_title": "Un parcours d'excellence",
+    "experience_chu": "Ancienne médecin au CHU Ibn Rochd de Casablanca.",
+    "experience_biougra": "Ancienne cheffe du service de pédiatrie à l'Hôpital Régional de Biougra.",
+    "diploma": "Diplômée de la Faculté de Médecine de Casablanca.",
+    "section2_title": "Une approche humaine au quotidien",
+    "description": "Aujourd'hui installée à Inezgane, elle accompagne les familles de la région Souss-Massa avec une médecine attentive, bienveillante et à l'écoute. Convaincue que chaque enfant est unique, elle prend toujours le temps d'expliquer et de rassurer, en adaptant ses soins à chaque situation.",
     "languages": "Consultations en français, arabe, darija et tamazight"
   },
   "services": {

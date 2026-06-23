@@ -35,7 +35,13 @@
   },
   "presentation": {
     "title": "Your trusted pediatrician in Inezgane",
-    "body": "Dr. Guinane Aicha is an experienced pediatrician with over 20 years of practice dedicated to children's well-being, from birth to adolescence.\n\nA path of excellence :\n\n    Former physician at the Ibn Rochd University Hospital (CHU) in Casablanca.\n    Former head of the pediatrics department at the Biougra Regional Hospital.\n    Graduate of the Faculty of Medicine of Casablanca.\n\nA human approach every day :\nNow based in Inezgane, she supports families in the Souss-Massa region with an attentive, caring, and mindful medical approach. Convinced that every child is unique, she always takes the time to explain and reassure, tailoring her care to each situation.",
+    "intro": "Dr. Guinane Aicha is an experienced pediatrician with over 20 years of practice dedicated to children's well-being, from birth to adolescence.",
+    "section1_title": "A path of excellence",
+    "experience_chu": "Former physician at the Ibn Rochd University Hospital (CHU) in Casablanca.",
+    "experience_biougra": "Former head of the pediatrics department at the Biougra Regional Hospital.",
+    "diploma": "Graduate of the Faculty of Medicine of Casablanca.",
+    "section2_title": "A human approach every day",
+    "description": "Now based in Inezgane, she supports families in the Souss-Massa region with an attentive, caring, and mindful medical approach. Convinced that every child is unique, she always takes the time to explain and reassure, tailoring her care to each situation.",
     "languages": "Consultations in French, Arabic, Darija and Tamazight"
   },
   "services": {
