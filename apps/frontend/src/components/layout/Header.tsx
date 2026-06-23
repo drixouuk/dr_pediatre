@@ -20,8 +20,14 @@ export default function Header() {
 
   return (
     <div
-      style={{ left: '1rem', right: '1rem' }}
-      className={`fixed top-4 z-50 transition-transform duration-300 ${
+      style={{
+        position: 'fixed',
+        top: '1rem',
+        left: '1rem',
+        right: '1rem',
+        zIndex: 50,
+      }}
+      className={`transition-transform duration-300 ${
         isHidden ? "-translate-y-[calc(100%+2rem)]" : "translate-y-0"
       }`}
     >
