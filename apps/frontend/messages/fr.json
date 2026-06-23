@@ -77,7 +77,16 @@
     "hours_note": "Fermé le dimanche",
     "fees_title": "Tarifs",
     "fees": "Consultation : 150 MAD — Conventionnée CNOPS/CNSS",
-    "payment": "Paiement en espèces uniquement"
+    "payment": "Paiement en espèces uniquement",
+    "days": {
+      "mon": "Lundi",
+      "tue": "Mardi",
+      "wed": "Mercredi",
+      "thu": "Jeudi",
+      "fri": "Vendredi",
+      "sat": "Samedi",
+      "sun": "Dimanche"
+    }
   },
   "contact": {
     "title": "Nous contacter",

@@ -6,16 +6,17 @@ type Props = {
 }
 
 const schedule = [
-  { day: 'Lundi', morning: '09h–12h', afternoon: '15h–18h' },
-  { day: 'Mardi', morning: '09h–12h', afternoon: '15h–18h' },
-  { day: 'Mercredi', morning: '09h–12h', afternoon: '—' },
-  { day: 'Jeudi', morning: '09h–12h', afternoon: '15h–18h' },
-  { day: 'Vendredi', morning: '09h–12h', afternoon: '15h–18h' },
-  { day: 'Samedi', morning: '09h–12h', afternoon: '—' },
+  { dayKey: 'mon', morning: '09h–12h', afternoon: '15h–18h' },
+  { dayKey: 'tue', morning: '09h–12h', afternoon: '15h–18h' },
+  { dayKey: 'wed', morning: '09h–12h', afternoon: '—' },
+  { dayKey: 'thu', morning: '09h–12h', afternoon: '15h–18h' },
+  { dayKey: 'fri', morning: '09h–12h', afternoon: '15h–18h' },
+  { dayKey: 'sat', morning: '09h–12h', afternoon: '—' },
 ] as const
 
 export default async function InfosSection({ locale }: Props) {
   const t = await getTranslations({ locale, namespace: 'infos' })
+  const d = await getTranslations({ locale, namespace: 'infos.days' })
 
   return (
     <section id="infos" className="scroll-mt-24 bg-white px-4 py-20 md:px-6 md:py-28 lg:px-8">
@@ -59,10 +60,10 @@ export default async function InfosSection({ locale }: Props) {
             <div className="overflow-hidden rounded-xl border border-stone-200 bg-white">
               {schedule.map((row) => (
                 <div
-                  key={row.day}
+                  key={row.dayKey}
                   className="flex items-center justify-between border-b border-stone-100 px-4 py-2.5 text-sm last:border-b-0"
                 >
-                  <span className="font-medium text-stone-700">{row.day}</span>
+                  <span className="font-medium text-stone-700">{d(row.dayKey)}</span>
                   <span className="text-stone-500">
                     {row.morning}
                     <span className="mx-2 text-stone-300">/</span>

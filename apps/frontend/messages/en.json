@@ -77,7 +77,16 @@
     "hours_note": "Closed on Sundays",
     "fees_title": "Fees",
     "fees": "Consultation: 150 MAD — Covered by CNOPS/CNSS",
-    "payment": "Cash only"
+    "payment": "Cash only",
+    "days": {
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday",
+      "sun": "Sunday"
+    }
   },
   "contact": {
     "title": "Contact us",

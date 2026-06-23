@@ -9,7 +9,7 @@ export function useScrollDirection() {
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY
-      setIsHidden(currentY > lastY && currentY > 80)
+      setIsHidden(currentY > lastY && currentY > 100)
       setLastY(currentY)
     }
 

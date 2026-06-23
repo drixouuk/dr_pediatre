@@ -77,7 +77,16 @@
     "hours_note": "ⵉⵜⵜⵇⴰⴼ ⴰⵙⵙ ⵏ ⴰⵅⴰⴷ",
     "fees_title": "ⵜⵉⵙⴽⵉⵡⵉⵏ",
     "fees": "ⵜⴰⵙⵇⴰⵎⵓⵜ: 150 ⴷⵔⵀⵎ — ⵜⴻⵜⵜⴰⵡⵉ ⴷⴷⵔⴰⵔⵉⵢⵉⵏ CN OPS/CNSS",
-    "payment": "ⴰⴷⴼⵓ ⵙ ⵉⴷⵔⵉⵎⵏ ⴳⴰⵏ ⴰⵏⵖⵉⴼ"
+    "payment": "ⴰⴷⴼⵓ ⵙ ⵉⴷⵔⵉⵎⵏ ⴳⴰⵏ ⴰⵏⵖⵉⴼ",
+    "days": {
+      "mon": "Aynas",
+      "tue": "Asinas",
+      "wed": "Akras",
+      "thu": "Akwas",
+      "fri": "Asimwas",
+      "sat": "Asiḍyas",
+      "sun": "Asamas"
+    }
   },
   "contact": {
     "title": "ⴰⵎⵢⴰⵡⴰⴹ",
