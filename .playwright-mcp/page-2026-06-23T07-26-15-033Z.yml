@@ -1,0 +1,40 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation "Main navigation" [ref=e3]:
+      - link "Dr Guinane Aicha" [ref=e4] [cursor=pointer]:
+        - /url: /fr
+        - generic [ref=e5]: Dr Guinane Aicha
+      - generic [ref=e6]:
+        - link "Accueil" [ref=e7] [cursor=pointer]:
+          - /url: /fr
+        - link "Présentation" [ref=e8] [cursor=pointer]:
+          - /url: /fr/presentation
+        - link "Services" [ref=e9] [cursor=pointer]:
+          - /url: /fr/services
+        - link "Infos" [ref=e10] [cursor=pointer]:
+          - /url: /fr/infos
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: /fr/contact
+      - generic [ref=e12]:
+        - button "Switch language" [ref=e13] [cursor=pointer]:
+          - img [ref=e14]
+          - generic [ref=e17]: Switch language
+        - button "Rendez-vous" [ref=e18]
+  - main [ref=e19]:
+    - generic [ref=e22]:
+      - generic [ref=e23]: Pédiatre · Inezgane, Maroc
+      - heading "La santé de vos enfants, entre de bonnes mains" [level=1] [ref=e25]
+      - paragraph [ref=e26]: Pédiatre à Inezgane, dédiée à la santé et au bien-être des enfants.
+      - generic [ref=e27]:
+        - button "Prendre rendez-vous" [ref=e28]
+        - button "En savoir plus" [ref=e29]
+      - generic [ref=e30]:
+        - generic [ref=e31]: Pédiatre conventionnée
+        - generic [ref=e33]: ·
+        - generic [ref=e34]: 4 langues
+  - contentinfo [ref=e40]:
+    - generic [ref=e42]:
+      - paragraph [ref=e43]: Dr Guinane Aicha|Pédiatre
+      - paragraph [ref=e44]: Inezgane, Maroc
+  - button "Open Next.js Dev Tools" [ref=e50] [cursor=pointer]:
+    - img [ref=e51]
