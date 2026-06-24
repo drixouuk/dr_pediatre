@@ -22,7 +22,7 @@ export default async function InfosSection({ locale }: Props) {
   return (
     <section
       id="infos"
-      className="scroll-mt-24 bg-white px-4 py-12 md:px-6 md:py-16 lg:px-8"
+      className="scroll-mt-24 bg-gradient-to-b from-cream-100 to-white px-4 py-12 md:px-6 md:py-16 lg:px-8"
     >
       <div className="mx-auto max-w-container">
         <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
