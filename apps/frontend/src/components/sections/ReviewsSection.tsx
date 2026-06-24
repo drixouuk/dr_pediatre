@@ -41,7 +41,11 @@ function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
           <StarRating rating={review.rating} />
         </div>
         <div className="ml-auto flex shrink-0 items-center gap-1">
-          <svg className="size-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            className="size-4"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
               fill="#4285F4"
@@ -92,17 +96,29 @@ export default function ReviewsSection() {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+
     const interval = setInterval(() => {
       if (paused) return;
+
       const card = track.firstElementChild as HTMLElement | null;
       if (!card) return;
-      const cardWidth = card.offsetWidth + 24;
-      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 1) {
-        track.scrollTo({ left: 0, behavior: "smooth" });
+
+      // Récupère dynamiquement la largeur de la carte + son gap réel via computed styles
+      const gap = parseInt(window.getComputedStyle(track).gap) || 24;
+      const cardWidth = card.offsetWidth + gap;
+
+      // Seuil de tolérance pour la fin du scroll
+      const isAtEnd =
+        track.scrollLeft + track.clientWidth >= track.scrollWidth - 10;
+
+      if (isAtEnd) {
+        // Retour au début INSTANTANÉ pour éviter le retour en arrière fluide désagréable
+        track.scrollTo({ left: 0, behavior: "auto" });
       } else {
         track.scrollBy({ left: cardWidth, behavior: "smooth" });
       }
     }, 3500);
+
     return () => clearInterval(interval);
   }, [paused]);
 
@@ -112,11 +128,13 @@ export default function ReviewsSection() {
         <h2 className="mb-10 text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
           Ce que disent nos patients
         </h2>
+        {/* Note : J'ai retiré "scroll-smooth" de la liste des classes ci-dessous 
+            pour laisser le JS gérer le comportement sans conflit de rendering */}
         <div
           ref={trackRef}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {reviews.map((r) => (
             <div key={r.id} className="snap-start">
