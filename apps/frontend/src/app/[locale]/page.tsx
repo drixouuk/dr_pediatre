@@ -66,23 +66,13 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      <div className="h-16 bg-gradient-to-b from-cream-100 to-white" />
-
       <PresentationSection locale={locale} />
-
-      <div className="h-16 bg-gradient-to-b from-white to-cream-100" />
 
       <ServicesSection locale={locale} />
 
-      <div className="h-16 bg-gradient-to-b from-cream-100 to-white" />
-
       <ReviewsSection />
 
-      <div className="h-16 bg-gradient-to-b from-white to-cream-100" />
-
       <InfosSection locale={locale} />
-
-      <div className="h-16 bg-gradient-to-b from-white to-cream-100" />
 
       <ContactSection locale={locale} />
     </main>
