@@ -19,7 +19,7 @@ export default function ContactSection({ locale }: Props) {
 
   if (sent) {
     return (
-      <section className="scroll-mt-24 bg-gradient-to-b from-white to-cream-100 bg-cream-100 bg-[length:100%_64px] bg-[position:0_0] bg-no-repeat px-4 py-20 md:px-6 md:py-28 lg:px-8">
+      <section className="scroll-mt-24 bg-gradient-to-b from-white to-cream-100 bg-cream-100 bg-[length:100%_32px] bg-[position:0_0] bg-no-repeat px-4 py-20 md:px-6 md:py-28 lg:px-8">
         <div className="mx-auto max-w-container text-center">
           <div className="mx-auto max-w-md rounded-2xl bg-white px-8 py-12 shadow-sm">
             <p className="text-lg font-medium text-stone-700">{t('success')}</p>
@@ -32,7 +32,7 @@ export default function ContactSection({ locale }: Props) {
   return (
     <section
       id="contact"
-      className="scroll-mt-24 bg-cream-100 px-4 py-20 md:px-6 md:py-28 lg:px-8"
+      className="scroll-mt-24 bg-gradient-to-b from-white to-cream-100 bg-cream-100 bg-[length:100%_32px] bg-[position:0_0] bg-no-repeat px-4 py-20 md:px-6 md:py-28 lg:px-8"
     >
       <div className="mx-auto max-w-container">
         <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
