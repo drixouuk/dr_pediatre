@@ -2,6 +2,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import PresentationSection from "@/components/sections/PresentationSection";
 import ServicesSection from "@/components/sections/ServicesSection";
+import ReviewsSection from "@/components/sections/ReviewsSection";
 import InfosSection from "@/components/sections/InfosSection";
 import ContactSection from "@/components/sections/ContactSection";
 
@@ -74,6 +75,10 @@ export default async function HomePage({ params }: Props) {
       <ServicesSection locale={locale} />
 
       <div className="h-16 bg-gradient-to-b from-cream-100 to-white" />
+
+      <ReviewsSection />
+
+      <div className="h-16 bg-gradient-to-b from-white to-cream-100" />
 
       <InfosSection locale={locale} />
 
