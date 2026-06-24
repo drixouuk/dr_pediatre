@@ -15,7 +15,7 @@ export default async function PresentationSection({ locale }: Props) {
   ] as const
 
   return (
-    <section id="presentation" className="scroll-mt-24 bg-gradient-to-b from-cream-100 to-white px-4 py-20 md:px-6 md:py-28 lg:px-8">
+    <section id="presentation" className="scroll-mt-24 bg-gradient-to-b from-cream-100 to-white bg-white bg-[length:100%_64px] bg-[position:0_0] bg-no-repeat px-4 py-20 md:px-6 md:py-28 lg:px-8">
       <div className="mx-auto max-w-container">
         <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
           {t('title')}
