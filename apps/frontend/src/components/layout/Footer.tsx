@@ -50,7 +50,7 @@ export default async function Footer({ locale }: Props) {
         </div>
 
         {/* Ligne du bas (Copyright) */}
-        <p className="mt-6 text-center text-xs text-stone-400">
+        <p className="mt-6 text-center text-xs text-stone-300">
           {f("copyright")}
         </p>
       </div>
