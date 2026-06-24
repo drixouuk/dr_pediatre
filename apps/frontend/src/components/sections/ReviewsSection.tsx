@@ -96,29 +96,17 @@ export default function ReviewsSection() {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-
     const interval = setInterval(() => {
       if (paused) return;
-
       const card = track.firstElementChild as HTMLElement | null;
       if (!card) return;
-
-      // Récupère dynamiquement la largeur de la carte + son gap réel via computed styles
-      const gap = parseInt(window.getComputedStyle(track).gap) || 24;
-      const cardWidth = card.offsetWidth + gap;
-
-      // Seuil de tolérance pour la fin du scroll
-      const isAtEnd =
-        track.scrollLeft + track.clientWidth >= track.scrollWidth - 10;
-
-      if (isAtEnd) {
-        // Retour au début INSTANTANÉ pour éviter le retour en arrière fluide désagréable
-        track.scrollTo({ left: 0, behavior: "auto" });
+      const cardWidth = card.offsetWidth + 24;
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 1) {
+        track.scrollTo({ left: 0, behavior: "smooth" });
       } else {
         track.scrollBy({ left: cardWidth, behavior: "smooth" });
       }
     }, 3500);
-
     return () => clearInterval(interval);
   }, [paused]);
 
@@ -128,13 +116,11 @@ export default function ReviewsSection() {
         <h2 className="mb-10 text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
           Ce que disent nos patients
         </h2>
-        {/* Note : J'ai retiré "scroll-smooth" de la liste des classes ci-dessous 
-            pour laisser le JS gérer le comportement sans conflit de rendering */}
         <div
           ref={trackRef}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {reviews.map((r) => (
             <div key={r.id} className="snap-start">
