@@ -17,7 +17,7 @@ const navLinks = [
 export default function Header() {
   const t = useTranslations('nav')
   const h = useTranslations('header')
-  const isHidden = useScrollDirection()
+  const { isHidden, show } = useScrollDirection()
 
   return (
     <header
@@ -42,6 +42,7 @@ export default function Header() {
             <Link
               key={href}
               href={href}
+              onClick={show}
               className="rounded-lg px-3 py-2 text-sm font-medium text-stone-600 hover:bg-cream-200 hover:text-primary-700 transition-colors duration-200"
             >
               {t(key)}
