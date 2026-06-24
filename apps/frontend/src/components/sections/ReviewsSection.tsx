@@ -27,7 +27,7 @@ function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
     expanded || !isLong ? review.text : review.text.slice(0, 120) + "…";
 
   return (
-    <div className="flex h-full w-[280px] shrink-0 flex-col gap-3 rounded-2xl border border-stone-100 bg-white p-5 shadow-sm md:w-[320px]">
+    <div className="flex h-full w-[280px] shrink-0 flex-col gap-3 rounded-2xl border border-stone-100 bg-cream-100 p-5 shadow-sm md:w-[320px]">
       <div className="flex items-center gap-3">
         <div
           className={`flex size-10 shrink-0 items-center justify-center rounded-full ${review.avatarColor} text-sm font-semibold text-white`}
