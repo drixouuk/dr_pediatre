@@ -22,18 +22,19 @@ export function useScrollDirection() {
   const show = () => {
     locked.current = true;
     setIsHidden(false);
-    lastY.current = window.scrollY;
 
-    const unlock = () => {
-      lastY.current = window.scrollY;
-      locked.current = false;
+    const stabilize = () => {
+      const currentY = window.scrollY;
+      if (currentY !== lastY.current) {
+        lastY.current = currentY;
+        requestAnimationFrame(stabilize);
+      } else {
+        locked.current = false;
+      }
     };
 
-    if ("onscrollend" in window) {
-      window.addEventListener("scrollend", unlock, { once: true });
-    } else {
-      setTimeout(unlock, 500);
-    }
+    lastY.current = window.scrollY;
+    requestAnimationFrame(stabilize);
   };
 
   return { isHidden, show };
