@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { MapPin, Phone, Clock, CreditCard } from "lucide-react";
 import OrientationLightbox from "@/components/ui/OrientationLightbox";
+import ContactForm from "@/components/ui/ContactForm";
 
 type Props = {
   locale: string;
@@ -18,6 +19,7 @@ const schedule = [
 export default async function InfosSection({ locale }: Props) {
   const t = await getTranslations({ locale, namespace: "infos" });
   const d = await getTranslations({ locale, namespace: "infos.days" });
+  const c = await getTranslations({ locale, namespace: "contact" });
 
   return (
     <section
@@ -29,7 +31,14 @@ export default async function InfosSection({ locale }: Props) {
           {t("title")}
         </h2>
 
-        <div className="mt-12 mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
+        <div className="mt-12 mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
+          <div className="flex flex-col gap-4">
+            <h3 className="font-semibold text-stone-700">
+              {c("title")}
+            </h3>
+            <ContactForm locale={locale} />
+          </div>
+
           <div className="flex flex-col gap-6">
             <div className="flex items-start gap-4">
               <MapPin className="mt-1 size-5 shrink-0 text-primary-600" />
@@ -54,6 +63,20 @@ export default async function InfosSection({ locale }: Props) {
                 <p>{t("fees")}</p>
                 <p className="text-sm text-stone-500">{t("payment")}</p>
               </div>
+            </div>
+
+            <div className="mt-auto w-full h-[300px] overflow-hidden rounded-xl">
+              <iframe
+                src="https://www.google.com/maps?q=30.3577836,-9.5279668&z=17&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-full w-full"
+                title="Cabinet Dr Guinane Aicha — Inezgane"
+              />
             </div>
           </div>
 
@@ -88,27 +111,14 @@ export default async function InfosSection({ locale }: Props) {
             </div>
 
             <p className="text-sm text-stone-500">{t("hours_note")}</p>
-          </div>
-        </div>
 
-        <div className="mt-8 mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="w-full h-[350px] overflow-hidden rounded-xl">
-            <iframe
-              src="https://www.google.com/maps?q=30.3577836,-9.5279668&z=17&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-full w-full"
-              title="Cabinet Dr Guinane Aicha — Inezgane"
-            />
+            <div className="mt-auto">
+              <OrientationLightbox
+                src="/orientation.png"
+                alt={t("orientationImageAlt")}
+              />
+            </div>
           </div>
-          <OrientationLightbox
-            src="/orientation.png"
-            alt={t("orientationImageAlt")}
-          />
         </div>
       </div>
     </section>

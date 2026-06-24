@@ -12,7 +12,6 @@ const navLinks = [
   { href: '/#services', key: 'services' },
   { href: '/#reviews', key: 'reviews' },
   { href: '/#infos', key: 'infos' },
-  { href: '/#contact', key: 'contact' },
 ] as const
 
 export default function Header() {

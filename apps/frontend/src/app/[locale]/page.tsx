@@ -4,7 +4,6 @@ import PresentationSection from "@/components/sections/PresentationSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import InfosSection from "@/components/sections/InfosSection";
-import ContactSection from "@/components/sections/ContactSection";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -73,8 +72,6 @@ export default async function HomePage({ params }: Props) {
       <ReviewsSection />
 
       <InfosSection locale={locale} />
-
-      <ContactSection locale={locale} />
     </main>
   );
 }
