@@ -32,8 +32,8 @@ export default async function InfosSection({ locale }: Props) {
         </h2>
 
         <div className="mt-12 mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
-          {/* Address — first on mobile, col 2 on desktop */}
-          <div className="flex flex-col gap-6 md:order-2">
+          {/* Address — first on mobile, col 1 on desktop */}
+          <div className="flex flex-col gap-6 md:order-1">
             <div className="flex items-start gap-4">
               <MapPin className="mt-1 size-5 shrink-0 text-primary-600" />
               <div>
@@ -104,7 +104,7 @@ export default async function InfosSection({ locale }: Props) {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              className="h-full w-full min-h-[200px] md:min-h-[300px]"
+              className="h-full w-full min-h-[200px] md:min-h-[400px]"
               title="Cabinet Dr Guinane Aicha — Inezgane"
             />
           </div>
@@ -117,8 +117,8 @@ export default async function InfosSection({ locale }: Props) {
             />
           </div>
 
-          {/* Form — last on mobile, col 1 on desktop (row 1) */}
-          <div className="flex flex-col gap-4 md:order-1">
+          {/* Form — last on mobile, col 2 on desktop (row 1) */}
+          <div className="flex flex-col gap-4 md:order-2">
             <h3 className="font-semibold text-stone-700">{c("title")}</h3>
             <ContactForm locale={locale} />
           </div>
