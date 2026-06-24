@@ -116,7 +116,7 @@ export default async function InfosSection({ locale }: Props) {
           </div>
 
           {/* Orientation — fourth on mobile, col 1-2 on desktop (row 2) */}
-          <div className="md:order-4 md:col-span-2">
+          <div className="h-[200px] md:h-[400px] md:order-4 md:col-span-2">
             <OrientationLightbox
               src="/orientation.png"
               alt={t("orientationImageAlt")}
