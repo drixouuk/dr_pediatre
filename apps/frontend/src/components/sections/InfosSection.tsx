@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
-import Image from "next/image";
 import { MapPin, Phone, Clock, CreditCard } from "lucide-react";
+import OrientationLightbox from "@/components/ui/OrientationLightbox";
 
 type Props = {
   locale: string;
@@ -22,7 +22,7 @@ export default async function InfosSection({ locale }: Props) {
   return (
     <section
       id="infos"
-      className="scroll-mt-24 bg-white px-4 py-20 md:px-6 md:py-28 lg:px-8"
+      className="scroll-mt-24 bg-white px-4 py-12 md:px-6 md:py-16 lg:px-8"
     >
       <div className="mx-auto max-w-container">
         <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
@@ -91,8 +91,8 @@ export default async function InfosSection({ locale }: Props) {
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="w-full min-h-[350px] overflow-hidden rounded-xl">
+        <div className="mt-8 mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="w-full h-[350px] overflow-hidden rounded-xl">
             <iframe
               src="https://www.google.com/maps?q=30.3577836,-9.5279668&z=17&output=embed"
               width="100%"
@@ -105,14 +105,10 @@ export default async function InfosSection({ locale }: Props) {
               title="Cabinet Dr Guinane Aicha — Inezgane"
             />
           </div>
-          <div className="relative aspect-[4/3] md:h-full md:order-first rtl:md:order-last">
-            <Image
-              src="/orientation.png"
-              alt={t("orientationImageAlt")}
-              fill
-              className="rounded-xl object-cover"
-            />
-          </div>
+          <OrientationLightbox
+            src="/orientation.png"
+            alt={t("orientationImageAlt")}
+          />
         </div>
       </div>
     </section>
