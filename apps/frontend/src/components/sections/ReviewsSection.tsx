@@ -107,7 +107,7 @@ export default function ReviewsSection() {
   }, [paused]);
 
   return (
-    <section className="bg-cream-100 py-16 md:py-20">
+    <section id="reviews" className="scroll-mt-24 bg-cream-100 py-16 md:py-20">
       <div className="mx-auto max-w-container px-4 md:px-6 lg:px-8">
         <h2 className="mb-10 text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
           Ce que disent nos patients
