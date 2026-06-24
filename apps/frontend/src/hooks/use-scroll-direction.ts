@@ -5,10 +5,11 @@ import { useState, useEffect, useRef } from "react";
 export function useScrollDirection() {
   const [isHidden, setIsHidden] = useState(false);
   const lastY = useRef(0);
-  const lockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const locked = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      if (locked.current) return;
       const currentY = window.scrollY;
       setIsHidden(currentY > lastY.current && currentY > 100);
       lastY.current = currentY;
@@ -19,12 +20,20 @@ export function useScrollDirection() {
   }, []);
 
   const show = () => {
+    locked.current = true;
     setIsHidden(false);
-    if (lockTimer.current) clearTimeout(lockTimer.current);
     lastY.current = window.scrollY;
-    lockTimer.current = setTimeout(() => {
+
+    const unlock = () => {
       lastY.current = window.scrollY;
-    }, 400);
+      locked.current = false;
+    };
+
+    if ("onscrollend" in window) {
+      window.addEventListener("scrollend", unlock, { once: true });
+    } else {
+      setTimeout(unlock, 500);
+    }
   };
 
   return { isHidden, show };
