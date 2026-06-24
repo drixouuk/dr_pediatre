@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { MapPin, Phone, Clock, CreditCard } from "lucide-react";
+import { MapPin, Phone, Clock, CreditCard, Mail, MapPinned } from "lucide-react";
 import OrientationLightbox from "@/components/ui/OrientationLightbox";
 import ContactForm from "@/components/ui/ContactForm";
 
@@ -34,6 +34,12 @@ export default async function InfosSection({ locale }: Props) {
         <div className="mt-12 mx-auto grid max-w-6xl gap-8 md:grid-cols-3">
           {/* Address — first on mobile, col 1 on desktop */}
           <div className="flex flex-col gap-6 md:order-1">
+            <div className="flex items-center gap-2">
+              <MapPinned className="size-5 text-primary-600" />
+              <h3 className="font-semibold text-stone-700">
+                {t("address_title")}
+              </h3>
+            </div>
             <div className="flex items-start gap-4">
               <MapPin className="mt-1 size-5 shrink-0 text-primary-600" />
               <div>
@@ -119,7 +125,10 @@ export default async function InfosSection({ locale }: Props) {
 
           {/* Form — last on mobile, col 2 on desktop (row 1) */}
           <div className="flex flex-col gap-4 md:order-2">
-            <h3 className="font-semibold text-stone-700">{c("title")}</h3>
+            <div className="flex items-center gap-2">
+              <Mail className="size-5 text-primary-600" />
+              <h3 className="font-semibold text-stone-700">{c("title")}</h3>
+            </div>
             <ContactForm locale={locale} />
           </div>
         </div>
