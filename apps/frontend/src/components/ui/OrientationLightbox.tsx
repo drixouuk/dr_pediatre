@@ -23,7 +23,7 @@ export default function OrientationLightbox({ src, alt }: Props) {
   return (
     <>
       <div
-        className="relative h-[350px] cursor-zoom-in overflow-hidden rounded-xl md:order-first rtl:md:order-last"
+        className="relative h-full cursor-zoom-in overflow-hidden rounded-xl"
         onClick={() => setOpen(true)}
       >
         <Image src={src} alt={alt} fill className="object-cover" />
