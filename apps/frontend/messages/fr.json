@@ -86,6 +86,7 @@
     "fees_title": "Tarifs",
     "fees": "Consultation : 250 MAD — Conventionnée CNOPS/CNSS",
     "payment": "Paiement en espèces uniquement",
+    "orientationImageAlt": "Schéma d'orientation vers le cabinet",
     "days": {
       "mon": "Lundi",
       "tue": "Mardi",

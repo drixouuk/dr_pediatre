@@ -86,6 +86,7 @@
     "fees_title": "Fees",
     "fees": "Consultation: 250 MAD — Covered by CNOPS/CNSS",
     "payment": "Cash only",
+    "orientationImageAlt": "Orientation map to the practice",
     "days": {
       "mon": "Monday",
       "tue": "Tuesday",

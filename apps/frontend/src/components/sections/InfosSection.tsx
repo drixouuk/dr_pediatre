@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 import { MapPin, Phone, Clock, CreditCard } from "lucide-react";
 
 type Props = {
@@ -90,18 +91,28 @@ export default async function InfosSection({ locale }: Props) {
           </div>
         </div>
 
-        <div className="mt-8 md:col-span-2">
-          <iframe
-            src="https://www.google.com/maps?q=30.3577836,-9.5279668&z=17&output=embed"
-            width="100%"
-            height="280"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="rounded-xl"
-            title="Cabinet Dr Guinane Aicha — Inezgane"
-          />
+        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="w-full min-h-[350px] overflow-hidden rounded-xl">
+            <iframe
+              src="https://www.google.com/maps?q=30.3577836,-9.5279668&z=17&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="h-full w-full"
+              title="Cabinet Dr Guinane Aicha — Inezgane"
+            />
+          </div>
+          <div className="relative aspect-[4/3] md:h-full md:order-first rtl:md:order-last">
+            <Image
+              src="/orientation.png"
+              alt={t("orientationImageAlt")}
+              fill
+              className="rounded-xl object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
