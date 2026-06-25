@@ -1,0 +1,25 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e13]:
+    - img [ref=e15]
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - text: Email
+            - generic [ref=e32]: "*"
+          - textbox "Email *" [ref=e34]
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - text: Password
+            - generic [ref=e37]: "*"
+          - textbox "Password" [ref=e40]
+      - link "Forgot password?" [ref=e41] [cursor=pointer]:
+        - /url: /admin/forgot
+      - button "Login" [ref=e43] [cursor=pointer]:
+        - generic:
+          - generic: Login
+  - status [ref=e44]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8]
+  - alert [ref=e11]: Login - Payload

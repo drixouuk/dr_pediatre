@@ -1,0 +1,24 @@
+[   12225ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   12418ms] [LOG] [HMR] connected @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   12463ms] [ERROR] %c%s%c (node:36361) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
+In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+
+To prepare for this change:
+- If you want the current behavior, explicitly use 'sslmode=verify-full'
+- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+
+See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
+(Use `node --trace-warnings ...` to show where the warning was created) background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:3318
+[   12868ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   13107ms] [LOG] [Fast Refresh] done in 352ms @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   35496ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   36498ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   37500ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   38501ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   39503ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   44510ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   49513ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   54515ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   59518ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   64520ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=sahamiqjnUD1lvJpXRrnl' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[   69531ms] [LOG] [HMR] connected @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477

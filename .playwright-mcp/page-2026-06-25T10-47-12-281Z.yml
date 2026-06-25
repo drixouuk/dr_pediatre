@@ -1,0 +1,90 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - button "Close Menu" [ref=e4] [cursor=pointer]:
+      - generic "Collapse" [ref=e6]:
+        - img [ref=e7]
+    - generic [ref=e10]:
+      - banner [ref=e11]:
+        - generic [ref=e14]:
+          - generic "Dashboard" [ref=e18]:
+            - img [ref=e19]
+          - link "Account" [ref=e22] [cursor=pointer]:
+            - /url: /admin/account
+            - img "yas" [ref=e23]
+        - button "Locale" [ref=e27] [cursor=pointer]:
+          - generic "Locale" [ref=e28]:
+            - generic [ref=e29]: "Locale:"
+            - generic [ref=e30]:
+              - generic [ref=e31]: fr
+              - img [ref=e32]
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - heading "Collections" [level=2] [ref=e45]
+          - list [ref=e46]:
+            - listitem [ref=e47]:
+              - generic [ref=e48] [cursor=pointer]:
+                - heading "Doctors" [level=3] [ref=e49]
+                - link "Create new Doctors" [ref=e51]:
+                  - /url: /admin/collections/doctors/create
+                  - generic:
+                    - generic:
+                      - img
+                - link "Show all Doctors" [ref=e52]:
+                  - /url: /admin/collections/doctors
+            - listitem [ref=e53]:
+              - generic [ref=e54] [cursor=pointer]:
+                - heading "Services" [level=3] [ref=e55]
+                - link "Create new Services" [ref=e57]:
+                  - /url: /admin/collections/services/create
+                  - generic:
+                    - generic:
+                      - img
+                - link "Show all Services" [ref=e58]:
+                  - /url: /admin/collections/services
+            - listitem [ref=e59]:
+              - generic [ref=e60] [cursor=pointer]:
+                - heading "Reviews" [level=3] [ref=e61]
+                - link "Create new Reviews" [ref=e63]:
+                  - /url: /admin/collections/reviews/create
+                  - generic:
+                    - generic:
+                      - img
+                - link "Show all Reviews" [ref=e64]:
+                  - /url: /admin/collections/reviews
+        - generic [ref=e65]:
+          - heading "Administration" [level=2] [ref=e66]
+          - list [ref=e67]:
+            - listitem [ref=e68]:
+              - generic [ref=e69] [cursor=pointer]:
+                - heading "Users" [level=3] [ref=e70]
+                - link "Create new Users" [ref=e72]:
+                  - /url: /admin/collections/users/create
+                  - generic:
+                    - generic:
+                      - img
+                - link "Show all Users" [ref=e73]:
+                  - /url: /admin/collections/users
+        - generic [ref=e74]:
+          - heading "Fichiers" [level=2] [ref=e75]
+          - list [ref=e76]:
+            - listitem [ref=e77]:
+              - generic [ref=e78] [cursor=pointer]:
+                - heading "Media" [level=3] [ref=e79]
+                - link "Create new Media" [ref=e81]:
+                  - /url: /admin/collections/media/create
+                  - generic:
+                    - generic:
+                      - img
+                - link "Show all Media" [ref=e82]:
+                  - /url: /admin/collections/media
+        - generic [ref=e83]:
+          - heading "Contenu" [level=2] [ref=e84]
+          - list [ref=e85]:
+            - listitem [ref=e86]:
+              - generic [ref=e87] [cursor=pointer]:
+                - heading "Practice Info" [level=3] [ref=e88]
+                - link "Edit Practice Info" [ref=e89]:
+                  - /url: /admin/globals/practice-info
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e95] [cursor=pointer]:
+    - img [ref=e96]

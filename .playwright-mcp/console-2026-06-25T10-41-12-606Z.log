@@ -1,0 +1,71 @@
+[    9840ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   10290ms] [LOG] [HMR] connected @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   10558ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   11131ms] [LOG] [Fast Refresh] done in 709ms @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   11347ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   11404ms] [LOG] [Fast Refresh] done in 156ms @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   11550ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   11582ms] [LOG] [Fast Refresh] done in 133ms @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   87707ms] [ERROR] %o
+
+%s Error: You have tried to pass in data from the old Slate editor to the new Lexical editor. The data structure is different, thus you will have to migrate your data. We offer a one-line migration script which migrates all your rich text fields: https://payloadcms.com/docs/lexical/migration#migration-via-migration-script-recommended
+    at http://localhost:3001/_next/static/chunks/node_modules__pnpm_0l62t.g._.js:2878:60
+    at mountMemo (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:5393:25)
+    at Object.useMemo (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:15213:24)
+    at http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_0rge7ss._.js:1742:36
+    at vt (http://localhost:3001/_next/static/chunks/node_modules__pnpm_0l62t.g._.js:2876:2097)
+    at Object.react_stack_bottom_frame (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:15037:24)
+    at renderWithHooks (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:4620:24)
+    at updateFunctionComponent (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:6081:21)
+    at beginWork (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:6691:24)
+    at runWithFiberInDEV (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:965:74)
+    at performUnitOfWork (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9555:97)
+    at workLoopSync (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9449:40)
+    at renderRootSync (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9433:13)
+    at performWorkOnRoot (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9098:47)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:10255:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_0rge7ss._.js:2647:64) The above error occurred in the <vt> component. It was handled by the <ErrorBoundary> error boundary. @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:1998
+[   88083ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   88570ms] [LOG] [Fast Refresh] done in 590ms @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   96740ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   96796ms] [LOG] [Fast Refresh] done in 157ms @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[   98557ms] [ERROR] %o
+
+%s Error: You have tried to pass in data from the old Slate editor to the new Lexical editor. The data structure is different, thus you will have to migrate your data. We offer a one-line migration script which migrates all your rich text fields: https://payloadcms.com/docs/lexical/migration#migration-via-migration-script-recommended
+    at http://localhost:3001/_next/static/chunks/node_modules__pnpm_0l62t.g._.js:2878:60
+    at mountMemo (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:5393:25)
+    at Object.useMemo (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:15213:24)
+    at http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_0rge7ss._.js:1742:36
+    at vt (http://localhost:3001/_next/static/chunks/node_modules__pnpm_0l62t.g._.js:2876:2097)
+    at Object.react_stack_bottom_frame (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:15037:24)
+    at renderWithHooks (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:4620:24)
+    at updateFunctionComponent (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:6081:21)
+    at beginWork (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:6691:24)
+    at runWithFiberInDEV (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:965:74)
+    at performUnitOfWork (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9555:97)
+    at workLoopSync (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9449:40)
+    at renderRootSync (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9433:13)
+    at performWorkOnRoot (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9098:47)
+    at performSyncWorkOnRoot (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:10263:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:10179:316)
+    at flushSpawnedWork (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9939:13)
+    at commitRoot (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9746:441)
+    at completeRoot (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9711:13)
+    at completeRootWhenReady (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9187:9)
+    at performWorkOnRoot (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:9159:25)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_react-dom_0th7rvq._.js:10255:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3001/_next/static/chunks/0wfd_next_dist_compiled_0rge7ss._.js:2647:64) The above error occurred in the <vt> component. It was handled by the <ErrorBoundary> error boundary. @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:1998
+[  132186ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[  132367ms] [LOG] [Fast Refresh] done in 282ms @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_13evzpr._.js:2477
+[  161000ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  162002ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  163003ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  164005ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  165008ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  170010ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  175015ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  180019ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  185023ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  190030ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  195035ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
+[  200042ms] [ERROR] WebSocket connection to 'ws://localhost:3001/_next/webpack-hmr?id=hs3UzJ8yT55oTlDNoLYEQ' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:3001/_next/static/chunks/0wfd_next_dist_client_0p9q1fd._.js:13322
