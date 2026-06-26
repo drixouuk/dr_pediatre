@@ -2,11 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { Calendar } from "lucide-react";
-import Cal from "@calcom/embed-react";
 
-const CAL_LINK = "drixou/consultation-pediatrique";
-const CAL_ORIGIN = "https://calcom.drixou.uk";
+const IFRAME_URL = "https://calcom.drixou.uk/drixou/consultation-pediatrique/embed?overlayCalendar=true";
 
 export default function RdvSection() {
   const t = useTranslations("rdv");
@@ -56,11 +53,13 @@ export default function RdvSection() {
           style={{ maxWidth: "800px", minHeight: "600px" }}
         >
           {loaded && (
-            <Cal
-              calLink={CAL_LINK}
-              calOrigin={CAL_ORIGIN}
-              config={{ layout: "month_view", theme: "light" }}
-              style={{ width: "100%", height: "600px", overflow: "hidden" }}
+            <iframe
+              src={IFRAME_URL}
+              title="Cal.com - Prise de rendez-vous"
+              width="100%"
+              height="600"
+              style={{ border: "none", overflow: "hidden" }}
+              allow="calendar; clipboard-read; clipboard-write"
             />
           )}
         </div>
