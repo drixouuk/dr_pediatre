@@ -29,7 +29,10 @@ export default function RdvSection() {
       if (!visible) {
         setVisible(true);
         setTimeout(() => {
-          sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+          sectionRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
         }, 100);
       }
     };
@@ -61,13 +64,11 @@ export default function RdvSection() {
           {t("subtitle")}
         </p>
 
-        <div
-          className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
-        >
+        <div className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
           {loaded && (
             <Cal
               calLink={CAL_LINK}
-              style={{ width: "100%" }}
+              style={{ maxWidth: "400px" }}
               config={{ layout: "month_view" }}
               embedJsUrl={EMBED_JS_URL}
             />
