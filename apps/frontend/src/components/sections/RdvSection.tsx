@@ -2,14 +2,27 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
+import Cal, { getCalApi } from "@calcom/embed-react";
 
-const IFRAME_URL = "https://calcom.drixou.uk/drixou/consultation-pediatrique/embed?overlayCalendar=true";
+const CAL_LINK = "drixou/consultation-pediatrique";
+const EMBED_JS_URL = "https://calcom.drixou.uk/embed/embed.js";
 
 export default function RdvSection() {
   const t = useTranslations("rdv");
   const [visible, setVisible] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({ embedJsUrl: EMBED_JS_URL });
+      cal("ui", {
+        styles: { branding: { brandColor: "#0D9488" } },
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+    })();
+  }, []);
 
   useEffect(() => {
     const handler = () => {
@@ -53,13 +66,11 @@ export default function RdvSection() {
           style={{ maxWidth: "800px", minHeight: "600px" }}
         >
           {loaded && (
-            <iframe
-              src={IFRAME_URL}
-              title="Cal.com - Prise de rendez-vous"
-              width="100%"
-              height="600"
-              style={{ border: "none", overflow: "hidden" }}
-              allow="calendar; clipboard-read; clipboard-write"
+            <Cal
+              calLink={CAL_LINK}
+              style={{ width: "100%", height: "600px", overflow: "scroll" }}
+              config={{ layout: "month_view" }}
+              embedJsUrl={EMBED_JS_URL}
             />
           )}
         </div>
