@@ -63,12 +63,12 @@ export default function RdvSection() {
 
         <div
           className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
-          style={{ maxWidth: "800px", minHeight: "600px" }}
+          style={{ maxWidth: "800px" }}
         >
           {loaded && (
             <Cal
               calLink={CAL_LINK}
-              style={{ width: "100%", minHeight: "600px", overflow: "hidden" }}
+              style={{ width: "100%" }}
               config={{ layout: "month_view" }}
               embedJsUrl={EMBED_JS_URL}
             />
