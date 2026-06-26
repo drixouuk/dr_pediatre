@@ -64,11 +64,14 @@ export default function RdvSection() {
           {t("subtitle")}
         </p>
 
-        <div className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+        <div
+          className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+          style={{ maxWidth: "800px", width: "100%", minHeight: "600px" }}
+        >
           {loaded && (
             <Cal
               calLink={CAL_LINK}
-              style={{ maxWidth: "400px" }}
+              style={{ width: "100%", minHeight: "600px" }}
               config={{ layout: "month_view" }}
               embedJsUrl={EMBED_JS_URL}
             />
