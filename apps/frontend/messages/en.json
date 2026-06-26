@@ -99,6 +99,11 @@
       "sun": "Sunday"
     }
   },
+  "rdv": {
+    "title": "Book an appointment",
+    "subtitle": "Choose the slot that works for you",
+    "loading": "Loading calendar…"
+  },
   "contact": {
     "title": "Contact us",
     "name_label": "Full name",

@@ -99,6 +99,11 @@
       "sun": "Dimanche"
     }
   },
+  "rdv": {
+    "title": "Prendre rendez-vous",
+    "subtitle": "Choisissez le créneau qui vous convient",
+    "loading": "Chargement du calendrier…"
+  },
   "contact": {
     "title": "Nous contacter",
     "name_label": "Nom complet",

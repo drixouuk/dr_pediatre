@@ -47,7 +47,7 @@ const baseData = {
   phone: '—',
   coordinates: { lat: 30.3576702, lng: -9.5279038 },
   schedules: [
-    { day: 'Lun–Ven / الإثنين–الجمعة', open: '08:30', close: '16:30' },
+    { day: 'Lun–Ven / الإثنين–الجمعة', open: '09:00', close: '16:30' },
     { day: 'Sam / السبت', open: '09:00', close: '13:00' },
   ],
 }
@@ -59,7 +59,7 @@ const localeData: Record<string, Record<string, any>> = {
     address: 'Face au souk Al Houria, porte 10, Immeuble Nassim, 1er étage, bureau 4, Inezgane',
     pricing: lexicalMixed([
       { text: 'Paiement en espèces uniquement. Consultation à partir de ' },
-      { text: '200 MAD', bold: true },
+      { text: '250 MAD', bold: true },
       { text: '.' },
     ]),
   },
@@ -67,7 +67,7 @@ const localeData: Record<string, Record<string, any>> = {
     address: 'Face au souk Al Houria, door 10, Immeuble Nassim, 1st floor, office 4, Inezgane',
     pricing: lexicalMixed([
       { text: 'Cash payment only. Consultation from ' },
-      { text: '200 MAD', bold: true },
+      { text: '250 MAD', bold: true },
       { text: '.' },
     ]),
   },
@@ -76,7 +76,7 @@ const localeData: Record<string, Record<string, any>> = {
     pricing: lexicalMixed(
       [
         { text: 'الدفع نقداً فقط. الاستشارة من ' },
-        { text: '200 درهم', bold: true },
+        { text: '250 درهم', bold: true },
         { text: '.' },
       ],
       'rtl',
@@ -104,6 +104,52 @@ const doctorLocaleData: Record<string, Record<string, any>> = {
     specialty: 'طبيبة أطفال',
     bio: lexical('طبيبة أطفال في إنزكان، مكرسة لصحة ورفاهية الأطفال في منطقة أكادير.', 'rtl'),
   },
+}
+
+const servicesSlugs = ['nourrisson', 'vaccins', 'suivi', 'urgences', 'nutrition', 'certificats'] as const
+
+const servicesIcons: Record<string, string> = {
+  nourrisson: 'Baby',
+  vaccins: 'Syringe',
+  suivi: 'HeartPulse',
+  urgences: 'Stethoscope',
+  nutrition: 'Apple',
+  certificats: 'FileCheck',
+}
+
+const servicesLocaleData: Record<string, Record<string, { title: string; description: string }[]>> = {
+  fr: [
+    { title: 'Consultation nourrisson', description: "Suivi du développement, courbes de croissance, conseils allaitement et nutrition" },
+    { title: 'Vaccinations', description: 'Calendrier vaccinal complet selon le programme national marocain' },
+    { title: 'Suivi pédiatrique régulier', description: 'Bilans de santé annuels, suivi scolaire, développement psychomoteur' },
+    { title: 'Consultations urgentes', description: 'Fièvre, gastro-entérite, infections ORL, allergies — sans rendez-vous selon disponibilité' },
+    { title: 'Nutrition & diététique', description: 'Conseils personnalisés pour une alimentation équilibrée à chaque âge' },
+    { title: 'Certificats médicaux', description: 'Certificats de bonne santé, aptitude sportive, crèche et école' },
+  ],
+  en: [
+    { title: 'Infant consultation', description: 'Development monitoring, growth charts, breastfeeding and nutrition advice' },
+    { title: 'Vaccinations', description: 'Full vaccination schedule according to the Moroccan national program' },
+    { title: 'Regular check-ups', description: 'Annual health check-ups, school follow-up, psychomotor development' },
+    { title: 'Urgent consultations', description: 'Fever, gastroenteritis, ENT infections, allergies — walk-in subject to availability' },
+    { title: 'Pediatric nutrition', description: 'Personalized advice for balanced nutrition at every age' },
+    { title: 'Medical certificates', description: 'Health certificates, sports fitness, nursery and school certificates' },
+  ],
+  ar: [
+    { title: 'استشارة الرضيع', description: 'متابعة النمو، منحنيات النمو، نصائح الرضاعة والتغذية' },
+    { title: 'التطعيمات', description: 'جدول التطعيم الكامل وفق البرنامج الوطني المغربي' },
+    { title: 'المتابعة الدورية', description: 'فحوصات صحية سنوية، متابعة مدرسية، التطور النفسحركي' },
+    { title: 'الاستشارات العاجلة', description: 'الحمى، التهاب المعدة، عدوى الأنف والأذن والحنجرة، الحساسية' },
+    { title: 'التغذية والحمية', description: 'نصائح شخصية لتغذية متوازنة في كل مرحلة عمرية' },
+    { title: 'الشهادات الطبية', description: 'شهادات صحية، لياقة رياضية، دور الحضانة والمدارس' },
+  ],
+  tzm: [
+    { title: 'ⴰⵙⵏⵉⵊⵉ ⵏ ⵓⵊⴷⵉⵄ', description: 'ⴰⵙⴻⴽⵛⴷ ⵏ ⵓⵏⵏⵉⵔⵉ, ⵜⵉⵖⵎⵔⵜ ⵏ ⵓⵏⵏⵉⵔⵉ, ⵜⵉⵏⴰⵜⵉⵏ ⵉ ⵜⵖⵓⵔⵉ ⴷ ⵜⴰⵍⵍⴻⵙⵜ' },
+    { title: 'ⵜⵉⵏⴼⵍⵉⵜⵉⵏ', description: 'ⴰⵖⴰⵏⵉⴱ ⵏ ⵜⵏⴼⵍⵉⵜ ⴰⵎ ⵓⵖⴰⵏⵉⴱ ⴰⵎⴰⵜⵜⵓⵔ ⴰⵎⴰⵖⵔⵉⴱⵉ' },
+    { title: 'ⴰⵙⴻⴽⵛⴷ ⴰⵎⴰⵜⵓ', description: 'ⵜⵉⴼⵔⴰⵏⵉⵏ ⵏ ⵓⵣⵔⴼ ⴰⵙⴳⴳⴰⵙ, ⴰⵙⴻⴽⵛⴷ ⵏ ⵜⵖⵓⵔⵉ, ⴰⵏⵏⵉⵔⵉ ⴰⵥⴰⵡⴰⵏ' },
+    { title: 'ⴰⵙⵏⵉⵊⵉ ⵏ ⵜⵎⵔⴰⵖⵜ', description: 'ⵜⴰⵖⵣⵉ, ⵜⵉⵎⵙⴰⵍ ⵏ ⵉⴼⴰⵙⵙⵏ, ⵜⵉⵎⵙⴰⵍ ⵏ ⵉⵎⵉ ⴷ ⵉⵎⵣⵣⵓⵖⵏ, ⵜⴰⵖⵣⵉⵎⵜ' },
+    { title: 'ⵜⴰⵍⵍⴻⵙⵜ ⵏ ⵉⵣⴷⴰⵏⵏ', description: 'ⵜⵉⵏⴰⵜⵉⵏ ⵉ ⵜⴰⵍⵍⴻⵙⵜ ⵜⴰⵎⵣⴷⴰⵢⵜ ⴷⴻⴳ ⴽⵓⵍ ⴰⵣⵎⵣ' },
+    { title: 'ⵜⵉⵣⵔⴰⵡⵉⵏ ⵏ ⵓⵣⵔⴼ', description: 'ⵜⵉⵣⵔⴰⵡⵉⵏ ⵏ ⵓⵣⵔⴼ, ⵜⴰⵖⵓⵍⵜ ⵏ ⵓⵖⵔⴱⴰⵣ, ⵜⵉⵖⵉⵡⴰⵏⵉⵏ ⵏ ⵉⵖⵔⴱⴰⵣⵏ' },
+  ],
 }
 
 async function seed() {
@@ -189,6 +235,52 @@ async function seed() {
     console.log('✅ 11 reviews seeded')
   } else {
     console.log('→ Reviews already exist, skipping')
+  }
+
+  const existingServices = await payload.find({
+    collection: 'services',
+    limit: 1,
+  })
+
+  if (existingServices.docs.length === 0) {
+    const locales = ['fr', 'en', 'ar', 'tzm']
+
+    for (let i = 0; i < servicesSlugs.length; i++) {
+      const slug = servicesSlugs[i]
+      const order = i + 1
+      const icon = servicesIcons[slug]
+
+      let service
+      for (const locale of locales) {
+        const items = servicesLocaleData[locale] || servicesLocaleData['fr']
+        const item = items[i]
+        const data: Record<string, unknown> = {
+          title: item.title,
+          icon,
+          order,
+        }
+
+        if (locale === 'fr') {
+          data.description = lexical(item.description)
+          service = await payload.create({
+            collection: 'services',
+            data: data as any,
+            locale: 'fr' as any,
+          })
+        } else {
+          data.description = lexical(item.description, locale === 'ar' ? 'rtl' : 'ltr')
+          await payload.update({
+            collection: 'services',
+            id: service!.id,
+            data: data as any,
+            locale: locale as any,
+          })
+        }
+      }
+    }
+    console.log('✅ 6 services seeded')
+  } else {
+    console.log('→ Services already exist, skipping')
   }
 
   console.log('🎉 Seed complete')

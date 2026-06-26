@@ -1,8 +1,10 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
+import RdvCtaButton from "@/components/ui/RdvCtaButton";
 import PresentationSection from "@/components/sections/PresentationSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import ReviewsSection from "@/components/sections/ReviewsSection";
+import RdvSection from "@/components/sections/RdvSection";
 import InfosSection from "@/components/sections/InfosSection";
 
 type Props = {
@@ -33,9 +35,9 @@ export default async function HomePage({ params }: Props) {
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <Button className="bg-cta-700 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-800">
+              <RdvCtaButton className="bg-cta-700 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-800">
                 {t("cta_primary")}
-              </Button>
+              </RdvCtaButton>
               <Button
                 variant="outline"
                 className="border-stone-300 px-6 py-3 text-base text-stone-700 hover:bg-cream-200"
@@ -70,6 +72,8 @@ export default async function HomePage({ params }: Props) {
       <ServicesSection locale={locale} />
 
       <ReviewsSection />
+
+      <RdvSection />
 
       <InfosSection locale={locale} />
     </main>

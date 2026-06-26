@@ -111,35 +111,31 @@ Footer
 
 ---
 
-## 9. Phases de développement
+## 9. Versions
 
-### Phase 0 — Setup
-- [ ] Init repo GitHub
-- [ ] `uipro init --ai kilocode` → validation design system
-- [ ] Setup Payload CMS sur LXC Proxmox
-- [ ] next-intl + middleware routing + `messages/*.json` vides
+### v1 — ✅ TERMINÉE
+Site statique multilingue (Next.js 15, next-intl, Tailwind CSS), 4 locales
+(fr, en, ar RTL, tzm Tifinagh), pages : accueil, présentation, services,
+infos pratiques, contact. Lighthouse ≈ 99/96/100. Déployé sur
+`drguinane.vercel.app`.
 
-### Phase 1 — Foundation
-- [ ] Layout global (header, footer, nav)
-- [ ] Sélecteur de langue + détection auto
-- [ ] Support RTL (`ar`) + Tifinagh (`tzm`)
-- [ ] Schemas Payload (médecin, services, infos)
+### v1.5 — ✅ TERMINÉE
+Payload CMS v3.85.1 intégré (collections Doctors, Services, Media, global
+PracticeInfo), Neon Postgres, Cloudflare R2, admin sur
+`dr-pediatre-cms.vercel.app`. Frontend reste hardcodé — branchement
+Payload→frontend reporté à v3 (restructuration multi-tenant rendrait ce
+travail obsolète).
 
-### Phase 2 — Contenu
-- [ ] Sections : Présentation, Services, Infos pratiques, Contact
-- [ ] Carte Google Maps (coordonnées GPS)
-- [ ] Génération drafts IA (4 langues)
+### v2 — 🚧 EN COURS
+Cal.com opérationnel sur Proxmox LXC (NPM + Cloudflare Tunnel). Objectif :
+intégrer widget Cal.com dans le frontend. Condition de passage à v3 :
+validation Cal.com par le client + acquisition d'un 2e praticien.
 
-### Phase 3 — SEO & Performance
-- [ ] Métadonnées + hreflang par locale
-- [ ] Sitemap multilingue + robots.txt
-- [ ] Optimisation Core Web Vitals (LCP < 2.5s, CLS < 0.1)
-- [ ] Audit Lighthouse
-
-### Phase 4 — Audit final (Claude)
-- [ ] Sécurité, accessibilité WCAG 2.1 AA
-- [ ] Cohérence design system
-- [ ] Checklist pré-production
+### v3 — 📋 PLANIFIÉE
+Infrastructure distribuée managée : Vercel (frontend Next.js), Vercel ou
+autre (Payload CMS), Neon Postgres multi-tenant, Cloudflare R2, VPS pour
+Cal.com stateless (DB sur Neon). Restructuration Payload multi-tenant,
+branchement frontend→Payload, dossier patient, outils cliniques.
 
 ---
 
@@ -186,8 +182,8 @@ Maroc uniquement (v3). Expansion Maghreb + diaspora en v4.
 | Coordonnées contact | À fournir par le médecin |
 | Bio + spécialités | À fournir par le médecin |
 | Photo professionnelle | À fournir par le médecin |
-| Reverse proxy LXC (Nginx/Caddy) | À configurer |
-| Migration SQLite → PostgreSQL | À faire en v2 (requis par Cal.com) |
-| Cal.com self-hosted sur Proxmox LXC | À déployer en v2, widget Next.js + shadcn/ui intégré dans le site |
+| Reverse proxy LXC | ✅ NPM + Cloudflare Tunnel |
+| Migration SQLite → PostgreSQL | ✅ Neon Postgres en production |
+| Cal.com self-hosted sur Proxmox LXC | ✅ Opérationnel |
 | Cal.com API multi-tenant | À architecturer en v3 (un event type par cabinet) |
 | Rôles utilisateurs v2 | Médecin (contenu) + Assistante (gestion RDV/agenda) — permissions séparées dans Payload et Cal.com |
