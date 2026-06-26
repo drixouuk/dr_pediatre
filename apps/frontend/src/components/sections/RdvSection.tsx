@@ -63,7 +63,6 @@ export default function RdvSection() {
 
         <div
           className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
-          style={{ maxWidth: "800px" }}
         >
           {loaded && (
             <Cal
