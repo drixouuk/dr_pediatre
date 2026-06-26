@@ -1,51 +1,83 @@
 "use client";
+
+import { useState, useEffect, useRef } from "react";
+import { useTranslations } from "next-intl";
 import Cal, { getCalApi } from "@calcom/embed-react";
-import { useEffect } from "react";
+
+const CAL_LINK = "drixou/consultation-pediatrique";
+const EMBED_JS_URL = "https://calcom.drixou.uk/embed/embed.js";
 
 export default function RdvSection() {
+  const t = useTranslations("rdv");
+  const [visible, setVisible] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
-    let cleanup: (() => void) | undefined;
-
-    const initCal = async () => {
-      const cal = await getCalApi({
-        embedJsUrl: "https://calcom.drixou.uk/embed/embed.js",
+    (async function () {
+      const cal = await getCalApi({ embedJsUrl: EMBED_JS_URL });
+      cal("ui", {
+        styles: { branding: { brandColor: "#0D9488" } },
+        hideEventTypeDetails: false,
+        layout: "month_view",
       });
-
-      // Une fois l'iframe prête, on écoute les changements de hauteur
-      cal("on", {
-        action: "__dimensionChanged",
-        callback: (event) => {
-          const { iframeHeight, iframeWidth, isFirstTime } = event.detail.data;
-          const iframe = document.querySelector(
-            "iframe[data-cal-embed]"
-          ) as HTMLIFrameElement;
-          if (iframe && iframeHeight) {
-            iframe.style.height = `${iframeHeight}px`;
-          }
-        },
-      });
-
-      // Nettoyage
-      cleanup = () => {
-        cal("off", { action: "__dimensionChanged", callback: () => {} });
-      };
-    };
-
-    initCal();
-
-    return () => {
-      cleanup?.();
-    };
+    })();
   }, []);
 
+  useEffect(() => {
+    const handler = () => {
+      if (!visible) {
+        setVisible(true);
+        setTimeout(() => {
+          sectionRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 100);
+      }
+    };
+
+    window.addEventListener("open-rdv", handler);
+    return () => window.removeEventListener("open-rdv", handler);
+  }, [visible]);
+
+  useEffect(() => {
+    if (visible && !loaded) {
+      setLoaded(true);
+    }
+  }, [visible, loaded]);
+
+  if (!visible) return null;
+
   return (
-    <div className="relative w-full max-w-3xl mx-auto" style={{ minHeight: 600 }}>
-      <Cal
-        calLink="drixou/consultation-pediatrique"
-        embedJsUrl="https://calcom.drixou.uk/embed/embed.js"
-        style={{ width: "100%", height: "100%", overflow: "hidden" }}
-        config={{ layout: "month_view" }}
-      />
-    </div>
+    <section
+      id="rdv"
+      ref={sectionRef}
+      className="scroll-mt-24 bg-gradient-to-b from-cream-100 to-white px-4 py-20 md:px-6 md:py-28 lg:px-8"
+    >
+      <div className="mx-auto max-w-container">
+        <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
+          {t("title")}
+        </h2>
+
+        <p className="mx-auto mt-3 max-w-xl text-center text-lg text-stone-500">
+          {t("subtitle")}
+        </p>
+
+        <div
+          className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+          style={{ maxWidth: "800px", width: "100%", minHeight: "600px" }}
+        >
+          {loaded && (
+            <Cal
+              calLink={CAL_LINK}
+              style={{ width: "100%", minHeight: "600px" }}
+              config={{ layout: "month_view" }}
+              embedJsUrl={EMBED_JS_URL}
+            />
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
