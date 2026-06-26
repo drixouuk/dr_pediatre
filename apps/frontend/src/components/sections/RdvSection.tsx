@@ -68,7 +68,7 @@ export default function RdvSection() {
           {loaded && (
             <Cal
               calLink={CAL_LINK}
-              style={{ width: "100%", height: "600px", overflow: "scroll" }}
+              style={{ width: "100%", minHeight: "600px", overflow: "hidden" }}
               config={{ layout: "month_view" }}
               embedJsUrl={EMBED_JS_URL}
             />
