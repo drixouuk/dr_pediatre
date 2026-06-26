@@ -1,3 +1,4 @@
+import { s3Storage } from "@payloadcms/storage-s3";
 import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
@@ -20,6 +21,24 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI,
     },
   }),
+
+  plugins: [
+    s3Storage({
+      collections: {
+        media: true, // Applique le stockage R2 sur votre collection 'media'
+      },
+      bucket: process.env.R2_BUCKET || "",
+      config: {
+        endpoint: process.env.R2_ENDPOINT || "",
+        credentials: {
+          accessKeyId: process.env.R2_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || "",
+        },
+        region: "auto", // Cloudflare R2 utilise 'auto'
+      },
+    }),
+  ],
+
   localization: {
     locales: ["fr", "en", "ar", "tzm"],
     defaultLocale: "fr",
