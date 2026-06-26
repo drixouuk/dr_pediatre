@@ -1,5 +1,4 @@
 {
-  "rootDirectory": "apps/cms",
   "framework": "nextjs",
   "buildCommand": "npx next build"
 }
