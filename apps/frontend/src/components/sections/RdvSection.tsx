@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import Cal, { getCalApi } from "@calcom/embed-react";
 
 const CAL_LINK = "drixou/consultation-pediatrique";
-const EMBED_JS_URL = "https://calcom.drixou.uk/embed/embed.js";
+const CAL_ORIGIN = "https://calcom.drixou.uk";
+const EMBED_JS_URL = `${CAL_ORIGIN}/embed/embed.js`;
 
 export default function RdvSection() {
   const t = useTranslations("rdv");
@@ -15,7 +16,12 @@ export default function RdvSection() {
 
   useEffect(() => {
     (async function () {
-      const cal = await getCalApi({ embedJsUrl: EMBED_JS_URL });
+      // Configuration de l'API avec les paramètres de ton instance locale
+      const cal = await getCalApi({
+        namespace: "consultation-pediatrique",
+        embedJsUrl: EMBED_JS_URL,
+      });
+
       cal("ui", {
         styles: { branding: { brandColor: "#0D9488" } },
         hideEventTypeDetails: false,
@@ -70,9 +76,13 @@ export default function RdvSection() {
         >
           {loaded && (
             <Cal
+              namespace="consultation-pediatrique"
               calLink={CAL_LINK}
-              style={{ width: "100%", minHeight: "600px" }}
-              config={{ layout: "month_view" }}
+              style={{ width: "100%", height: "100%", overflow: "scroll" }}
+              config={{
+                layout: "month_view",
+              }}
+              calOrigin={CAL_ORIGIN}
               embedJsUrl={EMBED_JS_URL}
             />
           )}

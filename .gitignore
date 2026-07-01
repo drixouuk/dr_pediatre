@@ -1,11 +1,36 @@
+# ==========================================
+# Dépendances & Builds
+# ==========================================
 node_modules/
 .next/
 dist/
+out/
+build/
+
+# ==========================================
+# Environnement & Secrets (À NE JAMAIS COMMIT)
+# ==========================================
 .env
 .env.local
+.env.production
+.env.development
+.env.calcom
+.env.*.local
+
+# ==========================================
+# Bases de données locales
+# ==========================================
 *.db
 *.db-journal
+*.sqlite
+*.sqlite-journal
+.kilocode.db
 
+# ==========================================
+# Éditeurs & IDE (Cursor, Claude, Trae, etc.)
+# ==========================================
+.vscode/
+.idea/
 .agent/
 .claude/
 .codebuddy/
@@ -18,6 +43,17 @@ dist/
 .qoder/
 .trae/
 .windsurf/
+*.log
 
+# ==========================================
+# Spécifique au projet / Fichiers locaux
+# ==========================================
 home/
-.github/
+
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Outils IA & Prompts spécifiques (.github/ est autorisé mais on bloque ce sous-dossier)
+.github/prompts/
