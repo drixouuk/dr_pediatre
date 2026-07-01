@@ -117,7 +117,7 @@ const servicesIcons: Record<string, string> = {
   certificats: 'FileCheck',
 }
 
-const servicesLocaleData: Record<string, Record<string, { title: string; description: string }[]>> = {
+const servicesLocaleData: Record<string, { title: string; description: string }[]> = {
   fr: [
     { title: 'Consultation nourrisson', description: "Suivi du développement, courbes de croissance, conseils allaitement et nutrition" },
     { title: 'Vaccinations', description: 'Calendrier vaccinal complet selon le programme national marocain' },
