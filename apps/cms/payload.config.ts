@@ -25,7 +25,7 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: true, // Applique le stockage R2 sur votre collection 'media'
+        media: true,
       },
       bucket: process.env.R2_BUCKET || "",
       config: {
@@ -34,7 +34,8 @@ export default buildConfig({
           accessKeyId: process.env.R2_ACCESS_KEY_ID || "",
           secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || "",
         },
-        region: "auto", // Cloudflare R2 utilise 'auto'
+        region: "garage",
+        forcePathStyle: true,
       },
     }),
   ],
