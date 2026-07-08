@@ -1,0 +1,75 @@
+const INVOICE_NINJA_URL = process.env.INVOICE_NINJA_URL || ''
+const INVOICE_NINJA_API_KEY = process.env.INVOICE_NINJA_API_KEY || ''
+
+async function apiRequest<T>(method: string, path: string, body?: unknown): Promise<T | null> {
+  if (!INVOICE_NINJA_URL || !INVOICE_NINJA_API_KEY) {
+    console.warn('Invoice Ninja non configuré (INVOICE_NINJA_URL / INVOICE_NINJA_API_KEY)')
+    return null
+  }
+
+  try {
+    const res = await fetch(`${INVOICE_NINJA_URL}/api/v1${path}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Api-Key': INVOICE_NINJA_API_KEY,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    })
+    if (!res.ok) return null
+    return res.json()
+  } catch {
+    return null
+  }
+}
+
+const TIER_PRICES: Record<string, number> = {
+  vitrine: 0,
+  rdv: 149,
+  dossier: 299,
+  clinique: 499,
+}
+
+export type InvoiceNinjaClient = {
+  data: { id: string; number?: string; name?: string }
+}
+
+export type InvoiceNinjaInvoice = {
+  data: { id: string; number?: string; amount?: number }
+}
+
+export async function createClient(tenantData: {
+  name: string
+  email: string
+  phone?: string
+}): Promise<string | null> {
+  const result = await apiRequest<InvoiceNinjaClient>('POST', '/clients', {
+    name: tenantData.name,
+    contacts: [{ email: tenantData.email, phone: tenantData.phone }],
+    currency_id: '1',
+  })
+  return result?.data?.id ?? null
+}
+
+export async function createSubscriptionInvoice(
+  clientId: string,
+  tier: string,
+): Promise<string | null> {
+  const amount = TIER_PRICES[tier]
+  if (amount === undefined) return null
+
+  const result = await apiRequest<InvoiceNinjaInvoice>('POST', '/invoices', {
+    client_id: clientId,
+    amount,
+    line_items: [
+      {
+        product_key: `abonnement-${tier}`,
+        notes: `Abonnement dr-tabibi — Offre ${tier}`,
+        cost: amount,
+        qty: 1,
+      },
+    ],
+  })
+  return result?.data?.id ?? null
+}

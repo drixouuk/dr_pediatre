@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { reviews } from "@/data/reviews";
+import { useTranslations } from "next-intl";
+import type { Review } from "@/lib/payload";
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -20,19 +21,17 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
+function ReviewCard({ review }: { review: Review }) {
   const [expanded, setExpanded] = useState(false);
-  const isLong = review.text.length > 120;
+  const isLong = (review.text?.length || 0) > 120;
   const displayText =
     expanded || !isLong ? review.text : review.text.slice(0, 120) + "…";
 
   return (
     <div className="flex h-full w-[280px] shrink-0 flex-col gap-3 rounded-2xl border border-stone-100 bg-cream-100 p-5 shadow-sm md:w-[320px]">
       <div className="flex items-center gap-3">
-        <div
-          className={`flex size-10 shrink-0 items-center justify-center rounded-full ${review.avatarColor} text-sm font-semibold text-white`}
-        >
-          {review.initials}
+        <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-500 text-sm font-semibold text-white">
+          {review.author.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-stone-800">
@@ -89,7 +88,13 @@ function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
   );
 }
 
-export default function ReviewsSection() {
+type Props = {
+  reviews: Review[];
+  locale: string;
+};
+
+export default function ReviewsSection({ reviews }: Props) {
+  const t = useTranslations("reviews");
   const trackRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
 
@@ -110,11 +115,13 @@ export default function ReviewsSection() {
     return () => clearInterval(interval);
   }, [paused]);
 
+  if (reviews.length === 0) return null;
+
   return (
     <section id="reviews" className="scroll-mt-24 bg-gradient-to-b from-cream-100 to-white bg-white bg-[length:100%_16px] bg-[position:0_0] bg-no-repeat py-20 md:py-28">
       <div className="mx-auto max-w-container px-4 md:px-6 lg:px-8">
         <h2 className="mb-10 text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
-          Ce que disent nos patients
+          {t("title") || "Ce que disent nos patients"}
         </h2>
         <div
           ref={trackRef}

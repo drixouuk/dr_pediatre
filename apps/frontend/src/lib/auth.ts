@@ -1,0 +1,42 @@
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+
+const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || 'https://dr-pediatre-cms.vercel.app'
+
+export type PayloadUser = {
+  id: string
+  email: string
+  name: string
+  roles: string[]
+  tenant?: string | { id: string }
+}
+
+export async function authenticate(): Promise<PayloadUser | null> {
+  try {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('payload-token')?.value
+    if (!token) return null
+
+    const res = await fetch(`${CMS_URL}/api/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      next: { revalidate: 0 },
+    })
+
+    if (!res.ok) return null
+    const json = await res.json()
+    return json.user ?? null
+  } catch {
+    return null
+  }
+}
+
+export async function requireAuth(): Promise<PayloadUser> {
+  const user = await authenticate()
+  if (!user) {
+    redirect('/login')
+  }
+  return user
+}

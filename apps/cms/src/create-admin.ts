@@ -1,23 +1,35 @@
-import { getPayload } from "payload";
-import config from "../payload.config.js";
+import { getPayload } from 'payload'
+import config from '../payload.config.js'
 
 async function createAdmin() {
-  const payload = await getPayload({ config });
+  const payload = await getPayload({ config })
+
+  const existing = await payload.find({
+    collection: 'users',
+    where: { email: { equals: 'admin@dr-tabibi.ma' } },
+    limit: 1,
+  })
+
+  if (existing.docs.length > 0) {
+    console.log('→ Admin already exists')
+    process.exit(0)
+  }
 
   await payload.create({
-    collection: "users",
+    collection: 'users',
     data: {
-      email: "admin@drpediatre.ma",
-      password: "changeme123",
-      name: "Admin",
-    } as any,
-  });
+      email: 'admin@dr-tabibi.ma',
+      password: process.env.ADMIN_PASSWORD ?? 'changeme123',
+      name: 'Admin',
+      roles: ['superadmin'],
+    },
+  })
 
-  console.log("✅ Admin user created");
-  process.exit(0);
+  console.log('✅ Admin user created')
+  process.exit(0)
 }
 
 createAdmin().catch((err) => {
-  console.error("❌ Failed:", err);
-  process.exit(1);
-});
+  console.error('❌ Failed:', err)
+  process.exit(1)
+})

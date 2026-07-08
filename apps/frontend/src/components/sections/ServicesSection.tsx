@@ -13,24 +13,33 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import type { Service } from '@/lib/payload'
 
 type Props = {
   locale: string
+  services: Service[]
 }
 
-const serviceIcons = {
-  nourrisson: Baby,
-  vaccins: Syringe,
-  suivi: HeartPulse,
-  urgences: Stethoscope,
-  nutrition: Apple,
-  certificats: FileCheck,
-} as const
+const serviceIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  Baby,
+  Syringe,
+  HeartPulse,
+  Stethoscope,
+  Apple,
+  FileCheck,
+}
 
-export default async function ServicesSection({ locale }: Props) {
+function extractText(value: unknown): string {
+  if (typeof value === 'string') return value
+  const root = (value as any)?.root
+  if (root?.children?.[0]?.children?.[0]?.text) return root.children[0].children[0].text
+  return ''
+}
+
+export default async function ServicesSection({ locale, services }: Props) {
   const t = await getTranslations({ locale, namespace: 'services' })
 
-  const items = Object.keys(serviceIcons) as Array<keyof typeof serviceIcons>
+  if (services.length === 0) return null
 
   return (
     <section id="services" className="scroll-mt-24 bg-gradient-to-b from-white to-cream-100 bg-cream-100 bg-[length:100%_16px] bg-[position:0_0] bg-no-repeat px-4 py-20 md:px-6 md:py-28 lg:px-8">
@@ -43,21 +52,22 @@ export default async function ServicesSection({ locale }: Props) {
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((key) => {
-            const Icon = serviceIcons[key]
+          {services.map((service) => {
+            const Icon = serviceIcons[service.icon] || HeartPulse
+            const desc = extractText(service.description)
             return (
-              <Card key={key} className="border-stone-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md">
+              <Card key={service.id} className="border-stone-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md">
                 <CardHeader>
                   <div className="flex size-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
                     <Icon className="size-5" />
                   </div>
                   <CardTitle className="font-heading text-lg text-stone-800">
-                    {t(`items.${key}.title`)}
+                    {service.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm leading-relaxed text-stone-500">
-                    {t(`items.${key}.description`)}
+                    {desc}
                   </p>
                 </CardContent>
               </Card>

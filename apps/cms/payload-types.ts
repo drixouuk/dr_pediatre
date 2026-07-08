@@ -67,11 +67,15 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    tenants: Tenant;
     users: User;
+    patients: Patient;
+    'audit-logs': AuditLog;
+    'queue-items': QueueItem;
     doctors: Doctor;
     services: Service;
-    media: Media;
     reviews: Review;
+    media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,11 +83,15 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    tenants: TenantsSelect<false> | TenantsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    patients: PatientsSelect<false> | PatientsSelect<true>;
+    'audit-logs': AuditLogsSelect<false> | AuditLogsSelect<true>;
+    'queue-items': QueueItemsSelect<false> | QueueItemsSelect<true>;
     doctors: DoctorsSelect<false> | DoctorsSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -133,12 +141,36 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Cabinets médicaux (Multi-tenant)
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number;
+  name: string;
+  domain?: string | null;
+  settings?: {
+    defaultLocale?: ('fr' | 'ar' | 'en' | 'tzm') | null;
+    activeTier?: ('vitrine' | 'rdv' | 'dossier' | 'clinique') | null;
+  };
+  calcomSettings?: {
+    eventSlug?: string | null;
+    username?: string | null;
+    customUrl?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
   name?: string | null;
+  roles: ('superadmin' | 'tenant_admin' | 'doctor' | 'secretary')[];
+  tenant?: (number | null) | Tenant;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -160,10 +192,57 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "patients".
+ */
+export interface Patient {
+  id: number;
+  tenant: number | Tenant;
+  fullName: string;
+  gender: 'boy' | 'girl';
+  birthDate?: string | null;
+  nationalId?: string | null;
+  medicalNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Registre immuable des accès aux données de santé
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit-logs".
+ */
+export interface AuditLog {
+  id: number;
+  action?: ('read' | 'write' | 'export') | null;
+  collectionName?: string | null;
+  documentId?: string | null;
+  user?: (number | null) | User;
+  tenant?: (number | null) | Tenant;
+  timestamp?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "queue-items".
+ */
+export interface QueueItem {
+  id: number;
+  tenant: number | Tenant;
+  patient: number | Patient;
+  status?: ('scheduled' | 'waiting' | 'in_consultation' | 'completed' | 'canceled') | null;
+  visitReason?: ('consultation' | 'controle' | 'vaccin' | 'urgence') | null;
+  arrivalTime?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "doctors".
  */
 export interface Doctor {
   id: number;
+  tenant?: (number | null) | Tenant;
   name: string;
   slug: string;
   specialty?: string | null;
@@ -199,6 +278,7 @@ export interface Doctor {
  */
 export interface Media {
   id: number;
+  tenant?: (number | null) | Tenant;
   alt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -218,6 +298,7 @@ export interface Media {
  */
 export interface Service {
   id: number;
+  tenant?: (number | null) | Tenant;
   title: string;
   description?: {
     root: {
@@ -248,6 +329,7 @@ export interface Service {
  */
 export interface Review {
   id: number;
+  tenant?: (number | null) | Tenant;
   author: string;
   rating: number;
   text?: string | null;
@@ -282,8 +364,24 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'tenants';
+        value: number | Tenant;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'patients';
+        value: number | Patient;
+      } | null)
+    | ({
+        relationTo: 'audit-logs';
+        value: number | AuditLog;
+      } | null)
+    | ({
+        relationTo: 'queue-items';
+        value: number | QueueItem;
       } | null)
     | ({
         relationTo: 'doctors';
@@ -294,12 +392,12 @@ export interface PayloadLockedDocument {
         value: number | Service;
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
-      } | null)
-    | ({
         relationTo: 'reviews';
         value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -345,10 +443,35 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants_select".
+ */
+export interface TenantsSelect<T extends boolean = true> {
+  name?: T;
+  domain?: T;
+  settings?:
+    | T
+    | {
+        defaultLocale?: T;
+        activeTier?: T;
+      };
+  calcomSettings?:
+    | T
+    | {
+        eventSlug?: T;
+        username?: T;
+        customUrl?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  roles?: T;
+  tenant?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -368,9 +491,51 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "patients_select".
+ */
+export interface PatientsSelect<T extends boolean = true> {
+  tenant?: T;
+  fullName?: T;
+  gender?: T;
+  birthDate?: T;
+  nationalId?: T;
+  medicalNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audit-logs_select".
+ */
+export interface AuditLogsSelect<T extends boolean = true> {
+  action?: T;
+  collectionName?: T;
+  documentId?: T;
+  user?: T;
+  tenant?: T;
+  timestamp?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "queue-items_select".
+ */
+export interface QueueItemsSelect<T extends boolean = true> {
+  tenant?: T;
+  patient?: T;
+  status?: T;
+  visitReason?: T;
+  arrivalTime?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "doctors_select".
  */
 export interface DoctorsSelect<T extends boolean = true> {
+  tenant?: T;
   name?: T;
   slug?: T;
   specialty?: T;
@@ -391,6 +556,7 @@ export interface DoctorsSelect<T extends boolean = true> {
  * via the `definition` "services_select".
  */
 export interface ServicesSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   description?: T;
   icon?: T;
@@ -400,9 +566,25 @@ export interface ServicesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  tenant?: T;
+  author?: T;
+  rating?: T;
+  text?: T;
+  date?: T;
+  source?: T;
+  published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  tenant?: T;
   alt?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -415,20 +597,6 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reviews_select".
- */
-export interface ReviewsSelect<T extends boolean = true> {
-  author?: T;
-  rating?: T;
-  text?: T;
-  date?: T;
-  source?: T;
-  published?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,3 +1,4 @@
+import { headers } from 'next/headers'
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import RdvCtaButton from "@/components/ui/RdvCtaButton";
@@ -6,6 +7,15 @@ import ServicesSection from "@/components/sections/ServicesSection";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import RdvSection from "@/components/sections/RdvSection";
 import InfosSection from "@/components/sections/InfosSection";
+import { getServices, getPracticeInfo, getReviews } from "@/lib/payload";
+import type { Service, PracticeInfo, Review } from "@/lib/payload";
+
+const DATA_LOCALE: Record<string, string> = {
+  fr: 'fr',
+  en: 'en',
+  ar: 'ar',
+  tzm: 'fr',
+}
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -15,6 +25,16 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
+
+  const headersList = await headers()
+  const tenantId = headersList.get('x-tenant-id') || 'default'
+  const dataLocale = DATA_LOCALE[locale] || 'fr'
+
+  const [services, practiceInfo, reviewsData] = await Promise.all([
+    getServices(tenantId, dataLocale),
+    getPracticeInfo(tenantId, dataLocale),
+    getReviews(tenantId, dataLocale),
+  ])
 
   return (
     <main className="flex-1">
@@ -69,13 +89,13 @@ export default async function HomePage({ params }: Props) {
 
       <PresentationSection locale={locale} />
 
-      <ServicesSection locale={locale} />
+      <ServicesSection locale={locale} services={services} />
 
-      <ReviewsSection />
+      <ReviewsSection reviews={reviewsData} locale={locale} />
 
       <RdvSection />
 
-      <InfosSection locale={locale} />
+      <InfosSection locale={locale} practiceInfo={practiceInfo} />
     </main>
   );
 }
