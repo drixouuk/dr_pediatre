@@ -3,12 +3,22 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import Cal, { getCalApi } from "@calcom/embed-react";
+import type { CalComSettings } from "@/lib/payload";
 
-const CAL_LINK = "drixou/consultation-pediatrique";
-const CAL_ORIGIN = "https://calcom.drixou.uk";
-const EMBED_JS_URL = `${CAL_ORIGIN}/embed/embed.js`;
+const DEFAULT_CALCOM: CalComSettings = {
+  eventSlug: "consultation-pediatrique",
+  username: "drixou",
+  customUrl: "https://calcom.drixou.uk",
+}
 
-export default function RdvSection() {
+export default function RdvSection({ calcom }: { calcom?: CalComSettings | null }) {
+  const c = calcom?.eventSlug ? calcom : DEFAULT_CALCOM
+  const eventSlug = c.eventSlug || "consultation-pediatrique"
+  const username = c.username || "drixou"
+  const customUrl = c.customUrl || "https://calcom.drixou.uk"
+  const calLink = `${username}/${eventSlug}`
+  const embedJsUrl = `${customUrl}/embed/embed.js`
+
   const t = useTranslations("rdv");
   const [visible, setVisible] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -16,10 +26,9 @@ export default function RdvSection() {
 
   useEffect(() => {
     (async function () {
-      // Configuration de l'API avec les paramètres de ton instance locale
       const cal = await getCalApi({
-        namespace: "consultation-pediatrique",
-        embedJsUrl: EMBED_JS_URL,
+        namespace: eventSlug,
+        embedJsUrl,
       });
 
       cal("ui", {
@@ -28,7 +37,7 @@ export default function RdvSection() {
         layout: "month_view",
       });
     })();
-  }, []);
+  }, [eventSlug, embedJsUrl]);
 
   useEffect(() => {
     const handler = () => {
@@ -76,14 +85,12 @@ export default function RdvSection() {
         >
           {loaded && (
             <Cal
-              namespace="consultation-pediatrique"
-              calLink={CAL_LINK}
+              namespace={eventSlug}
+              calLink={calLink}
               style={{ width: "100%", height: "100%", overflow: "scroll" }}
-              config={{
-                layout: "month_view",
-              }}
-              calOrigin={CAL_ORIGIN}
-              embedJsUrl={EMBED_JS_URL}
+              config={{ layout: "month_view" }}
+              calOrigin={customUrl}
+              embedJsUrl={embedJsUrl}
             />
           )}
         </div>

@@ -7,8 +7,8 @@ import ServicesSection from "@/components/sections/ServicesSection";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import RdvSection from "@/components/sections/RdvSection";
 import InfosSection from "@/components/sections/InfosSection";
-import { getServices, getPracticeInfo, getReviews } from "@/lib/payload";
-import type { Service, PracticeInfo, Review } from "@/lib/payload";
+import { getServices, getPracticeInfo, getReviews, getTenantById } from "@/lib/payload";
+import type { Service, PracticeInfo, Review, CalComSettings } from "@/lib/payload";
 
 const DATA_LOCALE: Record<string, string> = {
   fr: 'fr',
@@ -30,10 +30,11 @@ export default async function HomePage({ params }: Props) {
   const tenantId = headersList.get('x-tenant-id') || 'default'
   const dataLocale = DATA_LOCALE[locale] || 'fr'
 
-  const [services, practiceInfo, reviewsData] = await Promise.all([
+  const [services, practiceInfo, reviewsData, tenant] = await Promise.all([
     getServices(tenantId, dataLocale),
     getPracticeInfo(tenantId, dataLocale),
     getReviews(tenantId, dataLocale),
+    getTenantById(tenantId),
   ])
 
   return (
@@ -93,7 +94,7 @@ export default async function HomePage({ params }: Props) {
 
       <ReviewsSection reviews={reviewsData} locale={locale} />
 
-      <RdvSection />
+      <RdvSection calcom={tenant?.calcomSettings} />
 
       <InfosSection locale={locale} practiceInfo={practiceInfo} />
     </main>

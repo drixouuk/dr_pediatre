@@ -88,7 +88,12 @@ export async function getTenantById(id: string): Promise<Tenant | null> {
 }
 
 export async function getPracticeInfo(tenantId: string, locale: string): Promise<PracticeInfo | null> {
-  return fetchAPI<PracticeInfo>('/api/globals/practice-info', [`tenant-${tenantId}`, 'practice-info'], locale)
+  const data = await fetchAPI<PracticeInfo[]>(
+    `/api/practice-info?where[tenant][equals]=${tenantId}&limit=1`,
+    [`tenant-${tenantId}`, 'practice-info'],
+    locale,
+  )
+  return data?.[0] ?? null
 }
 
 export async function getServices(tenantId: string, locale: string): Promise<Service[]> {
