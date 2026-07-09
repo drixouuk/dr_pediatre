@@ -1,4 +1,40 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, Field, Access } from 'payload'
+
+const tenantAccess: Access = ({ req: { user } }) => {
+  if (user?.roles?.includes('superadmin')) return true
+  if (!user?.tenant) return false
+  return {
+    tenant: {
+      equals: typeof user.tenant === 'object' ? user.tenant.id : user.tenant,
+    },
+  }
+}
+
+const tenantField: Field = {
+  name: 'tenant',
+  type: 'relationship',
+  relationTo: 'tenants',
+  required: true,
+  admin: {
+    position: 'sidebar',
+    condition: (_data: any, _siblingData: any, { user }: any): boolean =>
+      !!(user?.roles as string[])?.includes('superadmin'),
+  },
+  hooks: {
+    beforeChange: [
+      ({ req, operation, value }) => {
+        if (
+          operation === 'create' &&
+          req.user &&
+          !req.user.roles?.includes('superadmin')
+        ) {
+          return req.user.tenant
+        }
+        return value
+      },
+    ],
+  },
+}
 
 export const PracticeInfo: CollectionConfig = {
   slug: 'practice-info',
@@ -7,36 +43,13 @@ export const PracticeInfo: CollectionConfig = {
     group: 'Contenu',
   },
   access: {
-    read: ({ req: { user } }: any) => {
-      if ((user?.roles as string[])?.includes('superadmin')) return true
-      return { tenant: { equals: user?.tenant } }
-    },
-    create: ({ req: { user } }: any): boolean => !!(user as any)?.tenant,
-    update: ({ req: { user } }: any) => ({
-      tenant: { equals: (user as any)?.tenant },
-    }),
-    delete: ({ req: { user } }: any) => ({
-      tenant: { equals: (user as any)?.tenant },
-    }),
-  },
-  hooks: {
-    beforeChange: [
-      ({ req, data, operation }: any) => {
-        if (operation === 'create' && req.user?.tenant) {
-          data.tenant = req.user.tenant
-        }
-        return data
-      },
-    ],
+    read: tenantAccess,
+    create: tenantAccess,
+    update: tenantAccess,
+    delete: tenantAccess,
   },
   fields: [
-    {
-      name: 'tenant',
-      type: 'relationship',
-      relationTo: 'tenants',
-      required: true,
-      admin: { readOnly: true },
-    },
+    tenantField,
     {
       name: 'address',
       type: 'textarea',
