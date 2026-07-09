@@ -68,8 +68,11 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`ALTER TABLE "practice_info_new_locales" RENAME TO "practice_info_locales";`)
   await db.execute(sql`ALTER TABLE "practice_info_new_schedules" RENAME TO "practice_info_schedules";`)
 
-  // 5. Update sequences
-  // 5. Update sequences
+  // 5. Rename sequences (RENAME TABLE does not rename the auto-created sequence)
+  await db.execute(sql`ALTER SEQUENCE "practice_info_new_id_seq" RENAME TO "practice_info_id_seq";`)
+  await db.execute(sql`ALTER SEQUENCE "practice_info_new_locales_id_seq" RENAME TO "practice_info_locales_id_seq";`)
+
+  // 6. Update sequences
   await db.execute(sql`
     SELECT setval('practice_info_id_seq', COALESCE((SELECT MAX(id) FROM practice_info), 1));
   `)
@@ -170,11 +173,15 @@ export async function down({ db }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`ALTER TABLE "practice_info_old_locales" RENAME TO "practice_info_locales";`)
   await db.execute(sql`ALTER TABLE "practice_info_old_schedules" RENAME TO "practice_info_schedules";`)
 
+  // Rename sequences back
+  await db.execute(sql`ALTER SEQUENCE "practice_info_id_seq" RENAME TO "practice_info_old_id_seq";`)
+  await db.execute(sql`ALTER SEQUENCE "practice_info_locales_id_seq" RENAME TO "practice_info_old_locales_id_seq";`)
+
   await db.execute(sql`
-    SELECT setval('practice_info_id_seq', COALESCE((SELECT MAX(id) FROM practice_info), 1));
+    SELECT setval('practice_info_old_id_seq', COALESCE((SELECT MAX(id) FROM practice_info), 1));
   `)
   await db.execute(sql`
-    SELECT setval('practice_info_locales_id_seq', COALESCE((SELECT MAX(id) FROM practice_info_locales), 1));
+    SELECT setval('practice_info_old_locales_id_seq', COALESCE((SELECT MAX(id) FROM practice_info_locales), 1));
   `)
 
   await db.execute(sql`
