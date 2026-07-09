@@ -3,7 +3,8 @@ import type { CollectionConfig } from 'payload'
 export const PracticeInfo: CollectionConfig = {
   slug: 'practice-info',
   admin: {
-    useAsTitle: 'id',
+    useAsTitle: 'tenant',
+    defaultColumns: ['tenant', 'city', 'phone', 'updatedAt'],
     group: 'Contenu',
   },
   access: {
