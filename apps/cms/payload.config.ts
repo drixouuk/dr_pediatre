@@ -14,7 +14,7 @@ import { Doctors } from "./src/collections/Doctors";
 import { Services } from "./src/collections/Services";
 import { Reviews } from "./src/collections/Reviews";
 import { Media } from "./src/collections/Media";
-import { PracticeInfo } from "./src/globals/PracticeInfo";
+import { PracticeInfo } from "./src/collections/PracticeInfo";
 import { seed } from "./src/seed";
 
 const filename = fileURLToPath(import.meta.url);
@@ -35,8 +35,8 @@ export default buildConfig({
     Services,
     Reviews,
     Media,
+    PracticeInfo,
   ],
-  globals: [PracticeInfo],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI,
