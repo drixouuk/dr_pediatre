@@ -4,6 +4,8 @@ import OrientationLightbox from "@/components/ui/OrientationLightbox";
 import ContactForm from "@/components/ui/ContactForm";
 import type { PracticeInfo } from "@/lib/payload";
 
+const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || "https://dr-pediatre-cms.vercel.app";
+
 type Props = {
   locale: string;
   practiceInfo: PracticeInfo | null;
@@ -106,22 +108,28 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
           </div>
 
           <div className="overflow-hidden rounded-xl md:order-5">
-            <iframe
-              src="https://www.google.com/maps?q=30.3577836,-9.5279668&z=17&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="h-full w-full min-h-[200px] md:min-h-[400px]"
-              title="Cabinet Dr Guinane Aicha — Inezgane"
-            />
+            {practiceInfo?.coordinates?.lat && practiceInfo?.coordinates?.lng ? (
+              <iframe
+                src={`https://www.google.com/maps?q=${practiceInfo.coordinates.lat},${practiceInfo.coordinates.lng}&z=17&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-full w-full min-h-[200px] md:min-h-[400px]"
+                title="Cabinet Dr Guinane Aicha — Inezgane"
+              />
+            ) : (
+              <div className="flex h-full min-h-[200px] items-center justify-center bg-stone-50 md:min-h-[400px]">
+                <p className="text-sm text-stone-400">Carte non disponible</p>
+              </div>
+            )}
           </div>
 
           <div className="h-[200px] md:h-[400px] md:order-4 md:col-span-2">
             <OrientationLightbox
-              src="/orientation.png"
+              src={`${CMS_URL}/api/media/file/orientation.png`}
               alt={t("orientationImageAlt")}
             />
           </div>
