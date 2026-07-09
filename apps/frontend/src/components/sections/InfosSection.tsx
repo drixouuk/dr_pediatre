@@ -30,14 +30,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
         dayKey: s.day,
         morning: `${s.open}–${s.close}`,
       }))
-    : [
-        { dayKey: "mon", morning: "09h–16h30" },
-        { dayKey: "tue", morning: "09h–16h30" },
-        { dayKey: "wed", morning: "09h–16h30" },
-        { dayKey: "thu", morning: "09h–16h30" },
-        { dayKey: "fri", morning: "09h–16h30" },
-        { dayKey: "sat", morning: "09h–13h" },
-      ];
+    : [];
 
   return (
     <section
@@ -60,23 +53,22 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
             <div className="flex items-start gap-4">
               <MapPin className="mt-1 size-5 shrink-0 text-primary-600" />
               <div>
-                <p>{practiceInfo?.address || t("address_line1")}</p>
-                <p className="font-medium text-stone-700">
-                  {t("address_line3")}
-                </p>
+                <p>{practiceInfo?.address || t("address_title")}</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-4">
-              <Phone className="mt-1 size-5 shrink-0 text-primary-600" />
-              <p>{practiceInfo?.phone || t("phone")}</p>
-            </div>
+            {practiceInfo?.phone && (
+              <div className="flex items-start gap-4">
+                <Phone className="mt-1 size-5 shrink-0 text-primary-600" />
+                <p>{practiceInfo.phone}</p>
+              </div>
+            )}
 
             <div className="flex items-start gap-4">
               <CreditCard className="mt-1 size-5 shrink-0 text-primary-600" />
               <div>
                 <p className="font-medium text-stone-700">{t("fees_title")}</p>
-                <p>{practiceInfo?.pricing ? extractPricingText(practiceInfo.pricing) : t("fees")}</p>
+                <p>{practiceInfo?.pricing ? extractPricingText(practiceInfo.pricing) : ''}</p>
                 <p className="text-sm text-stone-500">{t("payment")}</p>
               </div>
             </div>
@@ -90,19 +82,21 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
               </h3>
             </div>
 
-            <div className="overflow-hidden rounded-xl border border-stone-200 bg-white">
-              {schedule.map((row) => (
-                <div
-                  key={row.dayKey}
-                  className="flex items-center justify-between border-b border-stone-100 px-4 py-2.5 text-sm last:border-b-0"
-                >
-                  <span className="font-medium text-stone-700">
-                    {d(row.dayKey as any)}
-                  </span>
-                  <span className="text-stone-500">{row.morning}</span>
-                </div>
-              ))}
-            </div>
+            {schedule.length > 0 ? (
+              <div className="overflow-hidden rounded-xl border border-stone-200 bg-white">
+                {schedule.map((row) => (
+                  <div
+                    key={row.dayKey}
+                    className="flex items-center justify-between border-b border-stone-100 px-4 py-2.5 text-sm last:border-b-0"
+                  >
+                    <span className="font-medium text-stone-700">
+                      {d(row.dayKey as any)}
+                    </span>
+                    <span className="text-stone-500">{row.morning}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
 
             <p className="text-sm text-stone-500">{t("hours_note")}</p>
           </div>
@@ -118,7 +112,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="h-full w-full min-h-[200px] md:min-h-[400px]"
-                title="Cabinet Dr Guinane Aicha — Inezgane"
+                title="Cabinet médical — Inezgane"
               />
             ) : (
               <div className="flex h-full min-h-[200px] items-center justify-center bg-stone-50 md:min-h-[400px]">

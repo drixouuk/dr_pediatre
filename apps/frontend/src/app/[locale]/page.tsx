@@ -7,8 +7,8 @@ import ServicesSection from "@/components/sections/ServicesSection";
 import ReviewsSection from "@/components/sections/ReviewsSection";
 import RdvSection from "@/components/sections/RdvSection";
 import InfosSection from "@/components/sections/InfosSection";
-import { getServices, getPracticeInfo, getReviews, getTenantById } from "@/lib/payload";
-import type { Service, PracticeInfo, Review, CalComSettings } from "@/lib/payload";
+import { getServices, getPracticeInfo, getReviews, getTenantById, getDoctorProfile } from "@/lib/payload";
+import type { Service, PracticeInfo, Review, Doctor, CalComSettings } from "@/lib/payload";
 
 const DATA_LOCALE: Record<string, string> = {
   fr: 'fr',
@@ -30,11 +30,12 @@ export default async function HomePage({ params }: Props) {
   const tenantId = headersList.get('x-tenant-id') || 'default'
   const dataLocale = DATA_LOCALE[locale] || 'fr'
 
-  const [services, practiceInfo, reviewsData, tenant] = await Promise.all([
+  const [services, practiceInfo, reviewsData, tenant, doctor] = await Promise.all([
     getServices(tenantId, dataLocale),
     getPracticeInfo(tenantId, dataLocale),
     getReviews(tenantId, dataLocale),
     getTenantById(tenantId),
+    getDoctorProfile(tenantId, dataLocale),
   ])
 
   return (
@@ -42,18 +43,22 @@ export default async function HomePage({ params }: Props) {
       <section className="flex min-h-screen items-center bg-cream-100 px-4 pt-24 pb-16 transition-colors duration-300 md:px-6 lg:px-8">
         <div className="mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-2 md:gap-16">
           <div className="flex flex-col gap-6">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 ring-1 ring-primary-200">
-              <span className="size-1.5 rounded-full bg-primary-500" />
-              {t("badge_location")}
-            </div>
+            {t("badge_location") && (
+              <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 ring-1 ring-primary-200">
+                <span className="size-1.5 rounded-full bg-primary-500" />
+                {t("badge_location")}
+              </div>
+            )}
 
             <h1 className="font-heading max-w-lg text-4xl font-bold leading-tight text-stone-800 md:text-5xl lg:text-6xl">
               {t("tagline")}
             </h1>
 
-            <p className="max-w-md text-lg leading-relaxed text-stone-500">
-              {t("subtitle")}
-            </p>
+            {t("subtitle") && (
+              <p className="max-w-md text-lg leading-relaxed text-stone-500">
+                {t("subtitle")}
+              </p>
+            )}
 
             <div className="flex flex-wrap gap-3">
               <RdvCtaButton className="bg-cta-700 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-800">
@@ -68,10 +73,12 @@ export default async function HomePage({ params }: Props) {
             </div>
 
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-stone-600">
-              <span className="inline-flex items-center gap-1.5">
-                <span className="size-1.5 rounded-full bg-primary-400" />
-                {t("badge_conventionnee")}
-              </span>
+              {t("badge_conventionnee") && (
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="size-1.5 rounded-full bg-primary-400" />
+                  {t("badge_conventionnee")}
+                </span>
+              )}
               <span className="text-stone-300">·</span>
               <span className="inline-flex items-center gap-1.5">
                 <span className="size-1.5 rounded-full bg-primary-400" />
@@ -88,7 +95,7 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
-      <PresentationSection locale={locale} />
+      <PresentationSection locale={locale} doctor={doctor} />
 
       <ServicesSection locale={locale} services={services} />
 

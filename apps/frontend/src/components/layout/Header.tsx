@@ -6,6 +6,11 @@ import { useScrollDirection } from '@/hooks/use-scroll-direction'
 import LanguageSwitcher from './LanguageSwitcher'
 import { Button } from '@/components/ui/button'
 
+type Props = {
+  doctorName: string | null
+  doctorNameShort: string | null
+}
+
 const navLinks = [
   { href: '/', key: 'home' },
   { href: '/#presentation', key: 'presentation' },
@@ -14,9 +19,8 @@ const navLinks = [
   { href: '/#infos', key: 'infos' },
 ] as const
 
-export default function Header() {
+export default function Header({ doctorName, doctorNameShort }: Props) {
   const t = useTranslations('nav')
-  const h = useTranslations('header')
   const { isHidden, show } = useScrollDirection()
 
   return (
@@ -33,8 +37,8 @@ export default function Header() {
           href="/"
           className="flex items-center gap-2 text-lg font-semibold text-primary-700 hover:text-primary-600 transition-colors duration-200"
         >
-          <span className="hidden sm:inline">{h('doctorName')}</span>
-          <span className="sm:hidden">{h('doctorNameShort')}</span>
+          <span className="hidden sm:inline">{doctorName ?? ''}</span>
+          <span className="sm:hidden">{doctorNameShort ?? ''}</span>
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

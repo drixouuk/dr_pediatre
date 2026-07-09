@@ -8,16 +8,6 @@
     "contact": "Contact",
     "cta": "Rendez-vous"
   },
-  "header": {
-    "doctorName": "Dr Guinane Aicha",
-    "doctorNameShort": "Dr Guinane",
-    "specialty": "Pédiatre"
-  },
-  "footer": {
-    "specialty": "Pédiatre",
-    "location": "Inezgane, Maroc",
-    "copyright": "© 2026 Dr Guinane Aicha — Tous droits réservés"
-  },
   "lang": {
     "fr": "Français",
     "en": "English",
@@ -25,68 +15,29 @@
     "tzm": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
   },
   "hero": {
+    "subtitle": "",
+    "badge_conventionnee": "",
+    "badge_location": "",
     "welcome": "Bienvenue",
     "tagline": "La santé de vos enfants, entre de bonnes mains",
-    "subtitle": "Pédiatre à Inezgane, dédiée à la santé et au bien-être des enfants.",
     "cta_primary": "Prendre rendez-vous",
     "cta_secondary": "En savoir plus",
-    "badge_conventionnee": "Pédiatre conventionnée",
-    "badge_langues": "4 langues",
-    "badge_location": "Inezgane, Maroc"
+    "badge_langues": "Plusieurs langues"
   },
   "presentation": {
-    "title": "Votre pédiatre de confiance à Inezgane",
-    "intro": "Dr Guinane Aicha est une pédiatre expérimentée avec plus de 20 ans de pratique dédiée au bien-être des enfants, de la naissance à l'adolescence.",
-    "section1_title": "Un parcours d'excellence",
-    "experience_chu": "Ancienne médecin au CHU Ibn Rochd de Casablanca.",
-    "experience_biougra": "Ancienne cheffe du service de pédiatrie à l'Hôpital Régional de Biougra.",
-    "diploma": "Diplômée de la Faculté de Médecine de Casablanca.",
-    "section2_title": "Une approche humaine au quotidien",
-    "description": "Aujourd'hui installée à Inezgane, elle accompagne les familles de la région Souss-Massa avec une médecine attentive, bienveillante et à l'écoute. Convaincue que chaque enfant est unique, elle prend toujours le temps d'expliquer et de rassurer, en adaptant ses soins à chaque situation.",
-    "languages": "Consultations en français, arabe, darija et tamazight"
+    "section1_title": "Parcours",
+    "section2_title": "Approche"
   },
   "services": {
     "title": "Nos services",
-    "subtitle": "Une prise en charge complète de votre enfant",
-    "items": {
-      "nourrisson": {
-        "title": "Consultation nourrisson",
-        "description": "Suivi du développement, courbes de croissance, conseils allaitement et nutrition"
-      },
-      "vaccins": {
-        "title": "Vaccinations",
-        "description": "Calendrier vaccinal complet selon le programme national marocain"
-      },
-      "suivi": {
-        "title": "Suivi pédiatrique régulier",
-        "description": "Bilans de santé annuels, suivi scolaire, développement psychomoteur"
-      },
-      "urgences": {
-        "title": "Consultations urgentes",
-        "description": "Fièvre, gastro-entérite, infections ORL, allergies — sans rendez-vous selon disponibilité"
-      },
-      "nutrition": {
-        "title": "Nutrition & diététique",
-        "description": "Conseils personnalisés pour une alimentation équilibrée à chaque âge"
-      },
-      "certificats": {
-        "title": "Certificats médicaux",
-        "description": "Certificats de bonne santé, aptitude sportive, crèche et école"
-      }
-    }
+    "subtitle": "Une prise en charge complète de votre enfant"
   },
   "infos": {
     "title": "Informations pratiques",
     "address_title": "Adresse",
-    "address_line1": "Face au souk Al Houria, porte 10",
-    "address_line2": "Immeuble Nassim, 1er étage, bureau 4",
-    "address_line3": "Inezgane, Maroc",
-    "phone": "+212528838618",
-    "email": "dr.aichaguinane@gmail.com",
-    "hours_title": "Horaires de consultation",
+    "hours_title": "Horaires",
     "hours_note": "Fermé le dimanche",
     "fees_title": "Tarifs",
-    "fees": "Consultation : 250 MAD — Conventionnée CNOPS/CNSS",
     "payment": "Paiement en espèces uniquement",
     "orientationImageAlt": "Schéma d'orientation vers le cabinet",
     "days": {
@@ -115,7 +66,7 @@
     "phone_placeholder": "Votre numéro de téléphone",
     "message_placeholder": "Votre message"
   },
-  "ui": {
-    "phone": "Tél +212528838618"
+  "reviews": {
+    "title": "Ce que disent nos patients"
   }
 }

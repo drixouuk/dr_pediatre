@@ -3,20 +3,10 @@
     "home": "Home",
     "presentation": "About",
     "services": "Services",
-    "infos": "Information",
+    "infos": "Info",
     "reviews": "Reviews",
     "contact": "Contact",
-    "cta": "Appointment"
-  },
-  "header": {
-    "doctorName": "Dr Guinane Aicha",
-    "doctorNameShort": "Dr Guinane",
-    "specialty": "Pediatrician"
-  },
-  "footer": {
-    "specialty": "Pediatrician",
-    "location": "Inezgane, Morocco",
-    "copyright": "© 2026 Dr Guinane Aicha — All rights reserved"
+    "cta": "Book"
   },
   "lang": {
     "fr": "Français",
@@ -25,68 +15,29 @@
     "tzm": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
   },
   "hero": {
+    "subtitle": "",
+    "badge_conventionnee": "",
+    "badge_location": "",
     "welcome": "Welcome",
     "tagline": "Your children's health, in caring hands",
-    "subtitle": "Pediatrician in Inezgane, dedicated to children's health and well-being.",
     "cta_primary": "Book an appointment",
     "cta_secondary": "Learn more",
-    "badge_conventionnee": "Contracted pediatrician",
-    "badge_langues": "4 languages",
-    "badge_location": "Inezgane, Morocco"
+    "badge_langues": "Multiple languages"
   },
   "presentation": {
-    "title": "Your trusted pediatrician in Inezgane",
-    "intro": "Dr. Guinane Aicha is an experienced pediatrician with over 20 years of practice dedicated to children's well-being, from birth to adolescence.",
-    "section1_title": "A path of excellence",
-    "experience_chu": "Former physician at the Ibn Rochd University Hospital (CHU) in Casablanca.",
-    "experience_biougra": "Former head of the pediatrics department at the Biougra Regional Hospital.",
-    "diploma": "Graduate of the Faculty of Medicine of Casablanca.",
-    "section2_title": "A human approach every day",
-    "description": "Now based in Inezgane, she supports families in the Souss-Massa region with an attentive, caring, and mindful medical approach. Convinced that every child is unique, she always takes the time to explain and reassure, tailoring her care to each situation.",
-    "languages": "Consultations in French, Arabic, Darija and Tamazight"
+    "section1_title": "Background",
+    "section2_title": "Approach"
   },
   "services": {
     "title": "Our services",
-    "subtitle": "Complete care for your child",
-    "items": {
-      "nourrisson": {
-        "title": "Infant consultation",
-        "description": "Development monitoring, growth charts, breastfeeding and nutrition advice"
-      },
-      "vaccins": {
-        "title": "Vaccinations",
-        "description": "Full vaccination schedule according to the Moroccan national program"
-      },
-      "suivi": {
-        "title": "Regular check-ups",
-        "description": "Annual health check-ups, school follow-up, psychomotor development"
-      },
-      "urgences": {
-        "title": "Urgent consultations",
-        "description": "Fever, gastroenteritis, ENT infections, allergies — walk-in subject to availability"
-      },
-      "nutrition": {
-        "title": "Pediatric nutrition",
-        "description": "Personalized advice for balanced nutrition at every age"
-      },
-      "certificats": {
-        "title": "Medical certificates",
-        "description": "Health certificates, sports fitness, nursery and school certificates"
-      }
-    }
+    "subtitle": "Complete care for your child"
   },
   "infos": {
-    "title": "Practical information",
+    "title": "Practical info",
     "address_title": "Address",
-    "address_line1": "Face au souk Al Houria, door 10",
-    "address_line2": "Nassim Building, 1st floor, office 4",
-    "address_line3": "Inezgane, Morocco",
-    "phone": "+212528838618",
-    "email": "dr.aichaguinane@gmail.com",
-    "hours_title": "Office hours",
+    "hours_title": "Hours",
     "hours_note": "Closed on Sundays",
     "fees_title": "Fees",
-    "fees": "Consultation: 250 MAD — Covered by CNOPS/CNSS",
     "payment": "Cash only",
     "orientationImageAlt": "Orientation map to the practice",
     "days": {
@@ -115,7 +66,7 @@
     "phone_placeholder": "Your phone number",
     "message_placeholder": "Your message"
   },
-  "ui": {
-    "phone": "Phone +212528838618"
+  "reviews": {
+    "title": "What our patients say"
   }
 }
