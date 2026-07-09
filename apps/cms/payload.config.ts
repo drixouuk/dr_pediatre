@@ -41,7 +41,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI,
     },
-    push: true,
+    push: false,
   }),
   plugins: [
     s3Storage({

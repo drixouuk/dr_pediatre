@@ -1,84 +1,90 @@
-import type { GlobalConfig } from 'payload'
+import type { GlobalConfig } from "payload";
 
 export const PracticeInfo: GlobalConfig = {
-  slug: 'practice-info',
+  slug: "practice-info",
   admin: {
-    group: 'Contenu',
+    group: "Contenu",
   },
   fields: [
     {
-      name: 'address',
-      type: 'textarea',
+      name: "address",
+      type: "textarea",
       localized: true,
-      label: 'Adresse',
+      label: "Adresse",
     },
     {
-      name: 'phone',
-      type: 'text',
-      label: 'Téléphone',
+      name: "city",
+      type: "text",
+      localized: true,
+      label: "Ville",
     },
     {
-      name: 'email',
-      type: 'email',
-      label: 'Email',
+      name: "phone",
+      type: "text",
+      label: "Téléphone",
     },
     {
-      type: 'group',
-      name: 'coordinates',
-      label: 'Coordonnées GPS',
+      name: "email",
+      type: "email",
+      label: "Email",
+    },
+    {
+      type: "group",
+      name: "coordinates",
+      label: "Coordonnées GPS",
       fields: [
         {
-          name: 'lat',
-          type: 'number',
-          label: 'Latitude',
+          name: "lat",
+          type: "number",
+          label: "Latitude",
           admin: {
-            placeholder: '30.3576702',
+            placeholder: "30.3576702",
           },
         },
         {
-          name: 'lng',
-          type: 'number',
-          label: 'Longitude',
+          name: "lng",
+          type: "number",
+          label: "Longitude",
           admin: {
-            placeholder: '-9.5279038',
+            placeholder: "-9.5279038",
           },
         },
       ],
     },
     {
-      name: 'schedules',
-      type: 'array',
-      label: 'Horaires',
+      name: "schedules",
+      type: "array",
+      label: "Horaires",
       fields: [
         {
-          name: 'day',
-          type: 'text',
+          name: "day",
+          type: "text",
           required: true,
-          label: 'Jour',
+          label: "Jour",
         },
         {
-          name: 'open',
-          type: 'text',
-          label: 'Ouverture',
+          name: "open",
+          type: "text",
+          label: "Ouverture",
           admin: {
-            placeholder: '08:30',
+            placeholder: "08:30",
           },
         },
         {
-          name: 'close',
-          type: 'text',
-          label: 'Fermeture',
+          name: "close",
+          type: "text",
+          label: "Fermeture",
           admin: {
-            placeholder: '16:30',
+            placeholder: "16:30",
           },
         },
       ],
     },
     {
-      name: 'pricing',
-      type: 'richText',
+      name: "pricing",
+      type: "richText",
       localized: true,
-      label: 'Tarifs',
+      label: "Tarifs",
     },
   ],
-}
+};
