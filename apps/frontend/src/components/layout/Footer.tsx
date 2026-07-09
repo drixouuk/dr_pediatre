@@ -1,14 +1,31 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { headers } from 'next/headers'
+import { getDoctorProfile, getPracticeInfo } from '@/lib/payload'
+
+const DATA_LOCALE: Record<string, string> = {
+  fr: 'fr', en: 'en', ar: 'ar', tzm: 'fr',
+}
 
 type Props = {
   locale: string;
 };
 
 export default async function Footer({ locale }: Props) {
-  const f = await getTranslations({ locale, namespace: "footer" });
   const n = await getTranslations({ locale, namespace: "nav" });
-  const i = await getTranslations({ locale, namespace: "infos" });
+
+  const h = await headers()
+  const tenantId = h.get('x-tenant-id') || 'default'
+  const dataLocale = DATA_LOCALE[locale] || 'fr'
+
+  const [doctor, practiceInfo] = await Promise.all([
+    getDoctorProfile(tenantId, dataLocale),
+    getPracticeInfo(tenantId, dataLocale),
+  ])
+
+  const doctorName = doctor?.name || ''
+  const specialty = doctor?.specialty || ''
+  const city = practiceInfo?.city || ''
 
   const navLinks = [
     { href: "/", key: "home" },
@@ -22,15 +39,12 @@ export default async function Footer({ locale }: Props) {
     <footer className="bg-primary-800 text-white">
       <div className="h-2 bg-gradient-to-b from-cream-100 to-primary-800" />
       <div className="mx-auto max-w-container px-4 py-6 md:px-6 lg:px-8">
-        {/* Remplacement du flex-row par un grid à 3 colonnes égales sur écran md */}
         <div className="flex flex-col items-center gap-4 text-center md:grid md:grid-cols-3 md:items-center">
-          {/* Bloc Gauche - Aligné à gauche sur écran md */}
           <p className="text-sm font-medium text-stone-300 md:text-left">
-            Dr Guinane Aicha <span className="text-stone-500">—</span>{" "}
-            <span className="font-normal text-stone-200">{f("specialty")}</span>
+            {doctorName}{doctorName && specialty ? ' — ' : ''}
+            <span className="font-normal text-stone-200">{specialty}</span>
           </p>
 
-          {/* Bloc Centre - Toujours parfaitement centré */}
           <nav className="flex flex-wrap items-center justify-center gap-4 text-sm">
             {navLinks.map(({ href, key }) => (
               <Link
@@ -43,16 +57,16 @@ export default async function Footer({ locale }: Props) {
             ))}
           </nav>
 
-          {/* Bloc Droite - Aligné à droite sur écran md */}
           <p className="text-sm text-stone-200 md:text-right">
-            {i("address_line3")}
+            {city}
           </p>
         </div>
 
-        {/* Ligne du bas (Copyright) */}
-        <p className="mt-6 text-center text-xs text-stone-300">
-          {f("copyright")}
-        </p>
+        {doctorName && (
+          <p className="mt-6 text-center text-xs text-stone-300">
+            &copy; {new Date().getFullYear()} {doctorName}
+          </p>
+        )}
       </div>
     </footer>
   );

@@ -45,7 +45,7 @@ const lexicalMixed = (
 const TENANT_SLUG = "dr-guinane";
 const TENANT_DOMAIN = "drguinane.drixou.uk";
 
-const DOCTOR_EMAIL = "drguinane.drixou.uk";
+const DOCTOR_EMAIL = "drguinane@drixou.uk";
 
 async function seedTenant(payload: Payload) {
   const existing = await payload.find({
@@ -78,6 +78,29 @@ async function seedTenant(payload: Payload) {
 
   console.log("✅ Tenant created");
   return tenant;
+}
+
+async function seedSuperadmin(payload: Payload) {
+  const existing = await payload.find({
+    collection: 'users',
+    where: { roles: { contains: 'superadmin' } },
+    limit: 1,
+  });
+  if (existing.docs.length > 0) {
+    console.log('→ Superadmin already exists, skipping');
+    return existing.docs[0];
+  }
+  const user = await payload.create({
+    collection: 'users',
+    data: {
+      email: 'admin@dr-tabibi.ma',
+      password: process.env.SEED_SUPERADMIN_PASSWORD ?? 'changeme123',
+      name: 'SuperAdmin dr-tabibi',
+      roles: ['superadmin'],
+    },
+  });
+  console.log('✅ Superadmin created');
+  return user;
 }
 
 async function seedDoctorUser(payload: Payload, tenantId: any) {
@@ -134,22 +157,35 @@ async function seedDoctor(payload: Payload, tenantId: any) {
     fr: {
       specialty: "Pédiatre",
       bio: lexical(
-        "Pédiatre installée à Inezgane, dédiée à la santé et au bien-être des enfants de la région d'Agadir.",
+        "Dr Guinane Aicha est une pédiatre expérimentée avec plus de 20 ans de pratique dédiée au bien-être des enfants, de la naissance à l'adolescence. " +
+          "Ancienne médecin au CHU Ibn Rochd de Casablanca et ancienne cheffe du service de pédiatrie à l'Hôpital Régional de Biougra, elle est diplômée de la Faculté de Médecine de Casablanca. " +
+          "Aujourd'hui installée à Inezgane, elle accompagne les familles de la région Souss-Massa avec une médecine attentive, bienveillante et à l'écoute. " +
+          'Consultations en français, arabe, darija et tamazight.',
       ),
     },
     en: {
       specialty: "Pediatrician",
       bio: lexical(
-        "Pediatrician based in Inezgane, dedicated to the health and well-being of children in the Agadir region.",
+        "Dr. Guinane Aicha is an experienced pediatrician with over 20 years of practice dedicated to children's well-being, from birth to adolescence. " +
+          "Former physician at the Ibn Rochd University Hospital (CHU) in Casablanca and former head of the pediatrics department at the Biougra Regional Hospital. " +
+          "Graduate of the Faculty of Medicine of Casablanca. " +
+          "Now based in Inezgane, she supports families in the Souss-Massa region with an attentive, caring, and mindful medical approach. " +
+          'Consultations in French, Arabic, Darija and Tamazight.',
       ),
     },
     ar: {
       specialty: "طبيبة أطفال",
       bio: lexical(
-        "طبيبة أطفال في إنزكان، مكرسة لصحة ورفاهية الأطفال في منطقة أكادير.",
+        "الدكتورة كينان عائشة هي طبيبة أطفال ذات خبرة كبيرة، تفوق 20 سنة من الممارسة في رعاية الأطفال من الولادة وحتى سن المراهقة. " +
+          "طبيبة سابقة بالمستشفى الجامعي ابن رشد بالدار البيضاء ورئيسة سابقة لقسم طب الأطفال بالمستشفى الإقليمي ببيوڭرى. " +
+          "خريجة كلية الطب والصيدلة بالدار البيضاء. " +
+          "تمارس حالياً في مدينة إنزكان، حيث تواكب عائلات جهة سوس ماسة برعاية طبية متميزة. " +
+          'الاستشارات بالعربية والفرنسية والدارجة والأمازيغية.',
         "rtl",
       ),
     },
+    // tzm non seedé intentionnellement : DATA_LOCALE['tzm'] → 'fr' côté frontend
+    // et Payload localization.fallback: true renvoie le contenu fr pour tzm.
   };
 
   for (const [locale, data] of Object.entries(localeData)) {
@@ -165,7 +201,7 @@ async function seedDoctor(payload: Payload, tenantId: any) {
 
 async function seedPracticeInfo(payload: Payload) {
   const baseData = {
-    phone: "+212 6XX XXX XXX",
+    phone: "+212528838618",
     coordinates: { lat: 30.3576702, lng: -9.5279038 },
     schedules: [
       { day: "Lun–Ven / الإثنين–الجمعة", open: "09:00", close: "16:30" },
@@ -177,6 +213,7 @@ async function seedPracticeInfo(payload: Payload) {
     fr: {
       address:
         "Face au souk Al Houria, porte 10, Immeuble Nassim, 1er étage, bureau 4, Inezgane",
+      city: "Inezgane, Maroc",
       pricing: lexicalMixed([
         { text: "Paiement en espèces uniquement. Consultation à partir de " },
         { text: "250 MAD", bold: true },
@@ -186,6 +223,7 @@ async function seedPracticeInfo(payload: Payload) {
     en: {
       address:
         "Face au souk Al Houria, door 10, Immeuble Nassim, 1st floor, office 4, Inezgane",
+      city: "Inezgane, Morocco",
       pricing: lexicalMixed([
         { text: "Cash payment only. Consultation from " },
         { text: "250 MAD", bold: true },
@@ -195,6 +233,7 @@ async function seedPracticeInfo(payload: Payload) {
     ar: {
       address:
         "أمام سوق الحورية، باب 10، عمارة نسيم، الطابق الأول، مكتب 4، إنزكان",
+      city: "إنزكان، المغرب",
       pricing: lexicalMixed(
         [
           { text: "الدفع نقداً فقط. الاستشارة من " },

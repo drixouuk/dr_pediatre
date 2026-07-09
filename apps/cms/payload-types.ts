@@ -645,6 +645,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface PracticeInfo {
   id: number;
   address?: string | null;
+  city?: string | null;
   phone?: string | null;
   email?: string | null;
   coordinates?: {
@@ -683,6 +684,7 @@ export interface PracticeInfo {
  */
 export interface PracticeInfoSelect<T extends boolean = true> {
   address?: T;
+  city?: T;
   phone?: T;
   email?: T;
   coordinates?:

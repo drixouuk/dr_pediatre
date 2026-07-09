@@ -21,6 +21,7 @@ async function fetchAPI<T>(path: string, tags: string[], locale?: string): Promi
 export type PracticeInfo = {
   id: string
   address: string
+  city: string
   phone: string
   email: string
   coordinates: { lat: number; lng: number }
