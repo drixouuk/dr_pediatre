@@ -521,7 +521,7 @@ export async function seed(payload: Payload) {
   console.log("🌱 Starting seed...");
 
   const tenant = await seedTenant(payload);
-  await seedSuperadmin(payload);
+
   await seedDoctorUser(payload, tenant.id as any);
   await seedDoctor(payload, tenant.id as any);
   await seedPracticeInfo(payload);
