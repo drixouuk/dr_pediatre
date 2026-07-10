@@ -43,7 +43,7 @@ export const Services: CollectionConfig = {
     defaultColumns: ['title', 'order', 'tenant'],
   },
   access: {
-    read: tenantAccess,
+    read: () => true,
     create: tenantAccess,
     update: tenantAccess,
     delete: tenantAccess,

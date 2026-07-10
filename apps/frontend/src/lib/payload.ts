@@ -100,7 +100,11 @@ export async function getPracticeInfo(tenantId: string, locale: string): Promise
 }
 
 export async function getServices(tenantId: string, locale: string): Promise<Service[]> {
-  const data = await fetchAPI<Service[]>('/api/services', [`tenant-${tenantId}`, 'services'], locale)
+  const data = await fetchAPI<Service[]>(
+    `/api/services?where[tenant][equals]=${tenantId}&sort=order&limit=20`,
+    [`tenant-${tenantId}`, 'services'],
+    locale,
+  )
   return data ?? []
 }
 
@@ -110,6 +114,10 @@ export async function getReviews(tenantId: string, locale: string): Promise<Revi
 }
 
 export async function getDoctorProfile(tenantId: string, locale: string): Promise<Doctor | null> {
-  const data = await fetchAPI<Doctor[]>('/api/doctors?limit=1', [`tenant-${tenantId}`, 'doctor'], locale)
+  const data = await fetchAPI<Doctor[]>(
+    `/api/doctors?where[tenant][equals]=${tenantId}&limit=1`,
+    [`tenant-${tenantId}`, 'doctor'],
+    locale,
+  )
   return data?.[0] ?? null
 }

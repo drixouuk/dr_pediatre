@@ -43,7 +43,7 @@ export const PracticeInfo: CollectionConfig = {
     group: 'Contenu',
   },
   access: {
-    read: tenantAccess,
+    read: () => true,
     create: tenantAccess,
     update: tenantAccess,
     delete: tenantAccess,
