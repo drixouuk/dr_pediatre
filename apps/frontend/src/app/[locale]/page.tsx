@@ -1,4 +1,3 @@
-import { headers } from 'next/headers'
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import RdvCtaButton from "@/components/ui/RdvCtaButton";
@@ -8,7 +7,7 @@ import ReviewsSection from "@/components/sections/ReviewsSection";
 import RdvSection from "@/components/sections/RdvSection";
 import InfosSection from "@/components/sections/InfosSection";
 import { getServices, getPracticeInfo, getReviews, getTenantById, getDoctorProfile } from "@/lib/payload";
-import type { Service, PracticeInfo, Review, Doctor, CalComSettings } from "@/lib/payload";
+import type { Service, PracticeInfo, Review, Doctor, Tenant, CalComSettings } from "@/lib/payload";
 
 const DATA_LOCALE: Record<string, string> = {
   fr: 'fr',
@@ -26,17 +25,38 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
 
-  const headersList = await headers()
-  const tenantId = headersList.get('x-tenant-id') || 'default'
+  const tenantId = "1"; // Forcé pour le test multi-tenant
   const dataLocale = DATA_LOCALE[locale] || 'fr'
 
-  const [services, practiceInfo, reviewsData, tenant, doctor] = await Promise.all([
-    getServices(tenantId, dataLocale),
-    getPracticeInfo(tenantId, dataLocale),
-    getReviews(tenantId, dataLocale),
-    getTenantById(tenantId),
-    getDoctorProfile(tenantId, dataLocale),
-  ])
+  console.log("=== [DEBUG FRONTEND] DETECTION TENANT ===");
+  console.log("Tenant ID cible :", tenantId, "| Type :", typeof tenantId);
+
+  let services: Service[] = []
+  let practiceInfo: PracticeInfo | null = null
+  let reviewsData: Review[] = []
+  let tenant: Tenant | null = null
+  let doctor: Doctor | null = null
+
+  try {
+    const results = await Promise.all([
+      getServices(tenantId, dataLocale),
+      getPracticeInfo(tenantId, dataLocale),
+      getReviews(tenantId, dataLocale),
+      getTenantById(tenantId),
+      getDoctorProfile(tenantId, dataLocale),
+    ])
+    services = results[0]
+    practiceInfo = results[1]
+    reviewsData = results[2]
+    tenant = results[3]
+    doctor = results[4]
+  } catch (err) {
+    console.error("=== [DEBUG FRONTEND] ERREUR FETCH CMS ===", err)
+  }
+
+  console.log("=== [DEBUG FRONTEND] RETOUR CMS PAYLOAD ===");
+  console.log("practiceInfo:", JSON.stringify(practiceInfo, null, 2));
+  console.log("doctor:", JSON.stringify(doctor, null, 2));
 
   return (
     <main className="flex-1">
