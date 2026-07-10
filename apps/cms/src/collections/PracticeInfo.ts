@@ -71,11 +71,13 @@ export const PracticeInfo: CollectionConfig = {
     {
       name: 'hoursNote',
       type: 'text',
+      localized: true,
       label: 'Remarque horaires',
     },
     {
       name: 'paymentNote',
       type: 'text',
+      localized: true,
       label: 'Note paiement',
     },
     {
