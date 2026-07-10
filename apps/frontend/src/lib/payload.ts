@@ -105,7 +105,7 @@ export async function getPracticeInfo(tenantId: string, locale: string): Promise
   const data = await fetchAPI<PracticeInfo[]>(
     '/api/practice-info',
     [`tenant-${tenantId}`, 'practice-info'],
-    { 'where[tenant][equals]': tenantId, limit: '1' },
+    { 'where[tenant.id][equals]': tenantId, limit: '1' },
     locale,
   )
   return data?.[0] ?? null
@@ -115,7 +115,7 @@ export async function getServices(tenantId: string, locale: string): Promise<Ser
   const data = await fetchAPI<Service[]>(
     '/api/services',
     [`tenant-${tenantId}`, 'services'],
-    { 'where[tenant][equals]': tenantId, sort: 'order', limit: '20' },
+    { 'where[tenant.id][equals]': tenantId, sort: 'order', limit: '20' },
     locale,
   )
   return data ?? []
@@ -130,7 +130,7 @@ export async function getDoctorProfile(tenantId: string, locale: string): Promis
   const data = await fetchAPI<Doctor[]>(
     '/api/doctors',
     [`tenant-${tenantId}`, 'doctor'],
-    { 'where[tenant][equals]': tenantId, limit: '1' },
+    { 'where[tenant.id][equals]': tenantId, limit: '1' },
     locale,
   )
   return data?.[0] ?? null
