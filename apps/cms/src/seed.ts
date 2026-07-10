@@ -199,7 +199,13 @@ async function seedDoctor(payload: Payload, tenantId: any) {
   console.log("✅ Doctor seeded");
 }
 
-async function seedPracticeInfo(payload: Payload) {
+async function seedPracticeInfo(payload: Payload, tenantId: any) {
+  const existing = await payload.find({
+    collection: 'practice-info',
+    where: { tenant: { equals: tenantId } },
+    limit: 1,
+  })
+
   const baseData = {
     phone: "+212528838618",
     coordinates: { lat: 30.3576702, lng: -9.5279038 },
@@ -214,6 +220,9 @@ async function seedPracticeInfo(payload: Payload) {
       address:
         "Face au souk Al Houria, porte 10, Immeuble Nassim, 1er étage, bureau 4, Inezgane",
       city: "Inezgane, Maroc",
+      tagline: "La santé de vos enfants, entre de bonnes mains",
+      hoursNote: "Fermé le dimanche",
+      paymentNote: "Paiement en espèces uniquement",
       pricing: lexicalMixed([
         { text: "Paiement en espèces uniquement. Consultation à partir de " },
         { text: "250 MAD", bold: true },
@@ -224,6 +233,9 @@ async function seedPracticeInfo(payload: Payload) {
       address:
         "Face au souk Al Houria, door 10, Immeuble Nassim, 1st floor, office 4, Inezgane",
       city: "Inezgane, Morocco",
+      tagline: "Your children's health, in caring hands",
+      hoursNote: "Closed on Sundays",
+      paymentNote: "Cash only",
       pricing: lexicalMixed([
         { text: "Cash payment only. Consultation from " },
         { text: "250 MAD", bold: true },
@@ -234,6 +246,9 @@ async function seedPracticeInfo(payload: Payload) {
       address:
         "أمام سوق الحورية، باب 10، عمارة نسيم، الطابق الأول، مكتب 4، إنزكان",
       city: "إنزكان، المغرب",
+      tagline: "صحة أطفالكم في أيدٍ أمينة",
+      hoursNote: "مغلق يوم الأحد",
+      paymentNote: "الدفع نقداً فقط",
       pricing: lexicalMixed(
         [
           { text: "الدفع نقداً فقط. الاستشارة من " },
@@ -247,17 +262,29 @@ async function seedPracticeInfo(payload: Payload) {
 
   for (const [locale, data] of Object.entries(localeData)) {
     if (locale === "fr") {
-      await payload.updateGlobal({
-        slug: "practice-info",
-        data: { ...baseData, ...data } as any,
-        locale: "fr" as any,
-      });
+      if (existing.docs.length > 0) {
+        await payload.update({
+          collection: 'practice-info',
+          id: existing.docs[0].id,
+          data: { tenant: tenantId, ...baseData, ...data } as any,
+          locale: "fr" as any,
+        })
+      } else {
+        await payload.create({
+          collection: 'practice-info',
+          data: { tenant: tenantId, ...baseData, ...data } as any,
+          locale: "fr" as any,
+        })
+      }
     } else {
-      await payload.updateGlobal({
-        slug: "practice-info",
+      const id = existing.docs[0]?.id
+      if (!id) continue
+      await payload.update({
+        collection: 'practice-info',
+        id,
         data: data as any,
         locale: locale as any,
-      });
+      })
     }
   }
   console.log("✅ PracticeInfo seeded");
@@ -563,7 +590,7 @@ export async function seed(payload: Payload) {
 
   await seedDoctorUser(payload, tenant.id as any);
   await seedDoctor(payload, tenant.id as any);
-  await seedPracticeInfo(payload);
+  await seedPracticeInfo(payload, tenant.id as any);
   await seedReviews(payload, tenant.id as any);
   await seedServices(payload, tenant.id as any);
 

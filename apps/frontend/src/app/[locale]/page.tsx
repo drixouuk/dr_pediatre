@@ -51,7 +51,7 @@ export default async function HomePage({ params }: Props) {
             )}
 
             <h1 className="font-heading max-w-lg text-4xl font-bold leading-tight text-stone-800 md:text-5xl lg:text-6xl">
-              {t("tagline")}
+              {practiceInfo?.tagline || t("tagline")}
             </h1>
 
             {t("subtitle") && (

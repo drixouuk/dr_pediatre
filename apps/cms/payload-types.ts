@@ -76,6 +76,7 @@ export interface Config {
     services: Service;
     reviews: Review;
     media: Media;
+    'practice-info': PracticeInfo;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -92,6 +93,7 @@ export interface Config {
     services: ServicesSelect<false> | ServicesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    'practice-info': PracticeInfoSelect<false> | PracticeInfoSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -106,12 +108,8 @@ export interface Config {
     | null
     | ('fr' | 'en' | 'ar' | 'tzm')
     | ('fr' | 'en' | 'ar' | 'tzm')[];
-  globals: {
-    'practice-info': PracticeInfo;
-  };
-  globalsSelect: {
-    'practice-info': PracticeInfoSelect<false> | PracticeInfoSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: 'fr' | 'en' | 'ar' | 'tzm';
   widgets: {
     collections: CollectionsWidget;
@@ -341,6 +339,50 @@ export interface Review {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "practice-info".
+ */
+export interface PracticeInfo {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  address?: string | null;
+  city?: string | null;
+  tagline?: string | null;
+  hoursNote?: string | null;
+  paymentNote?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  coordinates?: {
+    lat?: number | null;
+    lng?: number | null;
+  };
+  schedules?:
+    | {
+        day: string;
+        open?: string | null;
+        close?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  pricing?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -398,6 +440,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'practice-info';
+        value: number | PracticeInfo;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -600,6 +646,37 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "practice-info_select".
+ */
+export interface PracticeInfoSelect<T extends boolean = true> {
+  tenant?: T;
+  address?: T;
+  city?: T;
+  tagline?: T;
+  hoursNote?: T;
+  paymentNote?: T;
+  phone?: T;
+  email?: T;
+  coordinates?:
+    | T
+    | {
+        lat?: T;
+        lng?: T;
+      };
+  schedules?:
+    | T
+    | {
+        day?: T;
+        open?: T;
+        close?: T;
+        id?: T;
+      };
+  pricing?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -637,74 +714,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "practice-info".
- */
-export interface PracticeInfo {
-  id: number;
-  address?: string | null;
-  city?: string | null;
-  phone?: string | null;
-  email?: string | null;
-  coordinates?: {
-    lat?: number | null;
-    lng?: number | null;
-  };
-  schedules?:
-    | {
-        day: string;
-        open?: string | null;
-        close?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  pricing?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "practice-info_select".
- */
-export interface PracticeInfoSelect<T extends boolean = true> {
-  address?: T;
-  city?: T;
-  phone?: T;
-  email?: T;
-  coordinates?:
-    | T
-    | {
-        lat?: T;
-        lng?: T;
-      };
-  schedules?:
-    | T
-    | {
-        day?: T;
-        open?: T;
-        close?: T;
-        id?: T;
-      };
-  pricing?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

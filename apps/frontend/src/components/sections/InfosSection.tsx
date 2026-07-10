@@ -69,7 +69,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
               <div>
                 <p className="font-medium text-stone-700">{t("fees_title")}</p>
                 <p>{practiceInfo?.pricing ? extractPricingText(practiceInfo.pricing) : ''}</p>
-                <p className="text-sm text-stone-500">{t("payment")}</p>
+                <p className="text-sm text-stone-500">{practiceInfo?.paymentNote || t("payment")}</p>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
               </div>
             ) : null}
 
-            <p className="text-sm text-stone-500">{t("hours_note")}</p>
+            <p className="text-sm text-stone-500">{practiceInfo?.hoursNote || t("hours_note")}</p>
           </div>
 
           <div className="overflow-hidden rounded-xl md:order-5">

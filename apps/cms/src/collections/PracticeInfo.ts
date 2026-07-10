@@ -63,6 +63,22 @@ export const PracticeInfo: CollectionConfig = {
       label: 'Ville',
     },
     {
+      name: 'tagline',
+      type: 'text',
+      localized: true,
+      label: 'Slogan (hero)',
+    },
+    {
+      name: 'hoursNote',
+      type: 'text',
+      label: 'Remarque horaires',
+    },
+    {
+      name: 'paymentNote',
+      type: 'text',
+      label: 'Note paiement',
+    },
+    {
       name: 'phone',
       type: 'text',
       label: 'Téléphone',

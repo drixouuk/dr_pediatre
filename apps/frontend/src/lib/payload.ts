@@ -22,6 +22,9 @@ export type PracticeInfo = {
   id: string
   address: string
   city: string
+  tagline: string
+  hoursNote: string
+  paymentNote: string
   phone: string
   email: string
   coordinates: { lat: number; lng: number }
