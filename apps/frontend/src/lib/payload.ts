@@ -1,10 +1,20 @@
 const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || 'https://dr-pediatre-cms.vercel.app'
 
-async function fetchAPI<T>(path: string, tags: string[], locale?: string): Promise<T | null> {
+async function fetchAPI<T>(
+  path: string,
+  tags: string[],
+  params?: Record<string, string>,
+  locale?: string,
+): Promise<T | null> {
   try {
-    const url = new URL(path.startsWith('http') ? path : `${CMS_URL}${path}`)
+    const url = new URL(`${CMS_URL}${path}`)
     if (locale) url.searchParams.set('locale', locale)
     url.searchParams.set('depth', '1')
+    if (params) {
+      for (const [key, value] of Object.entries(params)) {
+        url.searchParams.set(key, value)
+      }
+    }
 
     const res = await fetch(url.toString(), {
       next: { tags, revalidate: 60 },
@@ -79,8 +89,9 @@ export type Tenant = {
 
 export async function getTenantByDomain(domain: string): Promise<Tenant | null> {
   const data = await fetchAPI<Tenant[]>(
-    `/api/tenants?where[domain][equals]=${encodeURIComponent(domain)}&limit=1`,
+    '/api/tenants',
     [`tenant-domain-${domain}`],
+    { 'where[domain][equals]': domain, limit: '1' },
   )
   return data?.[0] ?? null
 }
@@ -92,8 +103,9 @@ export async function getTenantById(id: string): Promise<Tenant | null> {
 
 export async function getPracticeInfo(tenantId: string, locale: string): Promise<PracticeInfo | null> {
   const data = await fetchAPI<PracticeInfo[]>(
-    `/api/practice-info?where[tenant][equals]=${tenantId}&limit=1`,
+    '/api/practice-info',
     [`tenant-${tenantId}`, 'practice-info'],
+    { 'where[tenant][equals]': tenantId, limit: '1' },
     locale,
   )
   return data?.[0] ?? null
@@ -101,22 +113,24 @@ export async function getPracticeInfo(tenantId: string, locale: string): Promise
 
 export async function getServices(tenantId: string, locale: string): Promise<Service[]> {
   const data = await fetchAPI<Service[]>(
-    `/api/services?where[tenant][equals]=${tenantId}&sort=order&limit=20`,
+    '/api/services',
     [`tenant-${tenantId}`, 'services'],
+    { 'where[tenant][equals]': tenantId, sort: 'order', limit: '20' },
     locale,
   )
   return data ?? []
 }
 
 export async function getReviews(tenantId: string, locale: string): Promise<Review[]> {
-  const data = await fetchAPI<Review[]>('/api/reviews', [`tenant-${tenantId}`, 'reviews', 'published'], locale)
+  const data = await fetchAPI<Review[]>('/api/reviews', [`tenant-${tenantId}`, 'reviews', 'published'], undefined, locale)
   return data ?? []
 }
 
 export async function getDoctorProfile(tenantId: string, locale: string): Promise<Doctor | null> {
   const data = await fetchAPI<Doctor[]>(
-    `/api/doctors?where[tenant][equals]=${tenantId}&limit=1`,
+    '/api/doctors',
     [`tenant-${tenantId}`, 'doctor'],
+    { 'where[tenant][equals]': tenantId, limit: '1' },
     locale,
   )
   return data?.[0] ?? null
