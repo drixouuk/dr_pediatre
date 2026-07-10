@@ -174,6 +174,38 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
+  CREATE TABLE "practice_info_schedules" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"day" varchar NOT NULL,
+  	"open" varchar,
+  	"close" varchar
+  );
+  
+  CREATE TABLE "practice_info" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"tenant_id" integer,
+  	"phone" varchar,
+  	"email" varchar,
+  	"coordinates_lat" numeric,
+  	"coordinates_lng" numeric,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE "practice_info_locales" (
+  	"address" varchar,
+  	"city" varchar,
+  	"tagline" varchar,
+  	"hours_note" varchar,
+  	"payment_note" varchar,
+  	"pricing" jsonb,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" integer NOT NULL
+  );
+  
   CREATE TABLE "payload_kv" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"key" varchar NOT NULL,
@@ -200,7 +232,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"doctors_id" integer,
   	"services_id" integer,
   	"reviews_id" integer,
-  	"media_id" integer
+  	"media_id" integer,
+  	"practice_info_id" integer
   );
   
   CREATE TABLE "payload_preferences" (
@@ -227,34 +260,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
-  CREATE TABLE "practice_info_schedules" (
-  	"_order" integer NOT NULL,
-  	"_parent_id" integer NOT NULL,
-  	"id" varchar PRIMARY KEY NOT NULL,
-  	"day" varchar NOT NULL,
-  	"open" varchar,
-  	"close" varchar
-  );
-  
-  CREATE TABLE "practice_info" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"phone" varchar,
-  	"email" varchar,
-  	"coordinates_lat" numeric,
-  	"coordinates_lng" numeric,
-  	"updated_at" timestamp(3) with time zone,
-  	"created_at" timestamp(3) with time zone
-  );
-  
-  CREATE TABLE "practice_info_locales" (
-  	"address" varchar,
-  	"city" varchar,
-  	"pricing" jsonb,
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"_locale" "_locales" NOT NULL,
-  	"_parent_id" integer NOT NULL
-  );
-  
   ALTER TABLE "users_roles" ADD CONSTRAINT "users_roles_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "users_sessions" ADD CONSTRAINT "users_sessions_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "users" ADD CONSTRAINT "users_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
@@ -273,6 +278,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "reviews_locales" ADD CONSTRAINT "reviews_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."reviews"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "media" ADD CONSTRAINT "media_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "media_locales" ADD CONSTRAINT "media_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "practice_info_schedules" ADD CONSTRAINT "practice_info_schedules_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."practice_info"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "practice_info" ADD CONSTRAINT "practice_info_tenant_id_tenants_id_fk" FOREIGN KEY ("tenant_id") REFERENCES "public"."tenants"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "practice_info_locales" ADD CONSTRAINT "practice_info_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."practice_info"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_tenants_fk" FOREIGN KEY ("tenants_id") REFERENCES "public"."tenants"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
@@ -283,10 +291,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_services_fk" FOREIGN KEY ("services_id") REFERENCES "public"."services"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_reviews_fk" FOREIGN KEY ("reviews_id") REFERENCES "public"."reviews"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_practice_info_fk" FOREIGN KEY ("practice_info_id") REFERENCES "public"."practice_info"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "practice_info_schedules" ADD CONSTRAINT "practice_info_schedules_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."practice_info"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "practice_info_locales" ADD CONSTRAINT "practice_info_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."practice_info"("id") ON DELETE cascade ON UPDATE no action;
   CREATE UNIQUE INDEX "tenants_domain_idx" ON "tenants" USING btree ("domain");
   CREATE INDEX "tenants_updated_at_idx" ON "tenants" USING btree ("updated_at");
   CREATE INDEX "tenants_created_at_idx" ON "tenants" USING btree ("created_at");
@@ -330,6 +337,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "media_created_at_idx" ON "media" USING btree ("created_at");
   CREATE UNIQUE INDEX "media_filename_idx" ON "media" USING btree ("filename");
   CREATE UNIQUE INDEX "media_locales_locale_parent_id_unique" ON "media_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX "practice_info_schedules_order_idx" ON "practice_info_schedules" USING btree ("_order");
+  CREATE INDEX "practice_info_schedules_parent_id_idx" ON "practice_info_schedules" USING btree ("_parent_id");
+  CREATE INDEX "practice_info_tenant_idx" ON "practice_info" USING btree ("tenant_id");
+  CREATE INDEX "practice_info_updated_at_idx" ON "practice_info" USING btree ("updated_at");
+  CREATE INDEX "practice_info_created_at_idx" ON "practice_info" USING btree ("created_at");
+  CREATE UNIQUE INDEX "practice_info_locales_locale_parent_id_unique" ON "practice_info_locales" USING btree ("_locale","_parent_id");
   CREATE UNIQUE INDEX "payload_kv_key_idx" ON "payload_kv" USING btree ("key");
   CREATE INDEX "payload_locked_documents_global_slug_idx" ON "payload_locked_documents" USING btree ("global_slug");
   CREATE INDEX "payload_locked_documents_updated_at_idx" ON "payload_locked_documents" USING btree ("updated_at");
@@ -346,6 +359,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "payload_locked_documents_rels_services_id_idx" ON "payload_locked_documents_rels" USING btree ("services_id");
   CREATE INDEX "payload_locked_documents_rels_reviews_id_idx" ON "payload_locked_documents_rels" USING btree ("reviews_id");
   CREATE INDEX "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
+  CREATE INDEX "payload_locked_documents_rels_practice_info_id_idx" ON "payload_locked_documents_rels" USING btree ("practice_info_id");
   CREATE INDEX "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
   CREATE INDEX "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
   CREATE INDEX "payload_preferences_created_at_idx" ON "payload_preferences" USING btree ("created_at");
@@ -354,10 +368,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "payload_preferences_rels_path_idx" ON "payload_preferences_rels" USING btree ("path");
   CREATE INDEX "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
   CREATE INDEX "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
-  CREATE INDEX "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");
-  CREATE INDEX "practice_info_schedules_order_idx" ON "practice_info_schedules" USING btree ("_order");
-  CREATE INDEX "practice_info_schedules_parent_id_idx" ON "practice_info_schedules" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "practice_info_locales_locale_parent_id_unique" ON "practice_info_locales" USING btree ("_locale","_parent_id");`)
+  CREATE INDEX "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
@@ -378,15 +389,15 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "reviews_locales" CASCADE;
   DROP TABLE "media" CASCADE;
   DROP TABLE "media_locales" CASCADE;
+  DROP TABLE "practice_info_schedules" CASCADE;
+  DROP TABLE "practice_info" CASCADE;
+  DROP TABLE "practice_info_locales" CASCADE;
   DROP TABLE "payload_kv" CASCADE;
   DROP TABLE "payload_locked_documents" CASCADE;
   DROP TABLE "payload_locked_documents_rels" CASCADE;
   DROP TABLE "payload_preferences" CASCADE;
   DROP TABLE "payload_preferences_rels" CASCADE;
   DROP TABLE "payload_migrations" CASCADE;
-  DROP TABLE "practice_info_schedules" CASCADE;
-  DROP TABLE "practice_info" CASCADE;
-  DROP TABLE "practice_info_locales" CASCADE;
   DROP TYPE "public"."_locales";
   DROP TYPE "public"."enum_tenants_settings_default_locale";
   DROP TYPE "public"."enum_tenants_settings_active_tier";
