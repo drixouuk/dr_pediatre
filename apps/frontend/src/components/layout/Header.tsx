@@ -1,6 +1,6 @@
 'use client'
 
-import { Link } from '@/i18n/navigation'
+import { Link, usePathname } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import { useScrollDirection } from '@/hooks/use-scroll-direction'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -19,9 +19,15 @@ const navLinks = [
   { href: '/#infos', key: 'infos' },
 ] as const
 
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 export default function Header({ doctorName, doctorNameShort }: Props) {
   const t = useTranslations('nav')
   const { isHidden, show } = useScrollDirection()
+  const pathname = usePathname()
+  const isHome = pathname === '/'
 
   return (
     <header
@@ -35,6 +41,13 @@ export default function Header({ doctorName, doctorNameShort }: Props) {
       >
         <Link
           href="/"
+          onClick={(e) => {
+            show()
+            if (isHome) {
+              e.preventDefault()
+              scrollToTop()
+            }
+          }}
           className="flex items-center gap-2 text-lg font-semibold text-primary-700 hover:text-primary-600 transition-colors duration-200"
         >
           <span className="hidden sm:inline">{doctorName ?? ''}</span>
@@ -46,7 +59,13 @@ export default function Header({ doctorName, doctorNameShort }: Props) {
             <Link
               key={href}
               href={href}
-              onClick={show}
+              onClick={(e) => {
+                show()
+                if (href === '/' && isHome) {
+                  e.preventDefault()
+                  scrollToTop()
+                }
+              }}
               className="rounded-lg px-3 py-2 text-sm font-medium text-stone-600 hover:bg-cream-200 hover:text-primary-700 transition-colors duration-200"
             >
               {t(key)}
@@ -56,7 +75,12 @@ export default function Header({ doctorName, doctorNameShort }: Props) {
 
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <Button className="hidden bg-cta-700 text-white hover:bg-cta-800 md:inline-flex">
+          <Button
+            className="hidden bg-cta-700 text-white hover:bg-cta-800 md:inline-flex"
+            onClick={() => {
+              window.dispatchEvent(new CustomEvent("open-rdv"))
+            }}
+          >
             {t('cta')}
           </Button>
         </div>
