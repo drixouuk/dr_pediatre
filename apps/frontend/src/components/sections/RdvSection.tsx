@@ -41,20 +41,18 @@ export default function RdvSection({ calcom }: { calcom?: CalComSettings | null 
 
   useEffect(() => {
     const handler = () => {
-      if (!visible) {
-        setVisible(true);
-        setTimeout(() => {
-          sectionRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }, 100);
-      }
+      setVisible(true);
+      setTimeout(() => {
+        sectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
     };
 
     window.addEventListener("open-rdv", handler);
     return () => window.removeEventListener("open-rdv", handler);
-  }, [visible]);
+  }, []);
 
   useEffect(() => {
     if (visible && !loaded) {
