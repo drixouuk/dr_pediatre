@@ -1,5 +1,5 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 import RdvCtaButton from "@/components/ui/RdvCtaButton";
 import PresentationSection from "@/components/sections/PresentationSection";
 import ServicesSection from "@/components/sections/ServicesSection";
@@ -84,12 +84,12 @@ export default async function HomePage({ params }: Props) {
               <RdvCtaButton className="bg-cta-700 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-800">
                 {t("cta_primary")}
               </RdvCtaButton>
-              <Button
-                variant="outline"
-                className="border-stone-300 px-6 py-3 text-base text-stone-700 hover:bg-cream-200"
+              <Link
+                href="/#presentation"
+                className="inline-flex items-center justify-center rounded-lg border border-stone-300 bg-white px-6 py-3 text-base font-medium text-stone-700 shadow-sm transition-colors duration-200 hover:bg-cream-200"
               >
                 {t("cta_secondary")}
-              </Button>
+              </Link>
             </div>
 
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-stone-600">
