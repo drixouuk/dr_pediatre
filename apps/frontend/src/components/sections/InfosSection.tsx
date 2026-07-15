@@ -5,6 +5,7 @@ import ContactForm from "@/components/ui/ContactForm";
 import type { PracticeInfo } from "@/lib/payload";
 
 const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || "https://dr-pediatre-cms.vercel.app";
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || CMS_URL;
 
 type Props = {
   locale: string;
@@ -123,7 +124,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
 
           <div className="h-[200px] md:h-[400px] md:order-4 md:col-span-2">
             <OrientationLightbox
-              src={`${CMS_URL}/api/media/file/orientation.png`}
+              src={`${SERVER_URL}/api/media/file/orientation.png`}
               alt={t("orientationImageAlt")}
             />
           </div>
