@@ -4,8 +4,7 @@ import OrientationLightbox from "@/components/ui/OrientationLightbox";
 import ContactForm from "@/components/ui/ContactForm";
 import type { PracticeInfo } from "@/lib/payload";
 
-const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || "https://dr-pediatre-cms.vercel.app";
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || CMS_URL;
+const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || "https://cms.drixou.uk";
 
 type Props = {
   locale: string;
@@ -27,10 +26,13 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
   const c = await getTranslations({ locale, namespace: "contact" });
 
   const schedule = practiceInfo?.schedules?.length
-    ? practiceInfo.schedules.map(s => ({
-        dayKey: s.day,
-        morning: `${s.open}–${s.close}`,
-      }))
+    ? practiceInfo.schedules.map(s => {
+        const timeParts = [s.open, s.close].filter(Boolean)
+        const timeStr = timeParts.length === 2
+          ? `${timeParts[0]}–${timeParts[1]}`
+          : timeParts[0] || ''
+        return { dayKey: s.day, hours: timeStr }
+      })
     : [];
 
   return (
@@ -93,7 +95,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
                     <span className="font-medium text-stone-700">
                       {d(row.dayKey as any)}
                     </span>
-                    <span className="text-stone-500">{row.morning}</span>
+                    <span className="text-stone-500">{row.hours}</span>
                   </div>
                 ))}
               </div>
@@ -124,7 +126,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
 
           <div className="h-[200px] md:h-[400px] md:order-4 md:col-span-2">
             <OrientationLightbox
-              src={`${SERVER_URL}/api/media/file/orientation.png`}
+              src={`${CMS_URL}/media/orientation.png`}
               alt={t("orientationImageAlt")}
             />
           </div>
