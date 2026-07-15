@@ -6,6 +6,38 @@ import type { PracticeInfo } from "@/lib/payload";
 
 const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || "https://cms.drixou.uk";
 
+const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+
+const FR_TO_EN: Record<string, string> = {
+  'lun': 'mon', 'lundi': 'mon',
+  'mar': 'tue', 'mardi': 'tue',
+  'mer': 'wed', 'mercredi': 'wed',
+  'jeu': 'thu', 'jeudi': 'thu',
+  'ven': 'fri', 'vendredi': 'fri',
+  'sam': 'sat', 'samedi': 'sat',
+  'dim': 'sun', 'dimanche': 'sun',
+}
+
+function expandDays(raw: string): string[] {
+  const clean = raw.trim().toLowerCase()
+  const sep = clean.includes('–') ? '–' : clean.includes('-') ? '-' : null
+  if (sep) {
+    const parts = clean.split(sep).map(s => s.trim())
+    const start = FR_TO_EN[parts[0]]
+    const end = FR_TO_EN[parts[1]]
+    if (start && end) {
+      const si = DAY_ORDER.indexOf(start)
+      const ei = DAY_ORDER.indexOf(end)
+      if (si !== -1 && ei !== -1 && si <= ei) {
+        return DAY_ORDER.slice(si, ei + 1)
+      }
+    }
+    return parts.filter(p => FR_TO_EN[p]).map(p => FR_TO_EN[p])
+  }
+  const mapped = FR_TO_EN[clean]
+  return mapped ? [mapped] : [raw]
+}
+
 type Props = {
   locale: string;
   practiceInfo: PracticeInfo | null;
@@ -25,15 +57,24 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
   const d = await getTranslations({ locale, namespace: "infos.days" });
   const c = await getTranslations({ locale, namespace: "contact" });
 
-  const schedule = practiceInfo?.schedules?.length
-    ? practiceInfo.schedules.map(s => {
-        const timeParts = [s.open, s.close].filter(Boolean)
-        const timeStr = timeParts.length === 2
-          ? `${timeParts[0]}–${timeParts[1]}`
-          : timeParts[0] || ''
-        return { dayKey: s.day, hours: timeStr }
-      })
-    : [];
+  const hoursMap = new Map<string, string>()
+  if (practiceInfo?.schedules) {
+    for (const s of practiceInfo.schedules) {
+      const timeParts = [s.open, s.close].filter(Boolean)
+      const timeStr = timeParts.length === 2
+        ? `${timeParts[0]}–${timeParts[1]}`
+        : timeParts[0] || ''
+      const days = expandDays(s.day)
+      for (const day of days) {
+        hoursMap.set(day, timeStr)
+      }
+    }
+  }
+
+  const fullSchedule = DAY_ORDER.map(dk => ({
+    dayKey: dk,
+    hours: hoursMap.get(dk) || '',
+  }))
 
   return (
     <section
@@ -85,9 +126,9 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
               </h3>
             </div>
 
-            {schedule.length > 0 ? (
+            {fullSchedule.length > 0 ? (
               <div className="overflow-hidden rounded-xl border border-stone-200 bg-white">
-                {schedule.map((row) => (
+                {fullSchedule.map((row) => (
                   <div
                     key={row.dayKey}
                     className="flex items-center justify-between border-b border-stone-100 px-4 py-2.5 text-sm last:border-b-0"
@@ -95,7 +136,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
                     <span className="font-medium text-stone-700">
                       {d(row.dayKey as any)}
                     </span>
-                    <span className="text-stone-500">{row.hours}</span>
+                    <span className="text-stone-500">{row.hours || '–'}</span>
                   </div>
                 ))}
               </div>
