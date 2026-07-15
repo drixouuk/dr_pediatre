@@ -118,6 +118,7 @@ export const PracticeInfo: CollectionConfig = {
           name: 'day',
           type: 'text',
           required: true,
+          localized: true,
           label: 'Jour',
         },
         {
