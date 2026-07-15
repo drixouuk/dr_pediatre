@@ -80,13 +80,13 @@ export default async function HomePage({ params }: Props) {
               </p>
             )}
 
-            <div className="flex flex-wrap gap-3">
-              <RdvCtaButton className="bg-cta-700 px-6 py-3 text-base text-white shadow-sm hover:bg-cta-800">
+            <div className="flex flex-wrap items-center gap-3">
+              <RdvCtaButton className="h-12 bg-cta-700 px-6 text-base text-white shadow-sm hover:bg-cta-800">
                 {t("cta_primary")}
               </RdvCtaButton>
               <Link
                 href="/#presentation"
-                className="inline-flex items-center justify-center rounded-lg border border-stone-300 bg-white px-6 py-3 text-base font-medium text-stone-700 shadow-sm transition-colors duration-200 hover:bg-cream-200"
+                className="inline-flex h-12 items-center justify-center rounded-lg border border-stone-300 bg-white px-6 text-base font-medium text-stone-700 shadow-sm transition-colors duration-200 hover:bg-cream-200"
               >
                 {t("cta_secondary")}
               </Link>
