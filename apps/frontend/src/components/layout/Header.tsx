@@ -75,14 +75,15 @@ export default function Header({ doctorName, doctorNameShort }: Props) {
 
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
-          <Button
-            className="hidden bg-cta-700 text-white hover:bg-cta-800 md:inline-flex"
+          <Link
+            href="/#rdv"
+            className="hidden h-10 items-center justify-center rounded-lg bg-cta-700 px-4 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-cta-800 md:inline-flex"
             onClick={() => {
               window.dispatchEvent(new CustomEvent("open-rdv"))
             }}
           >
             {t('cta')}
-          </Button>
+          </Link>
         </div>
       </nav>
     </header>

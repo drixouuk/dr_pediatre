@@ -62,39 +62,41 @@ export default function RdvSection({ calcom }: { calcom?: CalComSettings | null 
     }
   }, [visible, loaded]);
 
-  if (!visible) return null;
-
   return (
-    <section
-      id="rdv"
-      ref={sectionRef}
-      className="scroll-mt-24 bg-gradient-to-b from-cream-100 to-white px-4 py-20 md:px-6 md:py-28 lg:px-8"
-    >
-      <div className="mx-auto max-w-container">
-        <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
-          {t("title")}
-        </h2>
-
-        <p className="mx-auto mt-3 max-w-xl text-center text-lg text-stone-500">
-          {t("subtitle")}
-        </p>
-
-        <div
-          className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
-          style={{ maxWidth: "800px", width: "100%", minHeight: "600px" }}
+    <>
+      <div id="rdv" />
+      {visible && (
+        <section
+          ref={sectionRef}
+          className="scroll-mt-24 bg-gradient-to-b from-cream-100 to-white px-4 py-20 md:px-6 md:py-28 lg:px-8"
         >
-          {loaded && (
-            <Cal
-              namespace={eventSlug}
-              calLink={calLink}
-              style={{ width: "100%", height: "100%", overflow: "scroll" }}
-              config={{ layout: "month_view" }}
-              calOrigin={customUrl}
-              embedJsUrl={embedJsUrl}
-            />
-          )}
-        </div>
-      </div>
-    </section>
+          <div className="mx-auto max-w-container">
+            <h2 className="text-center font-heading text-3xl font-bold text-stone-800 md:text-4xl">
+              {t("title")}
+            </h2>
+
+            <p className="mx-auto mt-3 max-w-xl text-center text-lg text-stone-500">
+              {t("subtitle")}
+            </p>
+
+            <div
+              className="mx-auto mt-10 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+              style={{ maxWidth: "800px", width: "100%", minHeight: "600px" }}
+            >
+              {loaded && (
+                <Cal
+                  namespace={eventSlug}
+                  calLink={calLink}
+                  style={{ width: "100%", height: "100%", overflow: "scroll" }}
+                  config={{ layout: "month_view" }}
+                  calOrigin={customUrl}
+                  embedJsUrl={embedJsUrl}
+                />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }
