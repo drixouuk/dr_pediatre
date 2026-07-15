@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 import {
   Baby,
   Syringe,
@@ -29,13 +30,6 @@ const serviceIcons: Record<string, React.ComponentType<{ className?: string }>> 
   FileCheck,
 }
 
-function extractText(value: unknown): string {
-  if (typeof value === 'string') return value
-  const root = (value as any)?.root
-  if (root?.children?.[0]?.children?.[0]?.text) return root.children[0].children[0].text
-  return ''
-}
-
 export default async function ServicesSection({ locale, services }: Props) {
   const t = await getTranslations({ locale, namespace: 'services' })
 
@@ -54,7 +48,6 @@ export default async function ServicesSection({ locale, services }: Props) {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => {
             const Icon = serviceIcons[service.icon] || HeartPulse
-            const desc = extractText(service.description)
             return (
               <Card key={service.id} className="border-stone-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md">
                 <CardHeader>
@@ -66,9 +59,9 @@ export default async function ServicesSection({ locale, services }: Props) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm leading-relaxed text-stone-500">
-                    {desc}
-                  </p>
+                  <div className="prose prose-sm prose-stone max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+                    <RichText data={service.description as any} />
+                  </div>
                 </CardContent>
               </Card>
             )
