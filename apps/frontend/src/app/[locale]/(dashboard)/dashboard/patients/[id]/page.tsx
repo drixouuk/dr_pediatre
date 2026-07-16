@@ -2,6 +2,7 @@ import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { notFound } from 'next/navigation'
 import PatientNotesForm from './PatientNotesForm'
+import AddToQueueButton from './AddToQueueButton'
 
 type Patient = {
   id: string
@@ -31,6 +32,10 @@ export default async function PatientDetailPage({ params }: Props) {
           CIN : {patient.nationalId || 'Non renseigné'} &middot; Créé le{' '}
           {new Date(patient.createdAt).toLocaleDateString('fr-FR')}
         </p>
+      </div>
+
+      <div className="mb-8">
+        <AddToQueueButton patientId={patient.id} />
       </div>
 
       <PatientNotesForm patientId={patient.id} initialNotes={patient.medicalNotes || ''} />

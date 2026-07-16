@@ -32,6 +32,22 @@ export default function NewPatientPage() {
       return
     }
 
+    const newPatient = await res.json()
+    const addToQueue = form.get('addToQueue') === 'on'
+
+    if (addToQueue && newPatient?.doc?.id) {
+      await fetch('/api/cms-proxy/queue-items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patient: newPatient.doc.id,
+          status: 'waiting',
+          visitReason: 'consultation',
+          arrivalTime: new Date().toISOString(),
+        }),
+      })
+    }
+
     router.push('./')
     router.refresh()
   }
@@ -83,6 +99,16 @@ export default function NewPatientPage() {
         </div>
 
         {error && <p className="text-sm font-medium text-red-600">{error}</p>}
+
+        <label className="flex items-center gap-2 text-sm text-stone-600">
+          <input
+            type="checkbox"
+            name="addToQueue"
+            defaultChecked
+            className="size-4 rounded border-stone-300 text-primary-600 focus:ring-primary-500/20"
+          />
+          Ajouter à la file d'attente du jour
+        </label>
 
         <button
           type="submit"
