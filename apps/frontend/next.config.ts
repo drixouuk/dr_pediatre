@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cms.drixou.uk",
-        pathname: "/**", // Autorise toutes les images venant de ce domaine
+        pathname: "/media/**", // Autorise toutes les images venant de ce domaine
       },
     ],
   },
