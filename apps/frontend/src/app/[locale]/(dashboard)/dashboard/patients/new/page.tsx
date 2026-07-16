@@ -16,6 +16,7 @@ export default function NewPatientPage() {
     const form = new FormData(e.currentTarget)
     const body = {
       fullName: form.get('fullName') as string,
+      gender: form.get('gender') as string,
       nationalId: (form.get('nationalId') as string) || undefined,
     }
 
@@ -51,6 +52,22 @@ export default function NewPatientPage() {
             required
             className="w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
           />
+        </div>
+
+        <div>
+          <label htmlFor="gender" className="mb-1 block text-sm font-medium text-stone-700">
+            Sexe *
+          </label>
+          <select
+            id="gender"
+            name="gender"
+            required
+            className="w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+          >
+            <option value="">Sélectionner…</option>
+            <option value="boy">Garçon</option>
+            <option value="girl">Fille</option>
+          </select>
         </div>
 
         <div>
