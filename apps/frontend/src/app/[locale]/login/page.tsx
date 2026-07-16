@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -29,7 +29,7 @@ export default function LoginPage() {
       return
     }
 
-    router.push('/fr/dashboard')
+    router.push('/dashboard')
   }
 
   return (
