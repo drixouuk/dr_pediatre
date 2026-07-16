@@ -9,6 +9,10 @@
     "build:frontend": "pnpm --filter frontend build",
     "build:cms": "pnpm --filter drpediatre-cms build",
     "seed": "pnpm --filter drpediatre-cms seed",
-    "lint": "pnpm run /^lint:/"
+    "lint": "pnpm run /^lint:/",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
   }
 }

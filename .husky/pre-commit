@@ -1,0 +1,10 @@
+if git diff --cached --name-only | grep -q "apps/cms/src/collections/"; then
+  MIGRATION_ADDED=$(git diff --cached --name-only | grep "apps/cms/src/migrations/" | grep -v "index.ts")
+  if [ -z "$MIGRATION_ADDED" ]; then
+    echo "⚠️  Modification détectée dans apps/cms/src/collections/ sans nouvelle migration."
+    echo "   Lance 'npx payload migrate:create' avant de commit, ou force avec --no-verify."
+    exit 1
+  fi
+fi
+
+
