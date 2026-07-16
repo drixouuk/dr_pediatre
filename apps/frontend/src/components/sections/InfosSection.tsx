@@ -1,41 +1,55 @@
 import { getTranslations } from "next-intl/server";
-import { MapPin, Phone, Clock, CreditCard, Mail, MapPinned } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Clock,
+  CreditCard,
+  Mail,
+  MapPinned,
+} from "lucide-react";
 import OrientationLightbox from "@/components/ui/OrientationLightbox";
 import ContactForm from "@/components/ui/ContactForm";
 import type { PracticeInfo } from "@/lib/payload";
 
 const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || "https://cms.drixou.uk";
 
-const DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+const DAY_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 const FR_TO_EN: Record<string, string> = {
-  'lun': 'mon', 'lundi': 'mon',
-  'mar': 'tue', 'mardi': 'tue',
-  'mer': 'wed', 'mercredi': 'wed',
-  'jeu': 'thu', 'jeudi': 'thu',
-  'ven': 'fri', 'vendredi': 'fri',
-  'sam': 'sat', 'samedi': 'sat',
-  'dim': 'sun', 'dimanche': 'sun',
-}
+  lun: "mon",
+  lundi: "mon",
+  mar: "tue",
+  mardi: "tue",
+  mer: "wed",
+  mercredi: "wed",
+  jeu: "thu",
+  jeudi: "thu",
+  ven: "fri",
+  vendredi: "fri",
+  sam: "sat",
+  samedi: "sat",
+  dim: "sun",
+  dimanche: "sun",
+};
 
 function expandDays(raw: string): string[] {
-  const clean = raw.trim().toLowerCase()
-  const sep = clean.includes('–') ? '–' : clean.includes('-') ? '-' : null
+  const clean = raw.trim().toLowerCase();
+  const sep = clean.includes("–") ? "–" : clean.includes("-") ? "-" : null;
   if (sep) {
-    const parts = clean.split(sep).map(s => s.trim())
-    const start = FR_TO_EN[parts[0]]
-    const end = FR_TO_EN[parts[1]]
+    const parts = clean.split(sep).map((s) => s.trim());
+    const start = FR_TO_EN[parts[0]];
+    const end = FR_TO_EN[parts[1]];
     if (start && end) {
-      const si = DAY_ORDER.indexOf(start)
-      const ei = DAY_ORDER.indexOf(end)
+      const si = DAY_ORDER.indexOf(start);
+      const ei = DAY_ORDER.indexOf(end);
       if (si !== -1 && ei !== -1 && si <= ei) {
-        return DAY_ORDER.slice(si, ei + 1)
+        return DAY_ORDER.slice(si, ei + 1);
       }
     }
-    return parts.filter(p => FR_TO_EN[p]).map(p => FR_TO_EN[p])
+    return parts.filter((p) => FR_TO_EN[p]).map((p) => FR_TO_EN[p]);
   }
-  const mapped = FR_TO_EN[clean]
-  return mapped ? [mapped] : [raw]
+  const mapped = FR_TO_EN[clean];
+  return mapped ? [mapped] : [raw];
 }
 
 type Props = {
@@ -44,12 +58,10 @@ type Props = {
 };
 
 function extractPricingText(value: unknown): string {
-  if (!value) return ''
-  const root = (value as any)?.root
-  if (!root?.children?.[0]?.children) return ''
-  return root.children[0].children
-    .map((c: any) => c.text || '')
-    .join('')
+  if (!value) return "";
+  const root = (value as any)?.root;
+  if (!root?.children?.[0]?.children) return "";
+  return root.children[0].children.map((c: any) => c.text || "").join("");
 }
 
 export default async function InfosSection({ locale, practiceInfo }: Props) {
@@ -57,24 +69,25 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
   const d = await getTranslations({ locale, namespace: "infos.days" });
   const c = await getTranslations({ locale, namespace: "contact" });
 
-  const hoursMap = new Map<string, string>()
+  const hoursMap = new Map<string, string>();
   if (practiceInfo?.schedules) {
     for (const s of practiceInfo.schedules) {
-      const timeParts = [s.open, s.close].filter(Boolean)
-      const timeStr = timeParts.length === 2
-        ? `${timeParts[0]}–${timeParts[1]}`
-        : timeParts[0] || ''
-      const days = expandDays(s.day)
+      const timeParts = [s.open, s.close].filter(Boolean);
+      const timeStr =
+        timeParts.length === 2
+          ? `${timeParts[0]}–${timeParts[1]}`
+          : timeParts[0] || "";
+      const days = expandDays(s.day);
       for (const day of days) {
-        hoursMap.set(day, timeStr)
+        hoursMap.set(day, timeStr);
       }
     }
   }
 
-  const fullSchedule = DAY_ORDER.map(dk => ({
+  const fullSchedule = DAY_ORDER.map((dk) => ({
     dayKey: dk,
-    hours: hoursMap.get(dk) || '',
-  }))
+    hours: hoursMap.get(dk) || "",
+  }));
 
   return (
     <section
@@ -112,8 +125,14 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
               <CreditCard className="mt-1 size-5 shrink-0 text-primary-600" />
               <div>
                 <p className="font-medium text-stone-700">{t("fees_title")}</p>
-                <p>{practiceInfo?.pricing ? extractPricingText(practiceInfo.pricing) : ''}</p>
-                <p className="text-sm text-stone-500">{practiceInfo?.paymentNote || t("payment")}</p>
+                <p>
+                  {practiceInfo?.pricing
+                    ? extractPricingText(practiceInfo.pricing)
+                    : ""}
+                </p>
+                <p className="text-sm text-stone-500">
+                  {practiceInfo?.paymentNote || t("payment")}
+                </p>
               </div>
             </div>
           </div>
@@ -136,17 +155,20 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
                     <span className="font-medium text-stone-700">
                       {d(row.dayKey as any)}
                     </span>
-                    <span className="text-stone-500">{row.hours || '–'}</span>
+                    <span className="text-stone-500">{row.hours || "–"}</span>
                   </div>
                 ))}
               </div>
             ) : null}
 
-            <p className="text-sm text-stone-500">{practiceInfo?.hoursNote || t("hours_note")}</p>
+            <p className="text-sm text-stone-500">
+              {practiceInfo?.hoursNote || t("hours_note")}
+            </p>
           </div>
 
           <div className="overflow-hidden rounded-xl md:order-5">
-            {practiceInfo?.coordinates?.lat && practiceInfo?.coordinates?.lng ? (
+            {practiceInfo?.coordinates?.lat &&
+            practiceInfo?.coordinates?.lng ? (
               <iframe
                 src={`https://www.google.com/maps?q=${practiceInfo.coordinates.lat},${practiceInfo.coordinates.lng}&z=17&output=embed`}
                 width="100%"
@@ -167,7 +189,7 @@ export default async function InfosSection({ locale, practiceInfo }: Props) {
 
           <div className="h-[200px] md:h-[400px] md:order-4 md:col-span-2">
             <OrientationLightbox
-              src={`${CMS_URL}/media/orientation.png`}
+              src={`${CMS_URL}/api/media/orientation.png`}
               alt={t("orientationImageAlt")}
             />
           </div>
