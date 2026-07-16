@@ -62,6 +62,15 @@ export default async function Footer({ locale }: Props) {
           </p>
         </div>
 
+        <div className="mt-4 text-center">
+          <Link
+            href="/login"
+            className="text-xs text-stone-400 transition-colors duration-200 hover:text-stone-200"
+          >
+            Espace praticien
+          </Link>
+        </div>
+
         {doctorName && (
           <p className="mt-6 text-center text-xs text-stone-300">
             &copy; {new Date().getFullYear()} {doctorName}
