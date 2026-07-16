@@ -1,4 +1,5 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { headers } from "next/headers";
 import { Link } from "@/i18n/navigation";
 import RdvCtaButton from "@/components/ui/RdvCtaButton";
 import PresentationSection from "@/components/sections/PresentationSection";
@@ -25,11 +26,9 @@ export default async function HomePage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
 
-  const tenantId = "1"; // Forcé pour le test multi-tenant
+  const h = await headers();
+  const tenantId = h.get('x-tenant-id') || 'default';
   const dataLocale = DATA_LOCALE[locale] || 'fr'
-
-  console.log("=== [DEBUG FRONTEND] DETECTION TENANT ===");
-  console.log("Tenant ID cible :", tenantId, "| Type :", typeof tenantId);
 
   let services: Service[] = []
   let practiceInfo: PracticeInfo | null = null
