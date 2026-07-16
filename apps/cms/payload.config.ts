@@ -16,6 +16,7 @@ import { Reviews } from "./src/collections/Reviews";
 import { Media } from "./src/collections/Media";
 import { PracticeInfo } from "./src/collections/PracticeInfo";
 import { seed } from "./src/seed";
+import { resolveTenant } from "./src/endpoints/resolve-tenant";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -69,6 +70,13 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
+  endpoints: [
+    {
+      path: '/resolve-tenant',
+      method: 'get',
+      handler: resolveTenant,
+    },
+  ],
   onInit: async (payload) => {
     if (process.env.PAYLOAD_SEED === "true") {
       await seed(payload);

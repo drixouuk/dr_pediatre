@@ -7,6 +7,11 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
+    create: ({ req: { user } }: any): boolean => {
+      if (!user) return false
+      if ((user.roles as string[])?.includes('superadmin')) return true
+      return !!(user.roles as string[])?.includes('tenant_admin')
+    },
     read: ({ req: { user } }: any) => {
       if ((user?.roles as string[])?.includes('superadmin')) return true
       if (!user?.tenant) return false
@@ -19,6 +24,30 @@ export const Users: CollectionConfig = {
         },
       }
     },
+  },
+  hooks: {
+    beforeChange: [
+      ({ req, data }: any) => {
+        const user = req.user
+        if (!user) return data
+
+        const userRoles: string[] = user.roles ?? []
+        const newRoles: string[] = data?.roles ?? []
+
+        if (!userRoles.includes('superadmin') && newRoles.includes('superadmin')) {
+          throw new Error('Seul un superadmin peut attribuer le rôle superadmin.')
+        }
+        if (
+          !userRoles.includes('superadmin') &&
+          !userRoles.includes('tenant_admin') &&
+          newRoles.includes('tenant_admin')
+        ) {
+          throw new Error('Vous ne pouvez pas attribuer le rôle tenant_admin.')
+        }
+
+        return data
+      },
+    ],
   },
   fields: [
     {

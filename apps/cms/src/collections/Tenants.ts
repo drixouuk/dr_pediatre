@@ -1,4 +1,14 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, Access } from 'payload'
+
+const tenantAccess: Access = ({ req: { user } }) => {
+  if (user?.roles?.includes('superadmin')) return true
+  if (!user?.tenant) return false
+  return {
+    tenant: {
+      equals: typeof user.tenant === 'object' ? user.tenant.id : user.tenant,
+    },
+  }
+}
 
 export const Tenants: CollectionConfig = {
   slug: 'tenants',
@@ -9,7 +19,11 @@ export const Tenants: CollectionConfig = {
   access: {
     create: ({ req: { user } }): boolean =>
       !!(user?.roles as string[])?.includes('superadmin'),
-    read: () => true,
+    // Lecture anonyme bloquée : seuls les utilisateurs authentifiés
+    // (superadmin ou membre du tenant) peuvent lister les tenants.
+    // Le frontend (proxy.ts) utilise désormais /api/resolve-tenant?domain=...
+    // qui est un endpoint public dédié, sans exposer la collection complète.
+    read: tenantAccess,
     update: ({ req: { user }, id }: any): boolean => {
       if ((user?.roles as string[])?.includes('superadmin')) return true
       return (

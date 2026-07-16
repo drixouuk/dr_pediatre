@@ -12,7 +12,7 @@ async function resolveTenant(hostname: string): Promise<{ id: string; slug: stri
   if (tenantCache.has(hostname)) return tenantCache.get(hostname) ?? null
 
   try {
-    const url = `${CMS_URL}/api/tenants?where[domain][equals]=${encodeURIComponent(hostname)}&depth=0&limit=1`
+    const url = `${CMS_URL}/api/resolve-tenant?domain=${encodeURIComponent(hostname)}`
     const res = await fetch(url, {
       headers: { 'Content-Type': 'application/json' },
       next: { revalidate: 300 },
@@ -22,9 +22,8 @@ async function resolveTenant(hostname: string): Promise<{ id: string; slug: stri
       return null
     }
     const json = await res.json()
-    const doc = json.docs?.[0]
-    if (doc) {
-      const tenant = { id: doc.id, slug: doc.slug || doc.id, name: doc.name }
+    if (json?.tenant) {
+      const tenant = { id: json.tenant.id, slug: json.tenant.slug || json.tenant.id, name: json.tenant.name }
       tenantCache.set(hostname, tenant)
       return tenant
     }
