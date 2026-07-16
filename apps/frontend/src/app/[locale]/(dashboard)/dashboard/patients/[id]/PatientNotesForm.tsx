@@ -5,14 +5,24 @@ import { useRouter } from 'next/navigation'
 
 type Props = {
   patientId: string
-  initialNotes: string
+  initialNotes: string | undefined
 }
 
 export default function PatientNotesForm({ patientId, initialNotes }: Props) {
   const router = useRouter()
-  const [notes, setNotes] = useState(initialNotes)
+  const [notes, setNotes] = useState(initialNotes ?? '')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+
+  const hasAccess = initialNotes !== undefined
+
+  if (!hasAccess) {
+    return (
+      <div className="rounded-lg border border-stone-200 bg-stone-50 px-4 py-6 text-center text-sm text-stone-500">
+        Notes médicales — accès restreint aux médecins.
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()

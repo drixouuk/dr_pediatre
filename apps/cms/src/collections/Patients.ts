@@ -68,6 +68,19 @@ export const Patients: CollectionConfig = {
     {
       name: 'medicalNotes',
       type: 'textarea',
+      // Accès réservé à superadmin / tenant_admin / doctor.
+      // tenant_admin inclus par défaut mais peut être retiré si
+      // seuls les médecins doivent voir les notes médicales.
+      access: {
+        read: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+        update: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+      },
     },
   ],
 }
