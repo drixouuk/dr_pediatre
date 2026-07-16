@@ -7,10 +7,17 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    create: ({ req: { user } }: any): boolean => {
+    create: ({ req: { user }, data }: any): boolean => {
       if (!user) return false
       if ((user.roles as string[])?.includes('superadmin')) return true
-      return !!(user.roles as string[])?.includes('tenant_admin')
+      if (!(user.roles as string[])?.includes('tenant_admin')) return false
+
+      const callerTenantId =
+        typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+      const targetTenantId =
+        typeof data?.tenant === 'object' ? data.tenant.id : data?.tenant
+
+      return callerTenantId === targetTenantId
     },
     read: ({ req: { user } }: any) => {
       if ((user?.roles as string[])?.includes('superadmin')) return true
