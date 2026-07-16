@@ -15,6 +15,7 @@ import { Services } from "./src/collections/Services";
 import { Reviews } from "./src/collections/Reviews";
 import { Media } from "./src/collections/Media";
 import { PracticeInfo } from "./src/collections/PracticeInfo";
+import { SystemAlerts } from "./src/collections/SystemAlerts";
 import { seed } from "./src/seed";
 import { resolveTenant } from "./src/endpoints/resolve-tenant";
 
@@ -37,6 +38,7 @@ export default buildConfig({
     Reviews,
     Media,
     PracticeInfo,
+    SystemAlerts,
   ],
   db: postgresAdapter({
     pool: {
