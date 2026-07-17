@@ -99,6 +99,13 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
     CREATE INDEX IF NOT EXISTS "documents_updated_at_idx" ON "documents" USING btree ("updated_at");
     CREATE INDEX IF NOT EXISTS "documents_created_at_idx" ON "documents" USING btree ("created_at");
     CREATE INDEX IF NOT EXISTS "documents_filename_idx" ON "documents" USING btree ("filename");
+
+    ALTER TABLE "payload_locked_documents_rels" ADD COLUMN IF NOT EXISTS "consultations_id" integer;
+    ALTER TABLE "payload_locked_documents_rels" ADD COLUMN IF NOT EXISTS "prescriptions_id" integer;
+    ALTER TABLE "payload_locked_documents_rels" ADD COLUMN IF NOT EXISTS "documents_id" integer;
+    CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_consultations_id_idx" ON "payload_locked_documents_rels" USING btree ("consultations_id");
+    CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_prescriptions_id_idx" ON "payload_locked_documents_rels" USING btree ("prescriptions_id");
+    CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_documents_id_idx" ON "payload_locked_documents_rels" USING btree ("documents_id");
   `)
 }
 
