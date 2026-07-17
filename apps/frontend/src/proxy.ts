@@ -52,6 +52,8 @@ async function resolveTenant(
 }
 
 export default async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
   // 1. Extraction du domaine compatible avec le Reverse Proxy Coolify/Traefik
   const hostname =
     request.headers.get("x-forwarded-host") ||
@@ -61,7 +63,22 @@ export default async function middleware(request: NextRequest) {
   // 2. Résolution du cabinet (tenant)
   const tenant = await resolveTenant(hostname);
 
-  // 3. Injection dans la REQUÊTE (indispensable pour headers() dans les Server Components)
+  // 3. Pour les routes API, on saute la redirection i18n (localePrefix) pour
+  //    ne pas casser les appels fetch POST/PATCH vers /api/auth/login ou /api/cms-proxy.
+  //    On injecte juste les headers tenant dans la réponse et on passe.
+  if (pathname.startsWith("/api")) {
+    const response = NextResponse.next();
+    if (tenant) {
+      response.headers.set("x-tenant-id", tenant.id);
+      response.headers.set("x-tenant-slug", tenant.slug);
+    } else {
+      response.headers.set("x-tenant-id", "default");
+      response.headers.set("x-tenant-slug", "default");
+    }
+    return response;
+  }
+
+  // 4. Injection dans la REQUÊTE (indispensable pour headers() dans les Server Components)
   if (tenant) {
     request.headers.set("x-tenant-id", tenant.id);
     request.headers.set("x-tenant-slug", tenant.slug);
@@ -70,10 +87,10 @@ export default async function middleware(request: NextRequest) {
     request.headers.set("x-tenant-slug", "default");
   }
 
-  // 4. Exécution du middleware next-intl avec la requête enrichie
+  // 5. Exécution du middleware next-intl avec la requête enrichie
   const response = intlMiddleware(request);
 
-  // 5. Injection dans la RÉPONSE (sans cloner, pour préserver la logique interne de next-intl)
+  // 6. Injection dans la RÉPONSE (sans cloner, pour préserver la logique interne de next-intl)
   if (tenant) {
     response.headers.set("x-tenant-id", tenant.id);
     response.headers.set("x-tenant-slug", tenant.slug);
