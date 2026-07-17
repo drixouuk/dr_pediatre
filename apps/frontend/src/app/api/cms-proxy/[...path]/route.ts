@@ -26,17 +26,31 @@ async function proxyRequest(request: NextRequest, method: string, path: string[]
   const queryString = request.nextUrl.searchParams.toString()
   const url = `${CMS_URL}/api/${path.join('/')}${queryString ? `?${queryString}` : ''}`
 
-  const body = method !== 'GET' ? await request.json().catch(() => undefined) : undefined
+  const incomingContentType = request.headers.get('content-type') || ''
+  const isMultipart = incomingContentType.startsWith('multipart/form-data')
 
   try {
+    const headers: Record<string, string> = {
+      Authorization: `Bearer ${token}`,
+    }
+
+    let body: BodyInit | undefined
+
+    if (isMultipart) {
+      headers['Content-Type'] = incomingContentType
+      body = request.body ?? undefined
+    } else if (method !== 'GET') {
+      headers['Content-Type'] = 'application/json'
+      const json = await request.json().catch(() => undefined)
+      body = json ? JSON.stringify(json) : undefined
+    }
+
     const res = await fetch(url, {
       method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: body ? JSON.stringify(body) : undefined,
-    })
+      headers,
+      body: body as BodyInit | undefined,
+      ...(isMultipart ? { duplex: 'half' } : {}),
+    } as any)
 
     const data = await res.json().catch(() => null)
     return NextResponse.json(data, { status: res.status })
