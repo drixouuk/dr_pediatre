@@ -1,7 +1,7 @@
 import * as migration_20260710_064021 from './20260710_064021';
 import * as migration_20260716_add_system_alerts from './20260716_add_system_alerts';
 import * as migration_20260716_fix_schedules_locales from './20260716_fix_schedules_locales';
-import * as migration_20260717_161041 from './20260717_161041';
+import * as migration_20260717_205700 from './20260717_205700';
 
 export const migrations = [
   {
@@ -20,8 +20,8 @@ export const migrations = [
     name: '20260716_fix_schedules_locales',
   },
   {
-    up: migration_20260717_161041.up,
-    down: migration_20260717_161041.down,
-    name: '20260717_161041'
+    up: migration_20260717_205700.up,
+    down: migration_20260717_205700.down,
+    name: '20260717_205700'
   },
 ];

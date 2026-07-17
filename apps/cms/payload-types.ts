@@ -77,6 +77,10 @@ export interface Config {
     reviews: Review;
     media: Media;
     'practice-info': PracticeInfo;
+    'system-alerts': SystemAlert;
+    consultations: Consultation;
+    prescriptions: Prescription;
+    documents: Document;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -94,6 +98,10 @@ export interface Config {
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'practice-info': PracticeInfoSelect<false> | PracticeInfoSelect<true>;
+    'system-alerts': SystemAlertsSelect<false> | SystemAlertsSelect<true>;
+    consultations: ConsultationsSelect<false> | ConsultationsSelect<true>;
+    prescriptions: PrescriptionsSelect<false> | PrescriptionsSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -194,6 +202,7 @@ export interface User {
  */
 export interface Patient {
   id: number;
+  healthIdentifier?: string | null;
   tenant: number | Tenant;
   fullName: string;
   gender: 'boy' | 'girl';
@@ -383,6 +392,93 @@ export interface PracticeInfo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "system-alerts".
+ */
+export interface SystemAlert {
+  id: number;
+  level: 'error' | 'critical';
+  message: string;
+  context?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  timestamp: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "consultations".
+ */
+export interface Consultation {
+  id: number;
+  tenant: number | Tenant;
+  patient: number | Patient;
+  practitioner: number | User;
+  date: string;
+  motif?: string | null;
+  examenClinique?: string | null;
+  poids?: number | null;
+  taille?: number | null;
+  perimetreCranien?: number | null;
+  diagnostic?: string | null;
+  codeActe?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prescriptions".
+ */
+export interface Prescription {
+  id: number;
+  tenant: number | Tenant;
+  patient: number | Patient;
+  consultation?: (number | null) | Consultation;
+  practitioner: number | User;
+  date: string;
+  medications: {
+    nom: string;
+    dci?: string | null;
+    posologie: string;
+    duree: string;
+    id?: string | null;
+  }[];
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  tenant: number | Tenant;
+  patient: number | Patient;
+  consultation?: (number | null) | Consultation;
+  documentType: 'radio' | 'analyse' | 'certificat' | 'ordonnance-externe' | 'autre';
+  uploadedBy: number | User;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -444,6 +540,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'practice-info';
         value: number | PracticeInfo;
+      } | null)
+    | ({
+        relationTo: 'system-alerts';
+        value: number | SystemAlert;
+      } | null)
+    | ({
+        relationTo: 'consultations';
+        value: number | Consultation;
+      } | null)
+    | ({
+        relationTo: 'prescriptions';
+        value: number | Prescription;
+      } | null)
+    | ({
+        relationTo: 'documents';
+        value: number | Document;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -540,6 +652,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "patients_select".
  */
 export interface PatientsSelect<T extends boolean = true> {
+  healthIdentifier?: T;
   tenant?: T;
   fullName?: T;
   gender?: T;
@@ -674,6 +787,83 @@ export interface PracticeInfoSelect<T extends boolean = true> {
   pricing?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "system-alerts_select".
+ */
+export interface SystemAlertsSelect<T extends boolean = true> {
+  level?: T;
+  message?: T;
+  context?: T;
+  timestamp?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "consultations_select".
+ */
+export interface ConsultationsSelect<T extends boolean = true> {
+  tenant?: T;
+  patient?: T;
+  practitioner?: T;
+  date?: T;
+  motif?: T;
+  examenClinique?: T;
+  poids?: T;
+  taille?: T;
+  perimetreCranien?: T;
+  diagnostic?: T;
+  codeActe?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "prescriptions_select".
+ */
+export interface PrescriptionsSelect<T extends boolean = true> {
+  tenant?: T;
+  patient?: T;
+  consultation?: T;
+  practitioner?: T;
+  date?: T;
+  medications?:
+    | T
+    | {
+        nom?: T;
+        dci?: T;
+        posologie?: T;
+        duree?: T;
+        id?: T;
+      };
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  tenant?: T;
+  patient?: T;
+  consultation?: T;
+  documentType?: T;
+  uploadedBy?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
