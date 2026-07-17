@@ -1,5 +1,8 @@
 import type { CollectionConfig, Access } from 'payload'
 
+// Pour les collections qui ont un champ tenant (Doctors, Services...),
+// on filtre par ce champ. Pour Tenants lui-même (pas de champ tenant),
+// on filtre par id à la place. Voir read ci-dessous.
 const tenantAccess: Access = ({ req: { user } }) => {
   if (user?.roles?.includes('superadmin')) return true
   if (!user?.tenant) return false
@@ -20,10 +23,21 @@ export const Tenants: CollectionConfig = {
     create: ({ req: { user } }): boolean =>
       !!(user?.roles as string[])?.includes('superadmin'),
     // Lecture anonyme bloquée : seuls les utilisateurs authentifiés
-    // (superadmin ou membre du tenant) peuvent lister les tenants.
+    // (superadmin ou membre du tenant) peuvent voir leur propre tenant.
+    // Les tenants n'ont PAS de champ "tenant" — on filtre par "id" à la place.
     // Le frontend (proxy.ts) utilise désormais /api/resolve-tenant?domain=...
     // qui est un endpoint public dédié, sans exposer la collection complète.
-    read: tenantAccess,
+    read: ({ req: { user } }: any) => {
+      const roles: string[] = user?.roles ?? []
+      if (roles.includes('superadmin')) return true
+      if (!user?.tenant) return false
+      return {
+        id: {
+          equals:
+            typeof user.tenant === 'object' ? user.tenant.id : user.tenant,
+        },
+      }
+    },
     update: ({ req: { user }, id }: any): boolean => {
       if ((user?.roles as string[])?.includes('superadmin')) return true
       return (
