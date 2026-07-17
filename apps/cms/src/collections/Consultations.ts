@@ -25,7 +25,8 @@ export const Consultations: CollectionConfig = {
     },
     update: ({ req: { user } }: any) => {
       const roles: string[] = user?.roles ?? []
-      if (!(roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor'))) return false
+      if (roles.includes('superadmin')) return true
+      if (!(roles.includes('tenant_admin') || roles.includes('doctor'))) return false
       return {
         tenant: {
           equals:
@@ -35,7 +36,8 @@ export const Consultations: CollectionConfig = {
     },
     delete: ({ req: { user } }: any) => {
       const roles: string[] = user?.roles ?? []
-      if (!(roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor'))) return false
+      if (roles.includes('superadmin')) return true
+      if (!(roles.includes('tenant_admin') || roles.includes('doctor'))) return false
       return {
         tenant: {
           equals:
