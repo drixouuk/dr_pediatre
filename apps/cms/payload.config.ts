@@ -15,6 +15,9 @@ import { Services } from "./src/collections/Services";
 import { Reviews } from "./src/collections/Reviews";
 import { Media } from "./src/collections/Media";
 import { PracticeInfo } from "./src/collections/PracticeInfo";
+import { Consultations } from "./src/collections/Consultations";
+import { Prescriptions } from "./src/collections/Prescriptions";
+import { Documents } from "./src/collections/Documents";
 import { SystemAlerts } from "./src/collections/SystemAlerts";
 import { seed } from "./src/seed";
 import { resolveTenant } from "./src/endpoints/resolve-tenant";
@@ -39,6 +42,9 @@ export default buildConfig({
     Media,
     PracticeInfo,
     SystemAlerts,
+    Consultations,
+    Prescriptions,
+    Documents,
   ],
   db: postgresAdapter({
     pool: {
@@ -50,7 +56,8 @@ export default buildConfig({
     s3Storage({
       collections: {
         media: true,
-      },
+        documents: true,
+      } as any,
       bucket: process.env.R2_BUCKET || "",
       config: {
         endpoint: process.env.R2_ENDPOINT || "",

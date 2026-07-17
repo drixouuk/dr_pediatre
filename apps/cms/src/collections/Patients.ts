@@ -34,6 +34,11 @@ export const Patients: CollectionConfig = {
   },
   fields: [
     {
+      name: 'healthIdentifier',
+      type: 'text',
+      label: 'Identifiant santé unique (CNSS) — à connecter plus tard',
+    },
+    {
       name: 'tenant',
       type: 'relationship',
       relationTo: 'tenants',
