@@ -7,11 +7,40 @@ const CMS_URL =
 
 const intlMiddleware = createMiddleware(routing);
 
-// Cache en mémoire (parfaitement adapté pour ton VPS/LXC persistant sur Coolify)
+// Cache LRU borné (200 entrées max, expiration 10 min) pour la résolution de tenant.
+// Un Map simple sans limite serait vulnérable à un flood de hostnames arbitraires
+// via les headers Host / X-Forwarded-Host (memory leak / DoS).
+const TENANT_CACHE_MAX = 200;
+const TENANT_CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+type CacheEntry = {
+  value: { id: string; slug: string; name: string } | null;
+  timestamp: number;
+};
+
 const tenantCache = new Map<
   string,
-  { id: string; slug: string; name: string } | null
+  CacheEntry
 >();
+
+function tenantCacheGet(key: string): { id: string; slug: string; name: string } | null | undefined {
+  const entry = tenantCache.get(key);
+  if (!entry) return undefined;
+  if (Date.now() - entry.timestamp > TENANT_CACHE_TTL) {
+    tenantCache.delete(key);
+    return undefined;
+  }
+  return entry.value;
+}
+
+function tenantCacheSet(key: string, value: { id: string; slug: string; name: string } | null): void {
+  if (tenantCache.size >= TENANT_CACHE_MAX) {
+    // Éviction LRU : supprime la clé la plus ancienne
+    const oldest = tenantCache.keys().next().value;
+    if (oldest !== undefined) tenantCache.delete(oldest);
+  }
+  tenantCache.set(key, { value, timestamp: Date.now() });
+}
 
 async function resolveTenant(
   hostname: string,
@@ -19,8 +48,8 @@ async function resolveTenant(
   // Nettoie le port si présent (ex: drguinane.drixou.uk:3000 -> drguinane.drixou.uk)
   const cleanHostname = hostname.split(":")[0];
 
-  if (tenantCache.has(cleanHostname))
-    return tenantCache.get(cleanHostname) ?? null;
+  const cached = tenantCacheGet(cleanHostname);
+  if (cached !== undefined) return cached;
 
   try {
     const url = `${CMS_URL}/api/resolve-tenant?domain=${encodeURIComponent(cleanHostname)}`;
@@ -29,7 +58,7 @@ async function resolveTenant(
       next: { revalidate: 300 },
     });
     if (!res.ok) {
-      tenantCache.set(cleanHostname, null);
+      tenantCacheSet(cleanHostname, null);
       return null;
     }
     const json = await res.json();
@@ -40,13 +69,13 @@ async function resolveTenant(
         slug: json.tenant.slug || String(json.tenant.id),
         name: json.tenant.name,
       };
-      tenantCache.set(cleanHostname, tenant);
+      tenantCacheSet(cleanHostname, tenant);
       return tenant;
     }
-    tenantCache.set(cleanHostname, null);
+    tenantCacheSet(cleanHostname, null);
     return null;
   } catch {
-    tenantCache.set(cleanHostname, null);
+    tenantCacheSet(cleanHostname, null);
     return null;
   }
 }
