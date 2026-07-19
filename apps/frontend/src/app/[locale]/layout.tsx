@@ -11,7 +11,8 @@ import {
 } from 'next/font/google'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
-import { getDoctorProfile } from '@/lib/payload'
+import { getDoctorProfile, getPracticeInfo } from '@/lib/payload'
+import type { PracticeInfo } from '@/lib/payload'
 import '../globals.css'
 
 const figtree = Figtree({
@@ -38,8 +39,6 @@ const notoSansTifinagh = Noto_Sans_Tifinagh({
   variable: '--font-tifinagh',
 })
 
-const siteUrl = 'https://dr-pediatre.vercel.app'
-
 const DATA_LOCALE: Record<string, string> = {
   fr: 'fr', en: 'en', ar: 'ar', tzm: 'fr',
 }
@@ -49,12 +48,19 @@ type Props = {
   params: Promise<{ locale: string }>
 }
 
+async function getSiteUrl(): Promise<string> {
+  const h = await headers()
+  const host = h.get('x-forwarded-host') || h.get('host') || 'drguinane.drixou.uk'
+  return `https://${host}`
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
 
   const h = await headers()
   const tenantId = h.get('x-tenant-id') || 'default'
   const dataLocale = DATA_LOCALE[locale] || 'fr'
+  const siteUrl = await getSiteUrl()
 
   const doctor = await getDoctorProfile(tenantId, dataLocale)
   const name = doctor?.name || ''
@@ -135,7 +141,9 @@ export default async function LocaleLayout({ children, params }: Props) {
   const h = await headers()
   const tenantId = h.get('x-tenant-id') || 'default'
   const dataLocale = DATA_LOCALE[locale] || 'fr'
+  const siteUrl = await getSiteUrl()
   const doctor = await getDoctorProfile(tenantId, dataLocale)
+  const practiceInfo = await getPracticeInfo(tenantId, dataLocale)
 
   const dir = dirByLocale[locale] ?? 'ltr'
   const fontVars = fontsByLocale[locale] ?? notoSans.variable
@@ -143,6 +151,34 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   const doctorName = doctor?.name || ''
   const doctorNameShort = doctor?.name?.split(' ').slice(0, 2).join(' ') || ''
+
+  const ld: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalOrganization',
+    name: doctorName || undefined,
+    medicalSpecialty: 'Pediatric',
+    url: siteUrl,
+  }
+
+  if (practiceInfo?.city) {
+    ld.address = {
+      '@type': 'PostalAddress',
+      addressLocality: practiceInfo.city,
+      addressCountry: 'MA',
+    }
+  }
+
+  if (practiceInfo?.coordinates?.lat && practiceInfo?.coordinates?.lng) {
+    ld.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: practiceInfo.coordinates.lat,
+      longitude: practiceInfo.coordinates.lng,
+    }
+  }
+
+  if (practiceInfo?.phone) {
+    ld.telephone = practiceInfo.phone
+  }
 
   return (
     <html
@@ -160,6 +196,12 @@ export default async function LocaleLayout({ children, params }: Props) {
           />
         ))}
         <link rel="alternate" hrefLang="x-default" href={`${siteUrl}/${routing.defaultLocale}`} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(ld, (key, value) => value === undefined ? undefined : value, 2),
+          }}
+        />
       </head>
       <body className={`${bodyFont} flex min-h-full flex-col bg-cream-100 text-stone-800 antialiased pt-20`}>
         <NextIntlClientProvider>
