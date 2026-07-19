@@ -25,8 +25,11 @@ import { resolveTenant } from "./src/endpoints/resolve-tenant";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+const payloadSecret = process.env.PAYLOAD_SECRET;
+if (!payloadSecret) throw new Error("PAYLOAD_SECRET manquant — impossible de démarrer en production sans ce secret.");
+
 export default buildConfig({
-  secret: process.env.PAYLOAD_SECRET ?? "dev-secret-change-in-production",
+  secret: payloadSecret,
   admin: {
     user: Users.slug,
   },

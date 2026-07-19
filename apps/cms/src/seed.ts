@@ -94,7 +94,7 @@ async function seedSuperadmin(payload: Payload) {
     collection: 'users',
     data: {
       email: 'admin@dr-tabibi.ma',
-      password: process.env.SEED_SUPERADMIN_PASSWORD ?? 'changeme123',
+      password: process.env.SEED_SUPERADMIN_PASSWORD ?? (() => { throw new Error('SEED_SUPERADMIN_PASSWORD manquant — définis cette variable d\'environnement avant de lancer le script.') })(),
       name: 'SuperAdmin dr-tabibi',
       roles: ['superadmin'],
     },
@@ -119,7 +119,7 @@ async function seedDoctorUser(payload: Payload, tenantId: any) {
     collection: "users",
     data: {
       email: DOCTOR_EMAIL,
-      password: process.env.SEED_DOCTOR_PASSWORD ?? "changeme123",
+      password: process.env.SEED_DOCTOR_PASSWORD ?? (() => { throw new Error('SEED_DOCTOR_PASSWORD manquant — définis cette variable d\'environnement avant de lancer le script.') })(),
       name: "Dr Guinane Aicha",
       roles: ["tenant_admin", "doctor"],
       tenant: tenantId,

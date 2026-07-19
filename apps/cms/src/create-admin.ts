@@ -19,7 +19,7 @@ async function createAdmin() {
     collection: 'users',
     data: {
       email: 'admin@dr-tabibi.ma',
-      password: process.env.ADMIN_PASSWORD ?? 'changeme123',
+      password: process.env.ADMIN_PASSWORD ?? (() => { throw new Error('ADMIN_PASSWORD manquant — définis cette variable d\'environnement avant de lancer le script.') })(),
       name: 'Admin',
       roles: ['superadmin'],
     },
