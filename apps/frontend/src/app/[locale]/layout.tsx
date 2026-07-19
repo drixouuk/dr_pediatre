@@ -156,7 +156,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'MedicalOrganization',
     name: doctorName || undefined,
-    medicalSpecialty: 'Pediatric',
+    medicalSpecialty: doctor?.specialty || 'Pediatric',
     url: siteUrl,
   }
 
