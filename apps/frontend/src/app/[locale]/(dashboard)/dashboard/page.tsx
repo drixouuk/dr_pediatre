@@ -11,6 +11,8 @@ const navLinks = [
 export default async function DashboardPage() {
   const user = await requireAuth()
 
+  const isSuperadmin = user.roles?.includes('superadmin')
+
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -30,6 +32,14 @@ export default async function DashboardPage() {
               {link.label}
             </Link>
           ))}
+          {isSuperadmin && (
+            <Link
+              href="./system-alerts"
+              className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-primary-700"
+            >
+              Alertes système
+            </Link>
+          )}
         </nav>
       </div>
 
