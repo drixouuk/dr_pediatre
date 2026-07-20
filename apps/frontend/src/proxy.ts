@@ -108,6 +108,7 @@ export default async function middleware(request: NextRequest) {
   }
 
   // 4. Injection dans la REQUÊTE (indispensable pour headers() dans les Server Components)
+  request.headers.set("x-pathname", pathname);
   if (tenant) {
     request.headers.set("x-tenant-id", tenant.id);
     request.headers.set("x-tenant-slug", tenant.slug);
@@ -120,6 +121,7 @@ export default async function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
 
   // 6. Injection dans la RÉPONSE (sans cloner, pour préserver la logique interne de next-intl)
+  response.headers.set("x-pathname", pathname);
   if (tenant) {
     response.headers.set("x-tenant-id", tenant.id);
     response.headers.set("x-tenant-slug", tenant.slug);

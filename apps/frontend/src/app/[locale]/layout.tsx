@@ -139,6 +139,8 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   const h = await headers()
+  const pathname = h.get('x-pathname') || ''
+  const isDashboard = pathname.includes('/dashboard')
   const tenantId = h.get('x-tenant-id') || 'default'
   const dataLocale = DATA_LOCALE[locale] || 'fr'
   const siteUrl = await getSiteUrl()
@@ -203,11 +205,17 @@ export default async function LocaleLayout({ children, params }: Props) {
           }}
         />
       </head>
-      <body className={`${bodyFont} flex min-h-full flex-col bg-cream-100 text-stone-800 antialiased pt-20`}>
+      <body className={`${bodyFont} flex min-h-full flex-col ${isDashboard ? 'bg-white' : 'bg-cream-100 pt-20'} text-stone-800 antialiased`}>
         <NextIntlClientProvider>
-          <Header doctorName={doctorName} doctorNameShort={doctorNameShort} />
-          {children}
-          <Footer locale={locale} />
+          {isDashboard ? (
+            children
+          ) : (
+            <>
+              <Header doctorName={doctorName} doctorNameShort={doctorNameShort} />
+              {children}
+              <Footer locale={locale} />
+            </>
+          )}
         </NextIntlClientProvider>
       </body>
     </html>

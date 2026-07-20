@@ -1,11 +1,11 @@
 import { requireAuth } from '@/lib/auth'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import LiveStatsWidget from '@/components/dashboard/LiveStatsWidget'
 import WaitingRoomList from '@/components/dashboard/WaitingRoomList'
 
 const navLinks = [
-  { href: './patients', label: 'Patients' },
-  { href: './audit-logs', label: 'Registre d\'audit' },
+  { href: '/dashboard/patients', label: 'Patients' },
+  { href: '/dashboard/audit-logs', label: 'Registre d\'audit' },
 ]
 
 export default async function DashboardPage() {
@@ -34,7 +34,7 @@ export default async function DashboardPage() {
           ))}
           {isSuperadmin && (
             <Link
-              href="./system-alerts"
+              href="/dashboard/system-alerts"
               className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm font-medium text-stone-600 hover:bg-stone-50 hover:text-primary-700"
             >
               Alertes système
