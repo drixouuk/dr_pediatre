@@ -78,6 +78,21 @@ export const Patients: CollectionConfig = {
       admin: { date: { pickerAppearance: 'dayOnly' } },
     },
     {
+      name: 'address',
+      type: 'text',
+      label: 'Adresse',
+    },
+    {
+      name: 'phone',
+      type: 'text',
+      label: 'Téléphone',
+    },
+    {
+      name: 'email',
+      type: 'email',
+      label: 'Email',
+    },
+    {
       name: 'nationalId',
       type: 'text',
     },

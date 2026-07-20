@@ -10,6 +10,9 @@ type Props = {
     fullName: string
     gender?: string | null
     birthDate?: string | null
+    address?: string | null
+    phone?: string | null
+    email?: string | null
     nationalId?: string | null
   }
 }
@@ -23,6 +26,9 @@ export default function EditPatientForm({ patient }: Props) {
   const [birthDate, setBirthDate] = useState(
     patient.birthDate ? patient.birthDate.slice(0, 10) : '',
   )
+  const [address, setAddress] = useState(patient.address || '')
+  const [phone, setPhone] = useState(patient.phone || '')
+  const [email, setEmail] = useState(patient.email || '')
   const [nationalId, setNationalId] = useState(patient.nationalId || '')
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -33,6 +39,9 @@ export default function EditPatientForm({ patient }: Props) {
     const body: Record<string, unknown> = {
       fullName,
       gender,
+      address: address || undefined,
+      phone: phone || undefined,
+      email: email || undefined,
       nationalId: nationalId || undefined,
       birthDate: birthDate || undefined,
     }
@@ -99,6 +108,45 @@ export default function EditPatientForm({ patient }: Props) {
           value={birthDate}
           onChange={(e) => setBirthDate(e.target.value)}
           type="date"
+          className={inputClass}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="address" className="mb-1 block text-sm font-medium text-stone-700">
+          Adresse
+        </label>
+        <input
+          id="address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          type="text"
+          className={inputClass}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="mb-1 block text-sm font-medium text-stone-700">
+          Téléphone
+        </label>
+        <input
+          id="phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          type="tel"
+          className={inputClass}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="mb-1 block text-sm font-medium text-stone-700">
+          Email
+        </label>
+        <input
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="email"
           className={inputClass}
         />
       </div>

@@ -14,6 +14,9 @@ type Patient = {
   fullName: string
   gender?: string | null
   birthDate?: string | null
+  address?: string | null
+  phone?: string | null
+  email?: string | null
   nationalId?: string | null
   medicalNotes?: string
   createdAt: string
@@ -104,6 +107,9 @@ export default async function PatientDetailPage({ params }: Props) {
               <span className="font-medium text-stone-700">{computeAge(patient.birthDate)}</span>
             </>
           )}
+          {patient.address && <span>Adresse : {patient.address}</span>}
+          {patient.phone && <span>Tél : {patient.phone}</span>}
+          {patient.email && <span>Email : {patient.email}</span>}
           <span>Créé le {new Date(patient.createdAt).toLocaleDateString('fr-FR')}</span>
         </div>
       </div>
