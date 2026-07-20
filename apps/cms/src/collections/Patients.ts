@@ -26,7 +26,7 @@ export const Patients: CollectionConfig = {
     beforeChange: [
       ({ req, data, operation }: any) => {
         if (operation === 'create' && req.user?.tenant) {
-          data.tenant = req.user.tenant
+          data.tenant = typeof req.user.tenant === 'object' ? req.user.tenant.id : req.user.tenant
         }
         return data
       },

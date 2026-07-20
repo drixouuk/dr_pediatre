@@ -17,7 +17,7 @@ export default function AddToQueueButton({ patientId }: Props) {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    fetch(`/api/cms-proxy/queue-items?where[patient][equals]=${patientId}&where[status][in]=scheduled,waiting,in_consultation&limit=1`)
+    fetch(`/api/cms-proxy/queue-items?where[patient][equals]=${patientId}&where[status][in]=scheduled&where[status][in]=waiting&where[status][in]=in_consultation&limit=1`)
       .then(r => r.json())
       .then(j => setActive((j.docs?.length ?? 0) > 0))
       .catch(() => setActive(false))

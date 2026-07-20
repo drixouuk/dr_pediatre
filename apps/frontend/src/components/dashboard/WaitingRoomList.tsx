@@ -67,7 +67,7 @@ export default function WaitingRoomList() {
 
   const fetchQueue = async () => {
     setLoading(true)
-    const res = await fetch('/api/cms-proxy/queue-items?depth=1&sort=arrivalTime&where[status][in]=waiting,in_consultation&limit=50')
+    const res = await fetch('/api/cms-proxy/queue-items?depth=1&sort=arrivalTime&where[status][in]=waiting&where[status][in]=in_consultation&limit=50')
     if (res.ok) {
       const json = await res.json()
       setItems(json.docs ?? [])
