@@ -84,7 +84,7 @@ export default async function Sidebar({ user }: Props) {
   }
 
   return (
-    <aside className="flex w-[208px] shrink-0 flex-col border-r border-stone-200 bg-stone-50">
+    <aside className="flex w-[208px] shrink-0 flex-col border-r border-cream-200 bg-cream-100">
       <div className="flex flex-col px-4 pt-6 pb-4">
         <h2 className="font-heading text-sm font-medium text-stone-800 leading-tight">
           {tenant?.name || 'Cabinet'}
@@ -108,7 +108,7 @@ export default async function Sidebar({ user }: Props) {
                   ? 'pointer-events-none text-stone-300'
                   : active
                     ? 'bg-primary-50 text-primary-700'
-                    : 'text-stone-600 hover:bg-stone-100 hover:text-stone-800'
+                    : 'text-stone-600 hover:bg-cream-200 hover:text-stone-800'
               }`}
               aria-disabled={item.disabled}
               tabIndex={item.disabled ? -1 : undefined}
@@ -121,7 +121,7 @@ export default async function Sidebar({ user }: Props) {
 
         {adminItems.length > 0 && (
           <>
-            <div className="my-2 border-t border-stone-200" />
+            <div className="my-2 border-t border-cream-200" />
             {adminItems.map((item) => {
               const active = isActive(item.href)
               return (
@@ -131,7 +131,7 @@ export default async function Sidebar({ user }: Props) {
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                     active
                       ? 'bg-primary-50 text-primary-700'
-                      : 'text-stone-600 hover:bg-stone-100 hover:text-stone-800'
+                      : 'text-stone-600 hover:bg-cream-200 hover:text-stone-800'
                   }`}
                 >
                   {item.icon}
@@ -143,7 +143,7 @@ export default async function Sidebar({ user }: Props) {
         )}
       </nav>
 
-      <div className="border-t border-stone-200 px-3 py-4">
+      <div className="border-t border-cream-200 px-3 py-4">
         <div className="flex items-center gap-3">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary-700 text-xs font-bold text-white">
             {initials}
@@ -162,7 +162,7 @@ export default async function Sidebar({ user }: Props) {
         >
           <button
             type="submit"
-            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-stone-600 transition-colors hover:bg-stone-100 hover:text-red-600"
+            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-stone-600 transition-colors duration-200 hover:bg-cream-200 hover:text-red-600"
           >
             <LogOut className="size-4" />
             Déconnexion
