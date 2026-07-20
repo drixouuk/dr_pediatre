@@ -56,22 +56,30 @@ type Props = {
 
 export default async function PatientDetailPage({ params }: Props) {
   const { id } = await params
-  await requireAuth()
+  const user = await requireAuth()
+
+  const canViewClinical = user.roles?.includes('doctor') || user.roles?.includes('tenant_admin') || user.roles?.includes('superadmin')
 
   const [patient, consultationsData, prescriptionsData, documentsData] = await Promise.all([
     fetchCMS<Patient>(`/api/patients/${id}`, { revalidate: 0 }),
-    fetchCMS<{ docs: Consultation[] }>(
-      `/api/consultations?where[patient][equals]=${id}&sort=-date&depth=1&limit=50`,
-      { revalidate: 0 },
-    ),
-    fetchCMS<{ docs: Prescription[] }>(
-      `/api/prescriptions?where[patient][equals]=${id}&sort=-date&depth=1&limit=50`,
-      { revalidate: 0 },
-    ),
-    fetchCMS<{ docs: Document[] }>(
-      `/api/documents?where[patient][equals]=${id}&sort=-createdAt&depth=0&limit=50`,
-      { revalidate: 0 },
-    ),
+    canViewClinical
+      ? fetchCMS<{ docs: Consultation[] }>(
+          `/api/consultations?where[patient][equals]=${id}&sort=-date&depth=1&limit=50`,
+          { revalidate: 0 },
+        )
+      : Promise.resolve(null),
+    canViewClinical
+      ? fetchCMS<{ docs: Prescription[] }>(
+          `/api/prescriptions?where[patient][equals]=${id}&sort=-date&depth=1&limit=50`,
+          { revalidate: 0 },
+        )
+      : Promise.resolve(null),
+    canViewClinical
+      ? fetchCMS<{ docs: Document[] }>(
+          `/api/documents?where[patient][equals]=${id}&sort=-createdAt&depth=0&limit=50`,
+          { revalidate: 0 },
+        )
+      : Promise.resolve(null),
   ])
 
   if (!patient) notFound()
@@ -98,14 +106,18 @@ export default async function PatientDetailPage({ params }: Props) {
         <PatientNotesForm patientId={patient.id} initialNotes={patient.medicalNotes || ''} />
       </div>
 
-      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <ConsultationForm patientId={patient.id} consultations={consultations} />
-        <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} />
-      </div>
+      {canViewClinical && (
+        <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <ConsultationForm patientId={patient.id} consultations={consultations} />
+          <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} />
+        </div>
+      )}
 
-      <div className="mb-8">
-        <DocumentUpload patientId={patient.id} documents={documents} />
-      </div>
+      {canViewClinical && (
+        <div className="mb-8">
+          <DocumentUpload patientId={patient.id} documents={documents} />
+        </div>
+      )}
     </div>
   )
 }
