@@ -7,10 +7,14 @@ import ConsultationForm from './ConsultationForm'
 import PrescriptionForm from './PrescriptionForm'
 import DocumentUpload from './DocumentUpload'
 
+import { computeAge } from '@/lib/age'
+
 type Patient = {
   id: string
   fullName: string
-  nationalId?: string
+  gender?: string | null
+  birthDate?: string | null
+  nationalId?: string | null
   medicalNotes?: string
   createdAt: string
   updatedAt: string
@@ -92,10 +96,16 @@ export default async function PatientDetailPage({ params }: Props) {
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="font-heading text-3xl font-bold text-stone-800">{patient.fullName}</h1>
-        <p className="mt-1 text-stone-500">
-          CIN : {patient.nationalId || 'Non renseigné'} &middot; Créé le{' '}
-          {new Date(patient.createdAt).toLocaleDateString('fr-FR')}
-        </p>
+        <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-stone-500">
+          <span>CIN : {patient.nationalId || 'Non renseigné'}</span>
+          {patient.birthDate && (
+            <>
+              <span>Né(e) le {new Date(patient.birthDate).toLocaleDateString('fr-FR')}</span>
+              <span className="font-medium text-stone-700">{computeAge(patient.birthDate)}</span>
+            </>
+          )}
+          <span>Créé le {new Date(patient.createdAt).toLocaleDateString('fr-FR')}</span>
+        </div>
       </div>
 
       <div className="mb-8">
