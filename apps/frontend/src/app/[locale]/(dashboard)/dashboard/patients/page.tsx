@@ -10,12 +10,24 @@ type Patient = {
   updatedAt: string
 }
 
-export default async function PatientsListPage() {
+type Props = {
+  searchParams: Promise<{ q?: string }>
+}
+
+export default async function PatientsListPage({ searchParams }: Props) {
+  const { q } = await searchParams
   const user = await requireAuth()
-  const data = await fetchCMS<{ docs: Patient[] }>(
-    `/api/patients?where[tenant][equals]=${typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant}&sort=-updatedAt&limit=50`,
-    { revalidate: 0 },
-  )
+  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+
+  let apiPath = `/api/patients?sort=-updatedAt&limit=50`
+  if (q?.trim()) {
+    const query = encodeURIComponent(q.trim())
+    apiPath = `/api/patients?where[and][0][tenant][equals]=${tenantId}&where[and][1][or][0][fullName][contains]=${query}&where[and][1][or][1][nationalId][contains]=${query}&sort=-updatedAt&limit=50`
+  } else {
+    apiPath = `/api/patients?where[tenant][equals]=${tenantId}&sort=-updatedAt&limit=50`
+  }
+
+  const data = await fetchCMS<{ docs: Patient[] }>(apiPath, { revalidate: 0 })
   const patients = data?.docs ?? []
 
   return (
@@ -30,7 +42,33 @@ export default async function PatientsListPage() {
         </Link>
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+      <form method="GET" className="mt-6">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            name="q"
+            defaultValue={q || ''}
+            placeholder="Rechercher par nom ou CIN…"
+            className="w-full max-w-md rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="rounded-lg bg-primary-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-800"
+          >
+            Rechercher
+          </button>
+          {q && (
+            <Link
+              href="/dashboard/patients"
+              className="rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-600 hover:bg-stone-50"
+            >
+              Effacer
+            </Link>
+          )}
+        </div>
+      </form>
+
+      <div className="mt-4 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 text-xs uppercase text-stone-500">
             <tr>
@@ -44,7 +82,7 @@ export default async function PatientsListPage() {
             {patients.length === 0 ? (
               <tr>
                 <td colSpan={4} className="px-4 py-8 text-center text-stone-400">
-                  Aucun patient pour le moment.
+                  {q ? 'Aucun patient trouvé pour cette recherche.' : 'Aucun patient pour le moment.'}
                 </td>
               </tr>
             ) : (

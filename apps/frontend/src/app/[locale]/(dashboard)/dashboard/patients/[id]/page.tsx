@@ -98,12 +98,9 @@ export default async function PatientDetailPage({ params }: Props) {
         <PatientNotesForm patientId={patient.id} initialNotes={patient.medicalNotes || ''} />
       </div>
 
-      <div className="mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <ConsultationForm patientId={patient.id} consultations={consultations} />
-      </div>
-
-      <div className="mb-8">
-        <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} />
+        <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} />
       </div>
 
       <div className="mb-8">

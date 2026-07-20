@@ -18,12 +18,19 @@ type Prescription = {
   practitioner: { email?: string; name?: string }
 }
 
+type ConsultationOption = {
+  id: string
+  date: string
+  motif?: string | null
+}
+
 type Props = {
   patientId: string
   prescriptions: Prescription[]
+  consultations: ConsultationOption[]
 }
 
-export default function PrescriptionForm({ patientId, prescriptions }: Props) {
+export default function PrescriptionForm({ patientId, prescriptions, consultations }: Props) {
   const router = useRouter()
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -31,6 +38,9 @@ export default function PrescriptionForm({ patientId, prescriptions }: Props) {
     { nom: '', dci: '', posologie: '', duree: '' },
   ])
   const [notes, setNotes] = useState('')
+  const [consultationId, setConsultationId] = useState(
+    consultations.length > 0 ? consultations[0].id : '',
+  )
 
   const updateMed = (i: number, field: keyof Medication, value: string) => {
     setMedications(prev => prev.map((m, j) => (j === i ? { ...m, [field]: value } : m)))
@@ -48,10 +58,13 @@ export default function PrescriptionForm({ patientId, prescriptions }: Props) {
     e.preventDefault()
     setSaving(true)
 
-    const body = {
+    const body: Record<string, unknown> = {
       patient: patientId,
       medications: medications.filter(m => m.nom.trim()),
       notes: notes || undefined,
+    }
+    if (consultationId) {
+      body.consultation = consultationId
     }
 
     const res = await fetch('/api/cms-proxy/prescriptions', {
@@ -124,6 +137,26 @@ export default function PrescriptionForm({ patientId, prescriptions }: Props) {
             <label className="mb-1 block text-sm font-medium text-stone-700">Notes</label>
             <textarea rows={3} value={notes} onChange={e => setNotes(e.target.value)} className={inputClass} />
           </div>
+
+          {consultations.length > 0 && (
+            <div>
+              <label className="mb-1 block text-sm font-medium text-stone-700">
+                Rattacher à une consultation <span className="text-stone-400">(optionnel)</span>
+              </label>
+              <select
+                value={consultationId}
+                onChange={e => setConsultationId(e.target.value)}
+                className={inputClass}
+              >
+                <option value="">Aucune</option>
+                {consultations.map(c => (
+                  <option key={c.id} value={c.id}>
+                    {new Date(c.date).toLocaleDateString('fr-FR')}{c.motif ? ` — ${c.motif}` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="flex items-center gap-3">
             <button type="submit" disabled={saving} className="rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:opacity-50">
