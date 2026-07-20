@@ -1,3 +1,6 @@
+import { fetchCMS } from './cms-fetch'
+import { cookies } from 'next/headers'
+
 const CMS_URL = process.env.NEXT_PUBLIC_CMS_URL || 'https://dr-pediatre-cms.vercel.app'
 
 async function fetchAPI<T>(
@@ -97,8 +100,12 @@ export async function getTenantByDomain(domain: string): Promise<Tenant | null> 
 }
 
 export async function getTenantById(id: string): Promise<Tenant | null> {
-  const data = await fetchAPI<Tenant>(`/api/tenants/${id}`, [`tenant-${id}`])
-  return data ?? null
+  const store = await cookies()
+  const token = store.get('payload-token')?.value
+  if (token) {
+    return fetchCMS<Tenant>(`/api/tenants/${id}`)
+  }
+  return fetchAPI<Tenant>(`/api/tenants/${id}`, [`tenant-${id}`])
 }
 
 export async function getPracticeInfo(tenantId: string, locale: string): Promise<PracticeInfo | null> {
