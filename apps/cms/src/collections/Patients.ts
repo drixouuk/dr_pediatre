@@ -1,6 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { logPatientReadAccess, logPatientWriteAccess } from '../hooks/logPatientAccess'
 
+function tenantId(user: any): string | undefined {
+  if (!user?.tenant) return undefined
+  return typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+}
+
 export const Patients: CollectionConfig = {
   slug: 'patients',
   admin: {
@@ -9,16 +14,22 @@ export const Patients: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }: any) => {
-      if ((user?.roles as string[])?.includes('superadmin')) return true
-      return { tenant: { equals: user?.tenant } }
+      if (user?.roles?.includes('superadmin')) return true
+      const id = tenantId(user)
+      if (!id) return false
+      return { tenant: { equals: id } }
     },
-    create: ({ req: { user } }: any): boolean => !!(user as any)?.tenant,
-    update: ({ req: { user } }: any) => ({
-      tenant: { equals: (user as any)?.tenant },
-    }),
-    delete: ({ req: { user } }: any) => ({
-      tenant: { equals: (user as any)?.tenant },
-    }),
+    create: ({ req: { user } }: any): boolean => !!tenantId(user),
+    update: ({ req: { user } }: any) => {
+      const id = tenantId(user)
+      if (!id) return false
+      return { tenant: { equals: id } }
+    },
+    delete: ({ req: { user } }: any) => {
+      const id = tenantId(user)
+      if (!id) return false
+      return { tenant: { equals: id } }
+    },
   },
   hooks: {
     afterRead: [logPatientReadAccess],
