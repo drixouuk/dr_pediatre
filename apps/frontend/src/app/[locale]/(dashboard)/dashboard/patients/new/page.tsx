@@ -8,16 +8,30 @@ export default function NewPatientPage() {
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
+  const [fullName, setFullName] = useState('')
+  const [gender, setGender] = useState('')
+  const [birthDate, setBirthDate] = useState('')
+  const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [nationalId, setNationalId] = useState('')
+  const [addToQueue, setAddToQueue] = useState(true)
+
+  const inputClass = 'w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none'
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setSaving(true)
 
-    const form = new FormData(e.currentTarget)
-    const body = {
-      fullName: form.get('fullName') as string,
-      gender: form.get('gender') as string,
-      nationalId: (form.get('nationalId') as string) || undefined,
+    const body: Record<string, unknown> = {
+      fullName,
+      gender,
+      birthDate: birthDate || undefined,
+      address: address || undefined,
+      phone: phone || undefined,
+      email: email || undefined,
+      nationalId: nationalId || undefined,
     }
 
     const res = await fetch('/api/cms-proxy/patients', {
@@ -33,7 +47,6 @@ export default function NewPatientPage() {
     }
 
     const newPatient = await res.json()
-    const addToQueue = form.get('addToQueue') === 'on'
 
     if (addToQueue && newPatient?.doc?.id) {
       await fetch('/api/cms-proxy/queue-items', {
@@ -63,10 +76,11 @@ export default function NewPatientPage() {
           </label>
           <input
             id="fullName"
-            name="fullName"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
             type="text"
             required
-            className="w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+            className={inputClass}
           />
         </div>
 
@@ -76,9 +90,10 @@ export default function NewPatientPage() {
           </label>
           <select
             id="gender"
-            name="gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
             required
-            className="w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+            className={inputClass}
           >
             <option value="">Sélectionner…</option>
             <option value="boy">Garçon</option>
@@ -87,14 +102,67 @@ export default function NewPatientPage() {
         </div>
 
         <div>
+          <label htmlFor="birthDate" className="mb-1 block text-sm font-medium text-stone-700">
+            Date de naissance
+          </label>
+          <input
+            id="birthDate"
+            value={birthDate}
+            onChange={(e) => setBirthDate(e.target.value)}
+            type="date"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="address" className="mb-1 block text-sm font-medium text-stone-700">
+            Adresse
+          </label>
+          <input
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            type="text"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="phone" className="mb-1 block text-sm font-medium text-stone-700">
+            Téléphone
+          </label>
+          <input
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            type="tel"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email" className="mb-1 block text-sm font-medium text-stone-700">
+            Email
+          </label>
+          <input
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
           <label htmlFor="nationalId" className="mb-1 block text-sm font-medium text-stone-700">
             CIN (optionnel)
           </label>
           <input
             id="nationalId"
-            name="nationalId"
+            value={nationalId}
+            onChange={(e) => setNationalId(e.target.value)}
             type="text"
-            className="w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+            className={inputClass}
           />
         </div>
 
@@ -103,8 +171,8 @@ export default function NewPatientPage() {
         <label className="flex items-center gap-2 text-sm text-stone-600">
           <input
             type="checkbox"
-            name="addToQueue"
-            defaultChecked
+            checked={addToQueue}
+            onChange={(e) => setAddToQueue(e.target.checked)}
             className="size-4 rounded border-stone-300 text-primary-600 focus:ring-primary-500/20"
           />
           Ajouter à la file d'attente du jour
