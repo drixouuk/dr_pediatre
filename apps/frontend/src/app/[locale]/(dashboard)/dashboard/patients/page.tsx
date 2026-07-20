@@ -1,8 +1,7 @@
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
-import PatientDeleteButton from '@/components/dashboard/PatientDeleteButton'
-
+import PatientActionsDropdown from '@/components/dashboard/PatientActionsDropdown'
 import { computeAge } from '@/lib/age'
 
 type Patient = {
@@ -102,17 +101,16 @@ export default async function PatientsListPage({ searchParams }: Props) {
           <thead className="border-b border-stone-200 bg-stone-50 text-xs uppercase text-stone-500">
             <tr>
               <th className="px-4 py-3 font-medium">Nom</th>
-              <th className="px-4 py-3 font-medium">CIN</th>
-              <th className="px-4 py-3 font-medium">Date de naissance</th>
               <th className="px-4 py-3 font-medium">Âge</th>
               <th className="px-4 py-3 font-medium">Dernière consultation</th>
-              <th className="px-4 py-3 font-medium">Actions</th>
+              <th className="px-4 py-3 font-medium">Date de naissance</th>
+              <th className="px-4 py-3 font-medium">CIN</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100">
             {patients.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-stone-400">
+                <td colSpan={5} className="px-4 py-8 text-center text-stone-400">
                   {q ? 'Aucun patient trouvé pour cette recherche.' : 'Aucun patient pour le moment.'}
                 </td>
               </tr>
@@ -120,18 +118,15 @@ export default async function PatientsListPage({ searchParams }: Props) {
               patients.map((p) => (
                 <tr key={p.id} className="hover:bg-stone-50">
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/dashboard/patients/${p.id}`}
-                      className="font-medium text-stone-800 hover:text-primary-600 transition-colors duration-200"
-                    >
-                      {p.fullName}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 text-stone-500">{p.nationalId || '—'}</td>
-                  <td className="px-4 py-3 text-stone-500">
-                    {p.birthDate
-                      ? new Date(p.birthDate).toLocaleDateString('fr-FR')
-                      : '—'}
+                    <div className="flex items-center gap-2">
+                      <PatientActionsDropdown patientId={p.id} patientName={p.fullName} />
+                      <Link
+                        href={`/dashboard/patients/${p.id}`}
+                        className="font-medium text-stone-800 hover:text-primary-600 transition-colors duration-200"
+                      >
+                        {p.fullName}
+                      </Link>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-stone-500">
                     {p.birthDate ? computeAge(p.birthDate) : '—'}
@@ -141,17 +136,12 @@ export default async function PatientsListPage({ searchParams }: Props) {
                       ? new Date(lastConsultations[p.id]).toLocaleDateString('fr-FR')
                       : '—'}
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <Link
-                        href={`/dashboard/patients/${p.id}/edit`}
-                        className="rounded-lg px-2 py-1 text-xs font-medium text-primary-600 transition-colors duration-200 hover:bg-primary-50 hover:text-primary-700"
-                      >
-                        Éditer
-                      </Link>
-                      <PatientDeleteButton patientId={p.id} patientName={p.fullName} />
-                    </div>
+                  <td className="px-4 py-3 text-stone-500">
+                    {p.birthDate
+                      ? new Date(p.birthDate).toLocaleDateString('fr-FR')
+                      : '—'}
                   </td>
+                  <td className="px-4 py-3 text-stone-500">{p.nationalId || '—'}</td>
                 </tr>
               ))
             )}

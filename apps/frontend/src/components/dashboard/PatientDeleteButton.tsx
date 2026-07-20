@@ -36,17 +36,17 @@ export default function PatientDeleteButton({ patientId, patientName }: Props) {
 
   if (confirming) {
     return (
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 px-3 py-2">
         <button
           onClick={handleDelete}
           disabled={deleting}
-          className="text-xs font-medium text-red-600 hover:text-red-700 disabled:opacity-50"
+          className="text-sm font-medium text-red-600 hover:text-red-700 disabled:opacity-50"
         >
-          {deleting ? '…' : 'Confirmer'}
+          {deleting ? '…' : 'Confirmer ?'}
         </button>
         <button
           onClick={() => { setConfirming(false); setError('') }}
-          className="text-xs text-stone-400 hover:text-stone-600"
+          className="text-sm text-stone-400 hover:text-stone-600"
         >
           Annuler
         </button>
@@ -58,10 +58,9 @@ export default function PatientDeleteButton({ patientId, patientName }: Props) {
   return (
     <button
       onClick={() => setConfirming(true)}
-      title={`Supprimer ${patientName}`}
-      className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium text-stone-500 transition-colors duration-200 hover:bg-red-50 hover:text-red-600"
+      className="flex w-full items-center gap-2 px-3 py-2 text-sm text-stone-700 transition-colors duration-200 hover:bg-stone-50"
     >
-      <Trash2 className="size-3" />
+      <Trash2 className="size-3.5" />
       Supprimer
     </button>
   )
