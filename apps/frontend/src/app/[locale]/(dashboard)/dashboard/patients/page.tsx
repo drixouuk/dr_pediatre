@@ -1,6 +1,7 @@
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
+import PatientDeleteButton from '@/components/dashboard/PatientDeleteButton'
 
 type Patient = {
   id: string
@@ -8,6 +9,12 @@ type Patient = {
   nationalId?: string
   medicalNotes?: string
   updatedAt: string
+}
+
+type Consultation = {
+  id: string
+  patient: string | { id: string }
+  date: string
 }
 
 type Props = {
@@ -29,6 +36,24 @@ export default async function PatientsListPage({ searchParams }: Props) {
 
   const data = await fetchCMS<{ docs: Patient[] }>(apiPath, { revalidate: 0 })
   const patients = data?.docs ?? []
+
+  const patientIds = patients.map(p => p.id)
+  const lastConsultations: Record<string, string> = {}
+
+  if (patientIds.length > 0) {
+    const inParams = patientIds.map(id => `where[patient][in]=${id}`).join('&')
+    const consPath = `/api/consultations?where[tenant][equals]=${tenantId}&${inParams}&sort=-date&depth=0&limit=${patientIds.length}`
+    const consData = await fetchCMS<{ docs: Consultation[] }>(consPath, { revalidate: 0 })
+    const consultations = consData?.docs ?? []
+
+    for (const c of consultations) {
+      const pid = typeof c.patient === 'object' ? c.patient.id : c.patient
+      const existing = lastConsultations[pid]
+      if (!existing || c.date > existing) {
+        lastConsultations[pid] = c.date
+      }
+    }
+  }
 
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
@@ -74,6 +99,7 @@ export default async function PatientsListPage({ searchParams }: Props) {
             <tr>
               <th className="px-4 py-3 font-medium">Nom</th>
               <th className="px-4 py-3 font-medium">CIN</th>
+              <th className="px-4 py-3 font-medium">Dernière consultation</th>
               <th className="px-4 py-3 font-medium">Dernier accès</th>
               <th className="px-4 py-3 font-medium">Actions</th>
             </tr>
@@ -81,25 +107,40 @@ export default async function PatientsListPage({ searchParams }: Props) {
           <tbody className="divide-y divide-stone-100">
             {patients.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-stone-400">
+                <td colSpan={5} className="px-4 py-8 text-center text-stone-400">
                   {q ? 'Aucun patient trouvé pour cette recherche.' : 'Aucun patient pour le moment.'}
                 </td>
               </tr>
             ) : (
               patients.map((p) => (
                 <tr key={p.id} className="hover:bg-stone-50">
-                  <td className="px-4 py-3 font-medium text-stone-800">{p.fullName}</td>
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/dashboard/patients/${p.id}`}
+                      className="font-medium text-stone-800 hover:text-primary-600 transition-colors duration-200"
+                    >
+                      {p.fullName}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 text-stone-500">{p.nationalId || '—'}</td>
+                  <td className="px-4 py-3 text-stone-500">
+                    {lastConsultations[p.id]
+                      ? new Date(lastConsultations[p.id]).toLocaleDateString('fr-FR')
+                      : '—'}
+                  </td>
                   <td className="px-4 py-3 text-stone-500">
                     {new Date(p.updatedAt).toLocaleDateString('fr-FR')}
                   </td>
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/dashboard/patients/${p.id}`}
-                      className="text-sm font-medium text-primary-600 hover:text-primary-700"
-                    >
-                      Voir
-                    </Link>
+                    <div className="flex items-center gap-1">
+                      <Link
+                        href={`/dashboard/patients/${p.id}`}
+                        className="rounded-lg px-2 py-1 text-xs font-medium text-primary-600 transition-colors duration-200 hover:bg-primary-50 hover:text-primary-700"
+                      >
+                        Éditer
+                      </Link>
+                      <PatientDeleteButton patientId={p.id} patientName={p.fullName} />
+                    </div>
                   </td>
                 </tr>
               ))

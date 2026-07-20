@@ -17,6 +17,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   return proxyRequest(request, 'PATCH', path)
 }
 
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
+  const { path } = await params
+  return proxyRequest(request, 'DELETE', path)
+}
+
 async function proxyRequest(request: NextRequest, method: string, path: string[]) {
   const token = request.cookies.get('payload-token')?.value
   if (!token) {
