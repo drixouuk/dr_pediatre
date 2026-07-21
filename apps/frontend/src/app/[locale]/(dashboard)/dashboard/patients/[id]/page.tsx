@@ -6,6 +6,7 @@ import AddToQueueButton from './AddToQueueButton'
 import ConsultationForm from './ConsultationForm'
 import PrescriptionForm from './PrescriptionForm'
 import DocumentUpload from './DocumentUpload'
+import GrowthChart from './GrowthChart'
 
 import { computeAge } from '@/lib/age'
 
@@ -23,7 +24,7 @@ type Patient = {
   updatedAt: string
 }
 
-type Consultation = {
+export type Consultation = {
   id: string
   date: string
   motif?: string | null
@@ -121,6 +122,10 @@ export default async function PatientDetailPage({ params }: Props) {
       <div className="mb-8">
         <PatientNotesForm patientId={patient.id} initialNotes={patient.medicalNotes || ''} />
       </div>
+
+      {canViewClinical && (
+        <GrowthChart consultations={consultations} />
+      )}
 
       {canViewClinical && (
         <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
