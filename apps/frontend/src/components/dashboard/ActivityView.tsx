@@ -38,8 +38,7 @@ export default function ActivityView({
     { value: 'year', label: 'Année' },
   ]
 
-  const hasData = chartData.length > 0
-  const totalBars = chartData.reduce((s, d) => s + d.consultations, 0)
+  const hasData = chartData.some((d) => d.consultations > 0 || d.newPatients > 0)
 
   return (
     <div>
@@ -86,7 +85,7 @@ export default function ActivityView({
         <p className="text-sm text-stone-400">Aucune donnée pour cette période</p>
       )}
 
-      {hasData && totalBars > 0 && (
+      {hasData && (
         <div className="mb-6">
           <h3 className="mb-2 font-heading text-sm font-semibold text-stone-700">Consultations par jour</h3>
           <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
