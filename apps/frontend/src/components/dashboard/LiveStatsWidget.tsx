@@ -28,9 +28,9 @@ export default async function LiveStatsWidget({ clickable }: Props) {
 
   const cards: StatCard[] = [
     { label: 'Programmés', count: scheduled?.totalDocs ?? 0, icon: <Calendar className="size-5" />, color: 'text-primary-600 bg-primary-50' },
-    { label: 'Salle d\'attente', count: waiting?.totalDocs ?? 0, icon: <Users className="size-5" />, color: 'text-warning bg-warning/10' },
+    { label: 'Salle d\'attente', count: waiting?.totalDocs ?? 0, icon: <Users className="size-5" />, color: 'text-primary-700 bg-primary-50' },
     { label: 'En consultation', count: inConsultation?.totalDocs ?? 0, icon: <ClockArrowDown className="size-5" />, color: 'text-primary-700 bg-primary-50' },
-    { label: 'Terminés aujourd\'hui', count: completed?.totalDocs ?? 0, icon: <CheckCheck className="size-5" />, color: 'text-stone-600 bg-stone-100' },
+    { label: 'Terminés aujourd\'hui', count: completed?.totalDocs ?? 0, icon: <CheckCheck className="size-5" />, color: 'text-primary-600 bg-primary-50' },
   ]
 
   const inner = (card: StatCard) => (

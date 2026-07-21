@@ -40,7 +40,7 @@ export default async function QueuePreview() {
             return (
               <div key={item.id} className="flex items-center gap-3 px-4 py-2.5">
                 <div className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold ${
-                  girl ? 'border-cta/30 bg-cta/10 text-cta-600' : 'border-primary/30 bg-primary/10 text-primary-700'
+                  girl ? 'border-pink-300 bg-pink-100 text-pink-700' : 'border-sky-300 bg-sky-100 text-sky-700'
                 }`}>
                   {initial}
                 </div>
