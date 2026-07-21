@@ -2,6 +2,8 @@ import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
 import PatientActionsDropdown from '@/components/dashboard/PatientActionsDropdown'
+import ImportPatientsButton from './ImportPatientsButton'
+import { Download } from 'lucide-react'
 import { computeAge } from '@/lib/age'
 
 type Patient = {
@@ -96,7 +98,19 @@ export default async function PatientsListPage({ searchParams }: Props) {
         </div>
       </form>
 
-      <div className="mt-4 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+      <div className="mt-4 mb-4 flex flex-wrap items-center gap-2">
+        <a
+          href="/api/patients/export"
+          download
+          className="flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors duration-200 hover:bg-stone-50"
+        >
+          <Download className="size-4" />
+          Exporter en CSV
+        </a>
+        <ImportPatientsButton />
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 text-xs uppercase text-stone-500">
             <tr>

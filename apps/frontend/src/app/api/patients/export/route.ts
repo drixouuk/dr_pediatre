@@ -1,0 +1,40 @@
+import { NextResponse } from 'next/server'
+import { fetchCMS } from '@/lib/cms-fetch'
+
+type Patient = {
+  fullName: string
+  gender?: string | null
+  birthDate?: string | null
+  nationalId?: string | null
+}
+
+function esc(val: string | null | undefined): string {
+  if (!val) return ''
+  const s = String(val)
+  if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+    return `"${s.replace(/"/g, '""')}"`
+  }
+  return s
+}
+
+export async function GET() {
+  const data = await fetchCMS<{ docs: Patient[] }>(
+    '/api/patients?limit=10000&depth=0&sort=fullName',
+  )
+  const patients = data?.docs ?? []
+
+  const header = 'fullName,gender,birthDate,nationalId'
+  const rows = patients.map(
+    (p) =>
+      `${esc(p.fullName)},${esc(p.gender)},${esc(p.birthDate?.slice(0, 10))},${esc(p.nationalId)}`,
+  )
+  const csv = [header, ...rows].join('\r\n')
+
+  return new Response(csv, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/csv; charset=utf-8',
+      'Content-Disposition': 'attachment; filename="patients.csv"',
+    },
+  })
+}
