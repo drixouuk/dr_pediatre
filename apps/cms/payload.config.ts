@@ -19,6 +19,8 @@ import { Consultations } from "./src/collections/Consultations";
 import { Prescriptions } from "./src/collections/Prescriptions";
 import { Documents } from "./src/collections/Documents";
 import { SystemAlerts } from "./src/collections/SystemAlerts";
+import { VaccineSchedule } from "./src/collections/VaccineSchedule";
+import { Vaccinations } from "./src/collections/Vaccinations";
 import { seed } from "./src/seed";
 import { resolveTenant } from "./src/endpoints/resolve-tenant";
 
@@ -48,6 +50,8 @@ export default buildConfig({
     Consultations,
     Prescriptions,
     Documents,
+    VaccineSchedule,
+    Vaccinations,
   ],
   db: postgresAdapter({
     pool: {

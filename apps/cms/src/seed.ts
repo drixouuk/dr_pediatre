@@ -583,6 +583,61 @@ async function seedServices(payload: Payload, tenantId: any) {
   console.log("✅ 6 services seeded");
 }
 
+/***
+ * Calendrier vaccinal (VaccineSchedule)
+ *
+ * ⚠️ ATTENTION — DONNÉES À VÉRIFIER PAR UN MÉDECIN
+ * Ces dates et doses sont basées sur une recherche sur le calendrier vaccinal
+ * marocain (PNI) mais peuvent contenir des erreurs, des omissions, ou des
+ * différences avec la pratique réelle de Dr. Guinane.
+ *
+ * Avant toute utilisation avec des patients réels, Dr. Guinane DOIT :
+ * 1. Vérifier chaque entrée dans l'admin Payload (collections → VaccineSchedule)
+ * 2. Corriger/ajouter/supprimer des entrées selon son protocole
+ * 3. Confirmer que le calendrier correspond à sa pratique
+ *
+ * Ces données NE SONT PAS une vérité absolue — elles amorcent juste le
+ * référentiel pour qu'il soit éditable dans l'admin.
+ */
+async function seedVaccineSchedule(payload: Payload) {
+  const existing = await (payload as any).find({
+    collection: "vaccine-schedule",
+    limit: 1,
+  });
+
+  if (existing.docs.length > 0) {
+    console.log("→ Vaccine schedule already exists, skipping");
+    return;
+  }
+
+  const entries = [
+    { vaccineName: "BCG", doseLabel: "Dose unique", ageMonths: 0, order: 1 },
+    { vaccineName: "Hépatite B", doseLabel: "Dose 1", ageMonths: 0, order: 2 },
+    { vaccineName: "Pentavalent DTC-Hib-HepB", doseLabel: "Dose 1", ageMonths: 2, order: 3 },
+    { vaccineName: "VPI", doseLabel: "Dose 1", ageMonths: 2, order: 4 },
+    { vaccineName: "Pneumocoque", doseLabel: "Dose 1", ageMonths: 2, order: 5 },
+    { vaccineName: "Pentavalent DTC-Hib-HepB", doseLabel: "Dose 2", ageMonths: 3, order: 6 },
+    { vaccineName: "VPI", doseLabel: "Dose 2", ageMonths: 3, order: 7 },
+    { vaccineName: "Pentavalent DTC-Hib-HepB", doseLabel: "Dose 3", ageMonths: 4, order: 8 },
+    { vaccineName: "VPI", doseLabel: "Dose 3", ageMonths: 4, order: 9 },
+    { vaccineName: "Pneumocoque", doseLabel: "Rappel", ageMonths: 4, order: 10 },
+    { vaccineName: "Rougeole / ROR", doseLabel: "Dose 1", ageMonths: 9, order: 11 },
+    { vaccineName: "ROR", doseLabel: "Dose 2", ageMonths: 12, order: 12 },
+    { vaccineName: "Rappel DTC-Polio", doseLabel: "Rappel 18 mois", ageMonths: 18, order: 13 },
+    { vaccineName: "Pneumocoque", doseLabel: "Rappel 18 mois", ageMonths: 18, order: 14 },
+    { vaccineName: "HPV", doseLabel: "Dose 1", ageMonths: 132, order: 15, notes: "Filles uniquement" },
+    { vaccineName: "HPV", doseLabel: "Dose 2", ageMonths: 138, order: 16, notes: "Filles uniquement" },
+  ];
+
+  for (const entry of entries) {
+    await (payload as any).create({
+      collection: "vaccine-schedule",
+      data: entry,
+    });
+  }
+  console.log("✅ Vaccine schedule seeded (16 entries)");
+}
+
 export async function seed(payload: Payload) {
   console.log("🌱 Starting seed...");
 
@@ -593,6 +648,7 @@ export async function seed(payload: Payload) {
   await seedPracticeInfo(payload, tenant.id as any);
   await seedReviews(payload, tenant.id as any);
   await seedServices(payload, tenant.id as any);
+  await seedVaccineSchedule(payload);
 
   console.log("🎉 Seed complete");
 }

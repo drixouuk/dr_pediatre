@@ -7,6 +7,7 @@ import ConsultationForm from './ConsultationForm'
 import PrescriptionForm from './PrescriptionForm'
 import DocumentUpload from './DocumentUpload'
 import GrowthChart from './GrowthChart'
+import VaccinationRecord from '@/components/dashboard/VaccinationRecord'
 
 import { computeAge } from '@/lib/age'
 
@@ -58,6 +59,22 @@ type Document = {
   createdAt: string
 }
 
+type VaccineScheduleEntry = {
+  id: string
+  vaccineName: string
+  doseLabel: string
+  ageMonths: number
+  order?: number | null
+  notes?: string | null
+}
+
+type VaccinationData = {
+  id: string
+  vaccineName: string
+  doseLabel: string
+  dateAdministered: string
+}
+
 type Props = {
   params: Promise<{ id: string; locale: string }>
 }
@@ -68,7 +85,7 @@ export default async function PatientDetailPage({ params }: Props) {
 
   const canViewClinical = user.roles?.includes('doctor') || user.roles?.includes('tenant_admin') || user.roles?.includes('superadmin')
 
-  const [patient, consultationsData, prescriptionsData, documentsData] = await Promise.all([
+  const [patient, consultationsData, prescriptionsData, documentsData, scheduleData, vaccinationsData] = await Promise.all([
     fetchCMS<Patient>(`/api/patients/${id}`, { revalidate: 0 }),
     canViewClinical
       ? fetchCMS<{ docs: Consultation[] }>(
@@ -88,6 +105,18 @@ export default async function PatientDetailPage({ params }: Props) {
           { revalidate: 0 },
         )
       : Promise.resolve(null),
+    canViewClinical
+      ? fetchCMS<{ docs: VaccineScheduleEntry[] }>(
+          '/api/vaccine-schedule?sort=ageMonths&limit=100&depth=0',
+          { revalidate: 60 },
+        )
+      : Promise.resolve(null),
+    canViewClinical
+      ? fetchCMS<{ docs: VaccinationData[] }>(
+          `/api/vaccinations?where[patient][equals]=${id}&depth=0&limit=100`,
+          { revalidate: 0 },
+        )
+      : Promise.resolve(null),
   ])
 
   if (!patient) notFound()
@@ -95,6 +124,8 @@ export default async function PatientDetailPage({ params }: Props) {
   const consultations = consultationsData?.docs ?? []
   const prescriptions = prescriptionsData?.docs ?? []
   const documents = documentsData?.docs ?? []
+  const vaccineSchedule = scheduleData?.docs ?? []
+  const patientVaccinations = vaccinationsData?.docs ?? []
 
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
@@ -125,6 +156,16 @@ export default async function PatientDetailPage({ params }: Props) {
 
       {canViewClinical && (
         <GrowthChart consultations={consultations} />
+      )}
+
+      {canViewClinical && (
+        <VaccinationRecord
+          patientId={patient.id}
+          schedule={vaccineSchedule}
+          vaccinations={patientVaccinations}
+          patientGender={patient.gender}
+          patientBirthDate={patient.birthDate}
+        />
       )}
 
       {canViewClinical && (
