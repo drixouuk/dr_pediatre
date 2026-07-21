@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Link } from '@/i18n/navigation'
 import { Clock, ArrowRight, Check } from 'lucide-react'
 
 type Patient = {
@@ -126,8 +127,8 @@ export default function WaitingRoomList() {
             const patient = item.patient
             const genderColor =
               patient?.gender === 'girl'
-                ? 'border-cta/30 bg-cta/10 text-cta-600'
-                : 'border-primary/30 bg-primary/10 text-primary-700'
+                ? 'border-pink-300 bg-pink-100 text-pink-700'
+                : 'border-sky-300 bg-sky-100 text-sky-700'
 
             const next = transitionMap[item.status]
 
@@ -138,9 +139,16 @@ export default function WaitingRoomList() {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-stone-800">
-                    {patient?.fullName || '—'}
-                  </p>
+                  {patient?.id ? (
+                    <Link
+                      href={`/dashboard/patients/${patient.id}`}
+                      className="truncate text-sm font-semibold text-stone-800 hover:text-primary-600 transition-colors duration-200"
+                    >
+                      {patient.fullName || '—'}
+                    </Link>
+                  ) : (
+                    <p className="truncate text-sm font-semibold text-stone-800">{patient?.fullName || '—'}</p>
+                  )}
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-stone-500">
                     {patient?.birthDate && <span>{computeAge(patient.birthDate)}</span>}
                     <span className={`inline-block rounded px-1.5 py-0.5 font-medium ${

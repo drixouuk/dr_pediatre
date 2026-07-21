@@ -30,27 +30,29 @@ function formatISO(d: Date): string {
   return d.toISOString()
 }
 
-function formatShort(d: Date): string {
+function formatKey(d: Date, period: Period): string {
+  if (period === 'year') return `${d.getMonth() + 1}/${d.getFullYear()}`
   return `${d.getDate()}/${d.getMonth() + 1}`
 }
 
-function groupByDay<T extends Record<string, unknown>>(
+function groupByPeriod<T extends Record<string, unknown>>(
   items: T[],
   dateField: keyof T,
+  period: Period,
 ): { date: string; count: number }[] {
   const map = new Map<string, number>()
   for (const item of items) {
     const raw = item[dateField]
     const d = new Date(raw as string)
-    const key = formatShort(d)
+    const key = formatKey(d, period)
     map.set(key, (map.get(key) || 0) + 1)
   }
   return Array.from(map.entries())
     .map(([date, count]) => ({ date, count }))
     .sort((a, b) => {
-      const [da, ma] = a.date.split('/').map(Number)
-      const [db, mb] = b.date.split('/').map(Number)
-      return da + ma * 31 - (db + mb * 31)
+      const [da, ma, ya = 0] = a.date.split('/').map(Number)
+      const [db, mb, yb = 0] = b.date.split('/').map(Number)
+      return (ya || new Date().getFullYear()) * 12 + ma - ((yb || new Date().getFullYear()) * 12 + mb) || da - db
     })
 }
 
@@ -102,8 +104,8 @@ export default async function ActivityPage({ searchParams }: Props) {
   const patients = patientsData?.docs ?? []
   const consultations = consultationsData?.docs ?? []
 
-  const consultationsByDay = groupByDay(consultations, 'date')
-  const patientsByDay = groupByDay(patients, 'createdAt')
+  const consultationsByDay = groupByPeriod(consultations, 'date', period)
+  const patientsByDay = groupByPeriod(patients, 'createdAt', period)
   const chartData = mergeChartData(consultationsByDay, patientsByDay)
 
   return (

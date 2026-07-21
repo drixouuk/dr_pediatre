@@ -12,7 +12,7 @@ type Props = {
 }
 
 const PRIMARY = '#0F766E'
-const PRIMARY_LIGHT = '#99F6E4'
+const SECONDARY = '#D97706'
 const LIGHT_GRID = '#E7E5E4'
 const LIGHT_TEXT = '#A8A29E'
 
@@ -99,7 +99,7 @@ export default function ActivityView({
                 />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
                 <Bar dataKey="consultations" name="Consultations" fill={PRIMARY} radius={[4, 4, 0, 0]} />
-                <Bar dataKey="newPatients" name="Nouveaux patients" fill={PRIMARY_LIGHT} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="newPatients" name="Nouveaux patients" fill={SECONDARY} radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
