@@ -51,7 +51,7 @@ export default async function Sidebar({ user }: Props) {
     { label: 'Patients', href: '/dashboard/patients', icon: <Users className="size-4" /> },
     { label: 'File d\'attente', href: '/dashboard/queue', icon: <ListOrdered className="size-4" /> },
     { label: 'Activité', href: '/dashboard/activity', icon: <BarChart3 className="size-4" /> },
-    { label: 'Rendez-vous', href: '#', icon: <Calendar className="size-4" />, disabled: true },
+    { label: 'Rendez-vous', href: '/dashboard/rendez-vous', icon: <Calendar className="size-4" /> },
   ]
 
   const adminItems: NavItem[] = []
