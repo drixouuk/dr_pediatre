@@ -103,6 +103,7 @@
       "periodDay": "Day",
       "periodWeek": "Week",
       "periodMonth": "Month",
+      "periodYear": "Year",
       "newPatients": "New patients",
       "consultationsDone": "Consultations done",
       "consultationsChart": "Consultations per day",

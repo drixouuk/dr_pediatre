@@ -14,6 +14,9 @@ function getStartDate(period: string): Date {
   if (period === 'month') {
     return new Date(now.getFullYear(), now.getMonth(), 1)
   }
+  if (period === 'year') {
+    return new Date(now.getFullYear(), 0, 1)
+  }
   // week: start from Monday
   const day = now.getDay()
   const diff = day === 0 ? 6 : day - 1
@@ -51,9 +54,35 @@ function groupByDay<T extends Record<string, unknown>>(
     })
 }
 
+type Period = 'day' | 'week' | 'month' | 'year'
+
+function mergeChartData(
+  consultations: { date: string; count: number }[],
+  patients: { date: string; count: number }[],
+): { date: string; consultations: number; newPatients: number }[] {
+  const map = new Map<string, { consultations: number; newPatients: number }>()
+  for (const c of consultations) {
+    const entry = map.get(c.date) || { consultations: 0, newPatients: 0 }
+    entry.consultations = c.count
+    map.set(c.date, entry)
+  }
+  for (const p of patients) {
+    const entry = map.get(p.date) || { consultations: 0, newPatients: 0 }
+    entry.newPatients = p.count
+    map.set(p.date, entry)
+  }
+  return Array.from(map.entries())
+    .map(([date, vals]) => ({ date, ...vals }))
+    .sort((a, b) => {
+      const [da, ma] = a.date.split('/').map(Number)
+      const [db, mb] = b.date.split('/').map(Number)
+      return da + ma * 31 - (db + mb * 31)
+    })
+}
+
 export default async function ActivityPage({ searchParams }: Props) {
   const { period: periodParam } = await searchParams
-  const period = (['day', 'week', 'month'] as const).includes(periodParam as any) ? (periodParam as 'day' | 'week' | 'month') : 'week'
+  const period: Period = (['day', 'week', 'month', 'year'] as const).includes(periodParam as any) ? (periodParam as Period) : 'week'
   const user = await requireAuth()
   const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
   const startDate = getStartDate(period)
@@ -61,17 +90,21 @@ export default async function ActivityPage({ searchParams }: Props) {
 
   const [patientsData, consultationsData] = await Promise.all([
     fetchCMS<{ docs: { id: string; createdAt: string }[] }>(
-      `/api/patients?where[tenant][equals]=${tenantId}&where[createdAt][greater_than_equal]=${isoStart}&limit=500&depth=0`,
+      `/api/patients?where[tenant][equals]=${tenantId}&where[createdAt][greater_than_equal]=${isoStart}&limit=5000&depth=0`,
       { revalidate: 0 },
     ),
     fetchCMS<{ docs: { id: string; date: string }[] }>(
-      `/api/consultations?where[tenant][equals]=${tenantId}&where[date][greater_than_equal]=${isoStart}&limit=500&depth=0`,
+      `/api/consultations?where[tenant][equals]=${tenantId}&where[date][greater_than_equal]=${isoStart}&limit=5000&depth=0`,
       { revalidate: 0 },
     ),
   ])
 
   const patients = patientsData?.docs ?? []
   const consultations = consultationsData?.docs ?? []
+
+  const consultationsByDay = groupByDay(consultations, 'date')
+  const patientsByDay = groupByDay(patients, 'createdAt')
+  const chartData = mergeChartData(consultationsByDay, patientsByDay)
 
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
@@ -81,8 +114,7 @@ export default async function ActivityPage({ searchParams }: Props) {
           period={period}
           newPatients={patients.length}
           consultationsDone={consultations.length}
-          consultationsByDay={groupByDay(consultations, 'date')}
-          patientsByDay={groupByDay(patients, 'createdAt')}
+          chartData={chartData}
         />
       </div>
     </div>

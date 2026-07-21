@@ -1,19 +1,18 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import { UserPlus, Stethoscope } from 'lucide-react'
 
 type Props = {
-  period: 'day' | 'week' | 'month'
+  period: 'day' | 'week' | 'month' | 'year'
   newPatients: number
   consultationsDone: number
-  consultationsByDay: { date: string; count: number }[]
-  patientsByDay: { date: string; count: number }[]
+  chartData: { date: string; consultations: number; newPatients: number }[]
 }
 
 const PRIMARY = '#0F766E'
-const SECONDARY = '#D97706'
+const PRIMARY_LIGHT = '#99F6E4'
 const LIGHT_GRID = '#E7E5E4'
 const LIGHT_TEXT = '#A8A29E'
 
@@ -21,8 +20,7 @@ export default function ActivityView({
   period,
   newPatients,
   consultationsDone,
-  consultationsByDay,
-  patientsByDay,
+  chartData,
 }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -37,9 +35,11 @@ export default function ActivityView({
     { value: 'day', label: 'Jour' },
     { value: 'week', label: 'Semaine' },
     { value: 'month', label: 'Mois' },
+    { value: 'year', label: 'Année' },
   ]
 
-  const hasChartData = consultationsByDay.length > 0 || patientsByDay.length > 0
+  const hasData = chartData.length > 0
+  const totalBars = chartData.reduce((s, d) => s + d.consultations, 0)
 
   return (
     <div>
@@ -82,39 +82,26 @@ export default function ActivityView({
         </div>
       </div>
 
-      {!hasChartData && (
+      {!hasData && (
         <p className="text-sm text-stone-400">Aucune donnée pour cette période</p>
       )}
 
-      {consultationsByDay.length > 0 && (
+      {hasData && totalBars > 0 && (
         <div className="mb-6">
           <h3 className="mb-2 font-heading text-sm font-semibold text-stone-700">Consultations par jour</h3>
           <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
             <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={consultationsByDay} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
+              <BarChart data={chartData} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke={LIGHT_GRID} />
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: LIGHT_TEXT }} />
                 <YAxis tick={{ fontSize: 11, fill: LIGHT_TEXT }} width={30} allowDecimals={false} />
-                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }} />
-                <Bar dataKey="count" fill={PRIMARY} radius={[4, 4, 0, 0]} />
+                <Tooltip
+                  contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }}
+                />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Bar dataKey="consultations" name="Consultations" fill={PRIMARY} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="newPatients" name="Nouveaux patients" fill={PRIMARY_LIGHT} radius={[4, 4, 0, 0]} />
               </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      )}
-
-      {patientsByDay.length > 0 && (
-        <div>
-          <h3 className="mb-2 font-heading text-sm font-semibold text-stone-700">Nouveaux patients par jour</h3>
-          <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={patientsByDay} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke={LIGHT_GRID} />
-                <XAxis dataKey="date" tick={{ fontSize: 11, fill: LIGHT_TEXT }} />
-                <YAxis tick={{ fontSize: 11, fill: LIGHT_TEXT }} width={30} allowDecimals={false} />
-                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }} />
-                <Line type="monotone" dataKey="count" stroke={SECONDARY} strokeWidth={2} dot={{ r: 3 }} />
-              </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
