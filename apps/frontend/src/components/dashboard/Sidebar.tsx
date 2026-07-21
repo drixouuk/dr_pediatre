@@ -1,7 +1,5 @@
 import type { PayloadUser } from '@/lib/auth'
 import { getTenantById } from '@/lib/payload'
-import { headers } from 'next/headers'
-import { Link } from '@/i18n/navigation'
 import {
   LayoutDashboard,
   Users,
@@ -12,12 +10,12 @@ import {
   ShieldAlert,
   LogOut,
 } from 'lucide-react'
+import SidebarNav from './SidebarNav'
 
 type NavItem = {
   label: string
   href: string
   icon: React.ReactNode
-  roles?: string[]
   disabled?: boolean
 }
 
@@ -26,9 +24,6 @@ type Props = {
 }
 
 export default async function Sidebar({ user }: Props) {
-  const h = await headers()
-  const currentPath = h.get('x-pathname') || ''
-
   const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
   const tenant = tenantId ? await getTenantById(tenantId) : null
 
@@ -77,15 +72,6 @@ export default async function Sidebar({ user }: Props) {
     })
   }
 
-  function isActive(href: string): boolean {
-    if (href === '#') return false
-    const localePath = '/' + currentPath.split('/').slice(2).join('/')
-    if (href === '/dashboard') {
-      return localePath === '/dashboard' || localePath === '/dashboard/'
-    }
-    return localePath.startsWith(href)
-  }
-
   return (
     <aside className="flex w-[208px] shrink-0 flex-col border-r border-cream-200 bg-cream-100">
       <div className="flex flex-col px-4 pt-6 pb-4">
@@ -99,52 +85,7 @@ export default async function Sidebar({ user }: Props) {
         )}
       </div>
 
-      <nav className="flex-1 space-y-0.5 px-3">
-        {navItems.map((item) => {
-          const active = isActive(item.href)
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                item.disabled
-                  ? 'pointer-events-none text-stone-300'
-                  : active
-                    ? 'bg-primary-50 text-primary-700'
-                    : 'text-stone-600 hover:bg-cream-200 hover:text-stone-800'
-              }`}
-              aria-disabled={item.disabled}
-              tabIndex={item.disabled ? -1 : undefined}
-            >
-              {item.icon}
-              {item.label}
-            </Link>
-          )
-        })}
-
-        {adminItems.length > 0 && (
-          <>
-            <div className="my-2 border-t border-cream-200" />
-            {adminItems.map((item) => {
-              const active = isActive(item.href)
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                    active
-                      ? 'bg-primary-50 text-primary-700'
-                      : 'text-stone-600 hover:bg-cream-200 hover:text-stone-800'
-                  }`}
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
-              )
-            })}
-          </>
-        )}
-      </nav>
+      <SidebarNav items={navItems} adminItems={adminItems} />
 
       <div className="border-t border-cream-200 px-3 py-4">
         <div className="flex items-center gap-3">
