@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { CheckCircle2, AlertCircle, Clock } from 'lucide-react'
 
 type ScheduleEntry = {
@@ -44,10 +45,10 @@ export default function VaccinationRecord({
   patientGender,
   patientBirthDate,
 }: Props) {
+  const router = useRouter()
   const [activeForm, setActiveForm] = useState<string | null>(null)
   const [dateValue, setDateValue] = useState(new Date().toISOString().slice(0, 10))
   const [saving, setSaving] = useState(false)
-  const [refreshKey, setRefreshKey] = useState(0)
 
   if (!patientBirthDate) {
     return (
@@ -85,7 +86,7 @@ export default function VaccinationRecord({
       })
       if (res.ok) {
         setActiveForm(null)
-        setRefreshKey((k) => k + 1)
+        router.refresh()
       }
     } catch {
       // silent
@@ -103,7 +104,7 @@ export default function VaccinationRecord({
   }
 
   return (
-    <div className="mb-8" key={refreshKey}>
+    <div className="mb-8">
       <h3 className="mb-3 font-heading text-lg font-semibold text-stone-800">Carnet vaccinal</h3>
       <p className="mb-3 text-xs text-stone-400">
         Âge du patient : {Math.floor(ageMonths / 12)} ans {ageMonths % 12} mois
