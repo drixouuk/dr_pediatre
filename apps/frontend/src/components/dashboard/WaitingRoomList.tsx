@@ -126,8 +126,8 @@ export default function WaitingRoomList() {
             const patient = item.patient
             const genderColor =
               patient?.gender === 'girl'
-                ? 'border-pink-300 bg-pink-100 text-pink-700'
-                : 'border-sky-300 bg-sky-100 text-sky-700'
+                ? 'border-cta/30 bg-cta/10 text-cta-600'
+                : 'border-primary/30 bg-primary/10 text-primary-700'
 
             const next = transitionMap[item.status]
 
@@ -143,7 +143,12 @@ export default function WaitingRoomList() {
                   </p>
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-stone-500">
                     {patient?.birthDate && <span>{computeAge(patient.birthDate)}</span>}
-                    <span className="inline-block rounded bg-stone-100 px-1.5 py-0.5 font-medium text-stone-600">
+                    <span className={`inline-block rounded px-1.5 py-0.5 font-medium ${
+                      item.visitReason === 'controle' ? 'bg-info/10 text-info' :
+                      item.visitReason === 'vaccin' ? 'bg-secondary/10 text-secondary-700' :
+                      item.visitReason === 'urgence' ? 'bg-error/10 text-error' :
+                      'bg-stone-100 text-stone-700'
+                    }`}>
                       {visitReasonLabel(item.visitReason)}
                     </span>
                     {item.arrivalTime && (
@@ -155,7 +160,7 @@ export default function WaitingRoomList() {
                   </div>
                 </div>
 
-                <span className={`hidden shrink-0 rounded-full px-2 py-0.5 text-xs font-medium sm:inline-block ${item.status === 'in_consultation' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
+                <span className={`hidden shrink-0 rounded-full px-2 py-0.5 text-xs font-medium sm:inline-block ${item.status === 'in_consultation' ? 'bg-primary/10 text-primary-700 border border-primary/20' : 'bg-warning/10 text-warning border border-warning/20'}`}>
                   {statusLabels[item.status]}
                 </span>
 

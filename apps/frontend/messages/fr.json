@@ -68,5 +68,46 @@
   },
   "reviews": {
     "title": "Ce que disent nos patients"
+  },
+  "dashboard": {
+    "overview": "Vue d'ensemble",
+    "queue": "File d'attente",
+    "activity": "Activité",
+    "welcome": "Bonjour, {name}",
+    "searchPatient": "Rechercher un patient (nom ou CIN)...",
+    "quickLinks": "Accès rapides",
+    "patients": "Patients",
+    "auditLogs": "Registre d'audit",
+    "systemAlerts": "Alertes système",
+    "stats": {
+      "scheduled": "Programmés",
+      "waiting": "Salle d'attente",
+      "inConsultation": "En consultation",
+      "completedToday": "Terminés aujourd'hui"
+    },
+    "queuePreview": {
+      "title": "En attente",
+      "empty": "Aucun patient en attente",
+      "viewAll": "Voir toute la file d'attente"
+    },
+    "vaccinationWidget": {
+      "title": "Rappels vaccinaux",
+      "allUpToDate": "Tous les patients sont à jour",
+      "noPatients": "Aucun patient enregistré",
+      "overdue": "En retard",
+      "upcoming": "À venir",
+      "vaccines": "vaccins"
+    },
+    "activity": {
+      "title": "Activité",
+      "periodDay": "Jour",
+      "periodWeek": "Semaine",
+      "periodMonth": "Mois",
+      "newPatients": "Nouveaux patients",
+      "consultationsDone": "Consultations réalisées",
+      "consultationsChart": "Consultations par jour",
+      "patientsChart": "Nouveaux patients par jour",
+      "noData": "Aucune donnée pour cette période"
+    }
   }
 }

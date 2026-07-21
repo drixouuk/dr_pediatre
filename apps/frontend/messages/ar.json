@@ -68,5 +68,46 @@
   },
   "reviews": {
     "title": "ماذا يقول مرضانا"
+  },
+  "dashboard": {
+    "overview": "نظرة عامة",
+    "queue": "قائمة الانتظار",
+    "activity": "النشاط",
+    "welcome": "مرحباً، {name}",
+    "searchPatient": "بحث عن مريض (الاسم أو رقم التعريف)...",
+    "quickLinks": "روابط سريعة",
+    "patients": "المرضى",
+    "auditLogs": "سجل التدقيق",
+    "systemAlerts": "تنبيهات النظام",
+    "stats": {
+      "scheduled": "مجدول",
+      "waiting": "قاعة الانتظار",
+      "inConsultation": "في الاستشارة",
+      "completedToday": "منتهٍ اليوم"
+    },
+    "queuePreview": {
+      "title": "في الانتظار",
+      "empty": "لا يوجد مرضى في الانتظار",
+      "viewAll": "عرض قائمة الانتظار كاملة"
+    },
+    "vaccinationWidget": {
+      "title": "تذكير بالتطعيمات",
+      "allUpToDate": "جميع المرضى محدثون",
+      "noPatients": "لا يوجد مرضى مسجلون",
+      "overdue": "متأخر",
+      "upcoming": "قادم",
+      "vaccines": "تطعيمات"
+    },
+    "activity": {
+      "title": "النشاط",
+      "periodDay": "يوم",
+      "periodWeek": "أسبوع",
+      "periodMonth": "شهر",
+      "newPatients": "مرضى جدد",
+      "consultationsDone": "استشارات منجزة",
+      "consultationsChart": "الاستشارات يومياً",
+      "patientsChart": "مرضى جدد يومياً",
+      "noData": "لا توجد بيانات لهذه الفترة"
+    }
   }
 }

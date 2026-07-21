@@ -5,7 +5,8 @@ import { Link } from '@/i18n/navigation'
 import {
   LayoutDashboard,
   Users,
-  Clock,
+  ListOrdered,
+  BarChart3,
   Calendar,
   FileText,
   ShieldAlert,
@@ -53,7 +54,8 @@ export default async function Sidebar({ user }: Props) {
   const navItems: NavItem[] = [
     { label: 'Vue d\'ensemble', href: '/dashboard', icon: <LayoutDashboard className="size-4" /> },
     { label: 'Patients', href: '/dashboard/patients', icon: <Users className="size-4" /> },
-    { label: 'File d\'attente', href: '/dashboard', icon: <Clock className="size-4" /> },
+    { label: 'File d\'attente', href: '/dashboard/queue', icon: <ListOrdered className="size-4" /> },
+    { label: 'Activité', href: '/dashboard/activity', icon: <BarChart3 className="size-4" /> },
     { label: 'Rendez-vous', href: '#', icon: <Calendar className="size-4" />, disabled: true },
   ]
 
@@ -77,10 +79,11 @@ export default async function Sidebar({ user }: Props) {
 
   function isActive(href: string): boolean {
     if (href === '#') return false
+    const localePath = '/' + currentPath.split('/').slice(2).join('/')
     if (href === '/dashboard') {
-      return currentPath === `/${currentPath.split('/')[1]}/dashboard` || currentPath.endsWith('/dashboard')
+      return localePath === '/dashboard' || localePath === '/dashboard/'
     }
-    return currentPath.includes(href)
+    return localePath.startsWith(href)
   }
 
   return (

@@ -68,5 +68,46 @@
   },
   "reviews": {
     "title": "What our patients say"
+  },
+  "dashboard": {
+    "overview": "Overview",
+    "queue": "Waiting room",
+    "activity": "Activity",
+    "welcome": "Hello, {name}",
+    "searchPatient": "Search patient (name or ID)...",
+    "quickLinks": "Quick links",
+    "patients": "Patients",
+    "auditLogs": "Audit log",
+    "systemAlerts": "System alerts",
+    "stats": {
+      "scheduled": "Scheduled",
+      "waiting": "Waiting room",
+      "inConsultation": "In consultation",
+      "completedToday": "Completed today"
+    },
+    "queuePreview": {
+      "title": "Waiting",
+      "empty": "No patients waiting",
+      "viewAll": "View full waiting room"
+    },
+    "vaccinationWidget": {
+      "title": "Vaccination reminders",
+      "allUpToDate": "All patients are up to date",
+      "noPatients": "No patients registered",
+      "overdue": "Overdue",
+      "upcoming": "Upcoming",
+      "vaccines": "vaccines"
+    },
+    "activity": {
+      "title": "Activity",
+      "periodDay": "Day",
+      "periodWeek": "Week",
+      "periodMonth": "Month",
+      "newPatients": "New patients",
+      "consultationsDone": "Consultations done",
+      "consultationsChart": "Consultations per day",
+      "patientsChart": "New patients per day",
+      "noData": "No data for this period"
+    }
   }
 }

@@ -1,0 +1,124 @@
+'use client'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts'
+import { UserPlus, Stethoscope } from 'lucide-react'
+
+type Props = {
+  period: 'day' | 'week' | 'month'
+  newPatients: number
+  consultationsDone: number
+  consultationsByDay: { date: string; count: number }[]
+  patientsByDay: { date: string; count: number }[]
+}
+
+const PRIMARY = '#0F766E'
+const SECONDARY = '#D97706'
+const LIGHT_GRID = '#E7E5E4'
+const LIGHT_TEXT = '#A8A29E'
+
+export default function ActivityView({
+  period,
+  newPatients,
+  consultationsDone,
+  consultationsByDay,
+  patientsByDay,
+}: Props) {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const setPeriod = (p: string) => {
+    const params = new URLSearchParams(searchParams?.toString() || '')
+    params.set('period', p)
+    router.push(`?${params.toString()}`)
+  }
+
+  const periods = [
+    { value: 'day', label: 'Jour' },
+    { value: 'week', label: 'Semaine' },
+    { value: 'month', label: 'Mois' },
+  ]
+
+  const hasChartData = consultationsByDay.length > 0 || patientsByDay.length > 0
+
+  return (
+    <div>
+      <div className="mb-6 inline-flex rounded-lg bg-stone-100 p-0.5">
+        {periods.map((p) => (
+          <button
+            key={p.value}
+            onClick={() => setPeriod(p.value)}
+            className={`rounded-md px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
+              period === p.value ? 'bg-white text-stone-800 shadow-sm' : 'text-stone-500 hover:text-stone-700'
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mb-6 grid grid-cols-2 gap-4">
+        <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 items-center justify-center rounded-lg bg-primary-50 text-primary-700">
+              <UserPlus className="size-5" />
+            </span>
+            <div>
+              <p className="font-heading text-3xl font-bold text-stone-800">{newPatients}</p>
+              <p className="text-sm text-stone-500">Nouveaux patients</p>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 items-center justify-center rounded-lg bg-primary-50 text-primary-700">
+              <Stethoscope className="size-5" />
+            </span>
+            <div>
+              <p className="font-heading text-3xl font-bold text-stone-800">{consultationsDone}</p>
+              <p className="text-sm text-stone-500">Consultations réalisées</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {!hasChartData && (
+        <p className="text-sm text-stone-400">Aucune donnée pour cette période</p>
+      )}
+
+      {consultationsByDay.length > 0 && (
+        <div className="mb-6">
+          <h3 className="mb-2 font-heading text-sm font-semibold text-stone-700">Consultations par jour</h3>
+          <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={consultationsByDay} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={LIGHT_GRID} />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: LIGHT_TEXT }} />
+                <YAxis tick={{ fontSize: 11, fill: LIGHT_TEXT }} width={30} allowDecimals={false} />
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }} />
+                <Bar dataKey="count" fill={PRIMARY} radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
+      {patientsByDay.length > 0 && (
+        <div>
+          <h3 className="mb-2 font-heading text-sm font-semibold text-stone-700">Nouveaux patients par jour</h3>
+          <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={patientsByDay} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={LIGHT_GRID} />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: LIGHT_TEXT }} />
+                <YAxis tick={{ fontSize: 11, fill: LIGHT_TEXT }} width={30} allowDecimals={false} />
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }} />
+                <Line type="monotone" dataKey="count" stroke={SECONDARY} strokeWidth={2} dot={{ r: 3 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

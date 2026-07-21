@@ -68,5 +68,46 @@
   },
   "reviews": {
     "title": "ⴰⵔⵉⵜⵏ ⵏ ⵉⵎⵓⴷⴰⵏ ⵏⵏⵖ"
+  },
+  "dashboard": {
+    "overview": "ⵜⴰⵙⵖⵏⵉⵢⵜ ⵜⴰⵎⴰⵜⵓⵢⵜ",
+    "queue": "ⴰⴷⴷⴰⵔ ⵏ ⵓⵙⵓⵏⵓⵊ",
+    "activity": "ⴰⵏⴰⵎⵎⵓⵙ",
+    "welcome": "ⴰⵣⵓⵍ, {name}",
+    "searchPatient": "ⵔⵣⵓ ⵖⴼ ⵓⵎⵓⴷⴰⵏ (ⵉⵙⵎ ⵏⵉⵖ CIN)...",
+    "quickLinks": "ⵉⵙⵖⵏ ⵉⵏⴳⴳⵓⵔⴰ",
+    "patients": "ⵉⵎⵓⴷⴰⵏ",
+    "auditLogs": "ⴰⴷⵍⵉⵙ ⵏ ⵓⵙⵉⵔⴳ",
+    "systemAlerts": "ⵉⵏⵉⵏⵉⵡⵏ ⵏ ⵓⵏⴳⵔⴰⵡ",
+    "stats": {
+      "scheduled": "ⵉⵙⵓⵏⵏⴼⵏ",
+      "waiting": "ⴰⴷⴷⴰⵔ ⵏ ⵓⵙⵓⵏⵓⵊ",
+      "inConsultation": "ⴷⴻⴳ ⵜⵎⵙⴰⵍ",
+      "completedToday": "ⵉⵇⴰⴷⵏ ⴰⵙⵙ ⴰⴷ"
+    },
+    "queuePreview": {
+      "title": "ⴳ ⵓⵙⵓⵏⵓⵊ",
+      "empty": "ⵓⵔ ⵍⵍⴰⵏ ⵉⵎⵓⴷⴰⵏ ⴳ ⵓⵙⵓⵏⵓⵊ",
+      "viewAll": "ⵥⵕ ⵉⵎⵓⴷⴰⵏ ⵎⴰⵕⵕⴰ ⴳ ⵓⵙⵓⵏⵓⵊ"
+    },
+    "vaccinationWidget": {
+      "title": "ⴰⵙⵎⴽⵜⴰ ⵏ ⵜⵏⴼⵍⵉⵜⵉⵏ",
+      "allUpToDate": "ⵎⴰⵕⵕⴰ ⵉⵎⵓⴷⴰⵏ ⵣⴷⵉⵔⵏ",
+      "noPatients": "ⵓⵔ ⵍⵍⴰⵏ ⵉⵎⵓⴷⴰⵏ ⵢⴻⵜⵜⵡⴰⵔⴰⵊⵎⵏ",
+      "overdue": "ⵉⵣⵔⵉ ⵓⴽⵓⴷ",
+      "upcoming": "ⵉⴷⵖⴰⵔⵏ",
+      "vaccines": "ⵜⵉⵏⴼⵍⵉⵜⵉⵏ"
+    },
+    "activity": {
+      "title": "ⴰⵏⴰⵎⵎⵓⵙ",
+      "periodDay": "ⴰⵙⵙ",
+      "periodWeek": "ⵉⵎⴰⵍⴰⵙⵙⵏ",
+      "periodMonth": "ⴰⵢⵢⵓⵔ",
+      "newPatients": "ⵉⵎⵓⴷⴰⵏ ⵉⵎⴰⵢⵏⵓⵜⵏ",
+      "consultationsDone": "ⵜⵉⵎⵙⴰⵍ ⵢⴻⵜⵜⵡⴰⵢⵏ",
+      "consultationsChart": "ⵜⵉⵎⵙⴰⵍ ⵙ ⵡⴰⵙⵙ",
+      "patientsChart": "ⵉⵎⵓⴷⴰⵏ ⵉⵎⴰⵢⵏⵓⵜⵏ ⵙ ⵡⴰⵙⵙ",
+      "noData": "ⵓⵔ ⵍⵍⴰⵏ ⵉⴼⵙⴽⴰ ⵉ ⵓⴽⵓⴷ ⴰⴷ"
+    }
   }
 }
