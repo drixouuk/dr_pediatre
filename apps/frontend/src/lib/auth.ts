@@ -9,6 +9,7 @@ export type PayloadUser = {
   name: string
   roles: string[]
   tenant?: string | { id: string }
+  doctorProfile?: string | { id: string; name?: string; specialty?: string } | null
 }
 
 export async function authenticate(): Promise<PayloadUser | null> {

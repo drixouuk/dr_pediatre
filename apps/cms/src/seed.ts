@@ -131,7 +131,7 @@ async function seedDoctorUser(payload: Payload, tenantId: any) {
   return user;
 }
 
-async function seedDoctor(payload: Payload, tenantId: any) {
+async function seedDoctor(payload: Payload, tenantId: any): Promise<any> {
   const existing = await payload.find({
     collection: "doctors",
     where: { slug: { equals: "dr-guinane-aicha" } },
@@ -644,8 +644,21 @@ export async function seed(payload: Payload) {
 
   const tenant = await seedTenant(payload);
 
-  await seedDoctorUser(payload, tenant.id as any);
-  await seedDoctor(payload, tenant.id as any);
+  const doctorUser = await seedDoctorUser(payload, tenant.id as any);
+  const doctorProfile = await seedDoctor(payload, tenant.id as any);
+
+  // Lier User → Doctor
+  if (doctorUser?.id && doctorProfile?.id) {
+    const currentDoc = await (payload as any).findByID({ collection: 'users', id: doctorUser.id })
+    if (!currentDoc?.doctorProfile) {
+      await (payload as any).update({
+        collection: 'users',
+        id: doctorUser.id,
+        data: { doctorProfile: doctorProfile.id },
+      })
+      console.log('✅ User lié à sa fiche médecin')
+    }
+  }
   await seedPracticeInfo(payload, tenant.id as any);
   await seedReviews(payload, tenant.id as any);
   await seedServices(payload, tenant.id as any);

@@ -71,6 +71,19 @@ export const Users: CollectionConfig = {
       defaultValue: ['secretary'],
     },
     {
+      name: 'doctorProfile',
+      type: 'relationship',
+      relationTo: 'doctors',
+      label: 'Fiche médecin associée',
+      admin: {
+        description: 'Lie ce compte utilisateur à sa fiche Doctors (permet consultation par Dr. X, file par médecin, etc.)',
+        condition: (data: any) => {
+          const roles: string[] = data?.roles ?? []
+          return roles.includes('doctor')
+        },
+      },
+    },
+    {
       name: 'tenant',
       type: 'relationship',
       relationTo: 'tenants',
