@@ -37,6 +37,11 @@ export const QueueItems: CollectionConfig = {
         if (operation === 'create' && req.user?.tenant) {
           data.tenant = typeof req.user.tenant === 'object' ? req.user.tenant.id : req.user.tenant
         }
+        if (operation === 'create' && req.user?.doctorProfile && !data?.doctor) {
+          data.doctor = typeof req.user.doctorProfile === 'object'
+            ? req.user.doctorProfile.id
+            : req.user.doctorProfile
+        }
         return data
       },
     ],
@@ -55,6 +60,13 @@ export const QueueItems: CollectionConfig = {
       relationTo: 'patients',
       required: true,
       label: 'Patient',
+    },
+    {
+      name: 'doctor',
+      type: 'relationship',
+      relationTo: 'doctors',
+      label: 'Médecin',
+      admin: { description: 'Médecin responsable de ce patient dans la file' },
     },
     {
       name: 'status',

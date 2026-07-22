@@ -1,9 +1,17 @@
 import { requireAuth } from '@/lib/auth'
+import { getTenantById } from '@/lib/payload'
 import LiveStatsWidget from '@/components/dashboard/LiveStatsWidget'
 import WaitingRoomList from '@/components/dashboard/WaitingRoomList'
 
 export default async function QueuePage() {
-  await requireAuth()
+  const user = await requireAuth()
+  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenant = tenantId ? await getTenantById(tenantId) : null
+  const isClinique = tenant?.settings?.activeTier === 'clinique'
+  const currentDoctorId = typeof user.doctorProfile === 'object'
+    ? (user.doctorProfile as any).id
+    : user.doctorProfile
+
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
       <h1 className="font-heading text-2xl font-bold text-stone-800">File d&apos;attente</h1>
@@ -11,7 +19,11 @@ export default async function QueuePage() {
         <LiveStatsWidget />
       </div>
       <div className="mt-6">
-        <WaitingRoomList />
+        <WaitingRoomList
+          tenantId={tenantId}
+          isClinique={isClinique}
+          currentDoctorId={currentDoctorId ? String(currentDoctorId) : undefined}
+        />
       </div>
     </div>
   )

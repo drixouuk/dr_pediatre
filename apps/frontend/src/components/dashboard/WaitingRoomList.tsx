@@ -18,6 +18,13 @@ type QueueItem = {
   visitReason: string
   arrivalTime: string | null
   patient: Patient
+  doctor?: { id: string; name: string } | null
+}
+
+type Props = {
+  tenantId?: string
+  isClinique?: boolean
+  currentDoctorId?: string
 }
 
 function computeAge(birthDate: string): string {
@@ -61,14 +68,20 @@ const statusLabels: Record<string, string> = {
   in_consultation: 'En consultation',
 }
 
-export default function WaitingRoomList() {
+export default function WaitingRoomList({ tenantId, isClinique, currentDoctorId }: Props) {
   const router = useRouter()
   const [items, setItems] = useState<QueueItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string | undefined>(currentDoctorId)
+  const [doctors, setDoctors] = useState<{ id: string; name: string }[]>([])
 
   const fetchQueue = async () => {
     setLoading(true)
-    const res = await fetch('/api/cms-proxy/queue-items?depth=1&sort=arrivalTime&where[status][in]=waiting&where[status][in]=in_consultation&limit=50')
+    let url = '/api/cms-proxy/queue-items?depth=2&sort=arrivalTime&where[status][in]=waiting&where[status][in]=in_consultation&limit=50'
+    if (selectedDoctorId) {
+      url += `&where[doctor][equals]=${selectedDoctorId}`
+    }
+    const res = await fetch(url)
     if (res.ok) {
       const json = await res.json()
       setItems(json.docs ?? [])
@@ -77,10 +90,18 @@ export default function WaitingRoomList() {
   }
 
   useEffect(() => {
+    if (!isClinique || !tenantId) return
+    fetch(`/api/cms-proxy/doctors?where[tenant][equals]=${tenantId}&depth=0&limit=50`)
+      .then(r => r.json())
+      .then(j => setDoctors(j.docs ?? []))
+      .catch(() => {})
+  }, [tenantId, isClinique])
+
+  useEffect(() => {
     fetchQueue()
     const interval = setInterval(fetchQueue, 15000)
     return () => clearInterval(interval)
-  }, [])
+  }, [selectedDoctorId])
 
   const updateStatus = async (id: string, currentStatus: string) => {
     const nextStatus = transitionMap[currentStatus]
@@ -107,14 +128,25 @@ export default function WaitingRoomList() {
 
   return (
     <div className="rounded-xl border border-stone-200 bg-white shadow-sm">
-      <div className="flex items-center justify-between border-b border-stone-100 px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 px-4 py-3">
         <h2 className="font-heading text-lg font-semibold text-stone-800">File d&apos;attente en direct</h2>
-        <button
-          onClick={fetchQueue}
-          className="text-xs font-medium text-primary-600 hover:text-primary-700"
-        >
-          Rafraîchir
-        </button>
+        <div className="flex items-center gap-2">
+          {isClinique && doctors.length > 0 && (
+            <select
+              value={selectedDoctorId || ''}
+              onChange={(e) => setSelectedDoctorId(e.target.value || undefined)}
+              className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+            >
+              <option value="">Tous les médecins</option>
+              {doctors.map((d) => (
+                <option key={d.id} value={d.id}>{d.name}</option>
+              ))}
+            </select>
+          )}
+          <button onClick={fetchQueue} className="text-xs font-medium text-primary-600 hover:text-primary-700">
+            Rafraîchir
+          </button>
+        </div>
       </div>
 
       {loading && items.length === 0 ? (
@@ -150,6 +182,7 @@ export default function WaitingRoomList() {
                     <p className="truncate text-sm font-semibold text-stone-800">{patient?.fullName || '—'}</p>
                   )}
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-stone-500">
+                    {isClinique && item.doctor?.name && <span className="text-stone-400">Dr. {item.doctor.name}</span>}
                     {patient?.birthDate && <span>{computeAge(patient.birthDate)}</span>}
                     <span className={`inline-block rounded px-1.5 py-0.5 font-medium ${
                       item.visitReason === 'controle' ? 'bg-info/10 text-info' :
