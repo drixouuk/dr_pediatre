@@ -73,7 +73,7 @@ export default async function PatientsListPage({ searchParams }: Props) {
       </div>
 
       <form method="GET" className="mt-6">
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             name="q"
@@ -110,8 +110,8 @@ export default async function PatientsListPage({ searchParams }: Props) {
         <ImportPatientsButton />
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-sm">
+        <table className="min-w-[640px] w-full text-left text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 text-xs uppercase text-stone-500">
             <tr>
               <th className="px-4 py-3 font-medium">Nom</th>

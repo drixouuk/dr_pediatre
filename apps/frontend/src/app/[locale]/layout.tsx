@@ -203,6 +203,12 @@ export default async function LocaleLayout({ children, params }: Props) {
             __html: JSON.stringify(ld, (key, value) => value === undefined ? undefined : value, 2),
           }}
         />
+        <meta name="theme-color" content="#0D9488" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Dr Tabibi" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="manifest" href="/manifest.webmanifest" />
       </head>
       <body className={`${bodyFont} flex min-h-full flex-col bg-cream-100 text-stone-800 antialiased`}>
         <NextIntlClientProvider>
@@ -213,6 +219,11 @@ export default async function LocaleLayout({ children, params }: Props) {
             {children}
           </LayoutShell>
         </NextIntlClientProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{})})}",
+          }}
+        />
       </body>
     </html>
   )

@@ -52,8 +52,8 @@ export default async function AuditLogsPage() {
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-sm">
+        <table className="min-w-[640px] w-full text-left text-sm">
           <thead className="border-b border-stone-200 bg-stone-50 text-xs uppercase text-stone-500">
             <tr>
               <th className="px-4 py-3 font-medium">Action</th>

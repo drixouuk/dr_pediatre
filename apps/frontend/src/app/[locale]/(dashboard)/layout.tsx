@@ -1,7 +1,7 @@
 import { requireAuth } from '@/lib/auth'
 import { getTenantById } from '@/lib/payload'
 import { redirect } from 'next/navigation'
-import Sidebar from '@/components/dashboard/Sidebar'
+import DashboardShell from '@/components/dashboard/DashboardShell'
 
 type Props = {
   children: React.ReactNode
@@ -18,12 +18,8 @@ export default async function DashboardLayout({ children }: Props) {
     if (!tier || (tier !== 'dossier' && tier !== 'clinique')) {
       redirect('/')
     }
+    return <DashboardShell user={user} tenant={tenant}>{children}</DashboardShell>
   }
 
-  return (
-    <div className="flex min-h-screen">
-      <Sidebar user={user} />
-      <main className="flex-1">{children}</main>
-    </div>
-  )
+  return <DashboardShell user={user} tenant={null}>{children}</DashboardShell>
 }

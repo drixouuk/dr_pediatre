@@ -15,7 +15,7 @@ export default function LayoutShell({ children, header, footer }: Props) {
   return (
     <>
       {!isDashboard && header}
-      <div className={isDashboard ? 'flex flex-1 flex-col' : 'flex flex-1 flex-col pt-20'}>
+      <div className={isDashboard ? 'flex flex-1 flex-col' : 'flex flex-1 flex-col pt-16 md:pt-20'}>
         {children}
       </div>
       {!isDashboard && footer}
