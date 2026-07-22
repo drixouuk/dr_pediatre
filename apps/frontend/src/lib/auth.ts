@@ -10,6 +10,7 @@ export type PayloadUser = {
   roles: string[]
   tenant?: string | { id: string }
   doctorProfile?: string | { id: string; name?: string; specialty?: string } | null
+  accessExpiresAt?: string | null
 }
 
 export async function authenticate(): Promise<PayloadUser | null> {
@@ -38,6 +39,13 @@ export async function requireAuth(): Promise<PayloadUser> {
   const user = await authenticate()
   if (!user) {
     redirect('/login')
+  }
+  if (user.roles?.includes('substitute') && user.accessExpiresAt) {
+    if (new Date(user.accessExpiresAt) < new Date()) {
+      const cookieStore = await cookies()
+      cookieStore.delete('payload-token')
+      redirect('/login')
+    }
   }
   return user
 }

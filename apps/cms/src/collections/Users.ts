@@ -67,7 +67,7 @@ export const Users: CollectionConfig = {
       type: 'select',
       hasMany: true,
       required: true,
-      options: ['superadmin', 'tenant_admin', 'doctor', 'secretary'],
+      options: ['superadmin', 'tenant_admin', 'doctor', 'secretary', 'substitute'],
       defaultValue: ['secretary'],
     },
     {
@@ -80,6 +80,19 @@ export const Users: CollectionConfig = {
         condition: (data: any) => {
           const roles: string[] = data?.roles ?? []
           return roles.includes('doctor')
+        },
+      },
+    },
+    {
+      name: 'accessExpiresAt',
+      type: 'date',
+      label: "Date d'expiration de l'accès",
+      admin: {
+        date: { pickerAppearance: 'dayOnly' },
+        description: 'Pour les comptes remplaçants. Après cette date, la connexion est bloquée.',
+        condition: (data: any) => {
+          const roles: string[] = data?.roles ?? []
+          return roles.includes('substitute')
         },
       },
     },

@@ -10,6 +10,7 @@ import * as migration_20260722_add_doctor_profile from './20260722_add_doctor_pr
 import * as migration_20260722_add_queue_doctor from './20260722_add_queue_doctor';
 import * as migration_20260722_add_templates from './20260722_add_templates';
 import * as migration_20260722_add_clinical_fields from './20260722_add_clinical_fields';
+import * as migration_20260722_add_substitute_role from './20260722_add_substitute_role';
 
 export const migrations = [
   {
@@ -71,5 +72,10 @@ export const migrations = [
     up: migration_20260722_add_clinical_fields.up,
     down: migration_20260722_add_clinical_fields.down,
     name: '20260722_add_clinical_fields'
+  },
+  {
+    up: migration_20260722_add_substitute_role.up,
+    down: migration_20260722_add_substitute_role.down,
+    name: '20260722_add_substitute_role'
   },
 ];

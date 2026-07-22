@@ -17,6 +17,18 @@ export async function POST(request: NextRequest) {
     }
 
     const json = await res.json()
+    const user = json.user
+
+    if (user?.roles?.includes('substitute') && user?.accessExpiresAt) {
+      const expiresAt = new Date(user.accessExpiresAt)
+      if (expiresAt < new Date()) {
+        const dateStr = expiresAt.toLocaleDateString('fr-FR')
+        return NextResponse.json(
+          { error: `Votre accès remplaçant a expiré le ${dateStr}. Contactez le médecin titulaire.` },
+          { status: 403 },
+        )
+      }
+    }
 
     const response = NextResponse.json({ success: true, user: json.user })
     response.cookies.set('payload-token', json.token, {

@@ -70,6 +70,9 @@ export default function Sidebar({ user, tenant, onNavigate }: Props) {
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium text-stone-800">{user.name || user.email}</p>
             <p className="truncate text-xs text-stone-500">{roleLabel}</p>
+            {user.roles?.includes('substitute') && user.accessExpiresAt && (
+              <p className="mt-0.5 text-xs text-warning">Accès jusqu'au {new Date(user.accessExpiresAt).toLocaleDateString('fr-FR')}</p>
+            )}
           </div>
         </div>
         <form action="/api/auth/logout" method="POST" className="mt-3">
