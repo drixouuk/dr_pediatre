@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { generatePrescriptionPDF, type DoctorInfo, type PatientInfo } from '@/lib/generate-pdf'
 
 type Medication = {
   nom: string
@@ -35,9 +36,11 @@ type Props = {
   patientId: string
   prescriptions: Prescription[]
   consultations: ConsultationOption[]
+  doctorInfo?: DoctorInfo
+  patientInfo?: PatientInfo
 }
 
-export default function PrescriptionForm({ patientId, prescriptions, consultations }: Props) {
+export default function PrescriptionForm({ patientId, prescriptions, consultations, doctorInfo, patientInfo }: Props) {
   const router = useRouter()
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -239,8 +242,23 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
                 <span className="text-sm font-medium text-stone-800">
                   {new Date(p.date).toLocaleDateString('fr-FR')}
                 </span>
-                <span className="text-xs text-stone-400">
-                  {p.practitioner?.name || p.practitioner?.email || '—'}
+                <span className="flex items-center gap-2">
+                  {p.medications?.length > 0 && doctorInfo && patientInfo && (
+                    <button
+                      onClick={() => generatePrescriptionPDF(doctorInfo, patientInfo, {
+                        date: new Date(p.date).toLocaleDateString('fr-FR'),
+                        medications: p.medications,
+                        notes: p.notes,
+                      })}
+                      className="text-xs font-medium text-primary-600 hover:text-primary-700"
+                      title="Télécharger l'ordonnance PDF"
+                    >
+                      PDF
+                    </button>
+                  )}
+                  <span className="text-xs text-stone-400">
+                    {p.practitioner?.name || p.practitioner?.email || '—'}
+                  </span>
                 </span>
               </div>
               <ul className="mt-1 space-y-0.5">

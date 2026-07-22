@@ -2,6 +2,7 @@
 
 import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import { generateConsultationPDF, type DoctorInfo, type PatientInfo } from '@/lib/generate-pdf'
 
 type Consultation = {
   id: string
@@ -18,9 +19,11 @@ type Props = {
   patientId: string
   consultations: Consultation[]
   isPediatrie?: boolean
+  doctorInfo?: DoctorInfo
+  patientInfo?: PatientInfo
 }
 
-export default function ConsultationForm({ patientId, consultations, isPediatrie }: Props) {
+export default function ConsultationForm({ patientId, consultations, isPediatrie, doctorInfo, patientInfo }: Props) {
   const router = useRouter()
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -197,8 +200,26 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
                 <span className="text-sm font-medium text-stone-800">
                   {new Date(c.date).toLocaleDateString('fr-FR')}
                 </span>
-                <span className="text-xs text-stone-400">
-                  {c.practitioner?.name || c.practitioner?.email || '—'}
+                <span className="flex items-center gap-2">
+                  {c.diagnostic && doctorInfo && patientInfo && (
+                    <button
+                      onClick={() => generateConsultationPDF(doctorInfo, patientInfo, {
+                        date: new Date(c.date).toLocaleDateString('fr-FR'),
+                        motif: c.motif,
+                        diagnostic: c.diagnostic,
+                        poids: c.poids,
+                        taille: c.taille,
+                        perimetreCranien: c.perimetreCranien,
+                      })}
+                      className="text-xs font-medium text-primary-600 hover:text-primary-700"
+                      title="Télécharger le certificat PDF"
+                    >
+                      PDF
+                    </button>
+                  )}
+                  <span className="text-xs text-stone-400">
+                    {c.practitioner?.name || c.practitioner?.email || '—'}
+                  </span>
                 </span>
               </div>
               {c.motif && <p className="mt-1 text-sm text-stone-600">{c.motif}</p>}

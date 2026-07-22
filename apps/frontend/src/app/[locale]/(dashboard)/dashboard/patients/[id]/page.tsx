@@ -1,6 +1,6 @@
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
-import { getTenantById } from '@/lib/payload'
+import { getTenantById, getDoctorProfile, getPracticeInfo } from '@/lib/payload'
 import { notFound } from 'next/navigation'
 import PatientNotesForm from './PatientNotesForm'
 import AddToQueueButton from './AddToQueueButton'
@@ -11,6 +11,7 @@ import GrowthChart from './GrowthChart'
 import VaccinationRecord from '@/components/dashboard/VaccinationRecord'
 
 import { computeAge } from '@/lib/age'
+import type { DoctorInfo, PatientInfo } from '@/lib/generate-pdf'
 
 type Patient = {
   id: string
@@ -90,7 +91,7 @@ export default async function PatientDetailPage({ params }: Props) {
   const tenant = tenantId ? await getTenantById(tenantId) : null
   const isPediatrie = tenant?.settings?.specialty === 'pediatrie'
 
-  const [patient, consultationsData, prescriptionsData, documentsData, scheduleData, vaccinationsData] = await Promise.all([
+  const [patient, consultationsData, prescriptionsData, documentsData, scheduleData, vaccinationsData, doctor, practiceInfo] = await Promise.all([
     fetchCMS<Patient>(`/api/patients/${id}`, { revalidate: 0 }),
     canViewClinical
       ? fetchCMS<{ docs: Consultation[] }>(
@@ -122,6 +123,8 @@ export default async function PatientDetailPage({ params }: Props) {
           { revalidate: 0 },
         )
       : Promise.resolve(null),
+    getDoctorProfile(tenantId, 'fr'),
+    getPracticeInfo(tenantId, 'fr'),
   ])
 
   if (!patient) notFound()
@@ -131,6 +134,22 @@ export default async function PatientDetailPage({ params }: Props) {
   const documents = documentsData?.docs ?? []
   const vaccineSchedule = scheduleData?.docs ?? []
   const patientVaccinations = vaccinationsData?.docs ?? []
+
+  const doctorInfo: DoctorInfo | undefined = doctor ? {
+    name: doctor.name,
+    specialty: doctor.specialty || '',
+    rpps: doctor.rpps || '—',
+    address: practiceInfo?.address || '',
+    phone: practiceInfo?.phone || '',
+    city: practiceInfo?.city || '',
+  } : undefined
+
+  const patientInfo: PatientInfo | undefined = patient ? {
+    name: patient.fullName,
+    age: patient.birthDate ? computeAge(patient.birthDate) : '',
+    nationalId: patient.nationalId || undefined,
+    birthDate: patient.birthDate || undefined,
+  } : undefined
 
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
@@ -175,8 +194,8 @@ export default async function PatientDetailPage({ params }: Props) {
 
       {canViewClinical && (
         <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <ConsultationForm patientId={patient.id} consultations={consultations} isPediatrie={isPediatrie} />
-          <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} />
+          <ConsultationForm patientId={patient.id} consultations={consultations} isPediatrie={isPediatrie} doctorInfo={doctorInfo} patientInfo={patientInfo} />
+          <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} doctorInfo={doctorInfo} patientInfo={patientInfo} />
         </div>
       )}
 
