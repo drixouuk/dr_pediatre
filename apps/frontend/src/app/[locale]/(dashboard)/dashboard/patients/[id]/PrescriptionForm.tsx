@@ -1,8 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { generatePrescriptionPDF, type DoctorInfo, type PatientInfo } from '@/lib/generate-pdf'
+
+type MedicationSuggestion = {
+  nom: string
+  dci: string
+  posologie: string
+  duree: string
+  count: number
+}
 
 type Medication = {
   nom: string
@@ -36,11 +44,12 @@ type Props = {
   patientId: string
   prescriptions: Prescription[]
   consultations: ConsultationOption[]
+  tenantId?: string
   doctorInfo?: DoctorInfo
   patientInfo?: PatientInfo
 }
 
-export default function PrescriptionForm({ patientId, prescriptions, consultations, doctorInfo, patientInfo }: Props) {
+export default function PrescriptionForm({ patientId, prescriptions, consultations, tenantId, doctorInfo, patientInfo }: Props) {
   const router = useRouter()
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -53,6 +62,27 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
   )
   const [savingTemplate, setSavingTemplate] = useState(false)
   const [templates, setTemplates] = useState<TemplateDoc[]>([])
+  const [suggestions, setSuggestions] = useState<Record<number, MedicationSuggestion[]>>({})
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null)
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false)
+  const debounceRef = useRef<Record<number, NodeJS.Timeout>>({})
+  const inputRefs = useRef<Record<number, HTMLInputElement | null>>({})
+
+  const searchMedications = async (i: number, query: string) => {
+    if (query.trim().length < 2) {
+      setSuggestions(prev => ({ ...prev, [i]: [] }))
+      setOpenDropdown(null)
+      return
+    }
+    setLoadingSuggestions(true)
+    const res = await fetch(`/api/medications/autocomplete?q=${encodeURIComponent(query.trim())}`)
+    if (res.ok) {
+      const data = await res.json()
+      setSuggestions(prev => ({ ...prev, [i]: data.suggestions ?? [] }))
+      if (data.suggestions?.length > 0) setOpenDropdown(i)
+    }
+    setLoadingSuggestions(false)
+  }
 
   useEffect(() => {
     fetch('/api/cms-proxy/templates?where[type][equals]=prescription&depth=0&limit=50')
@@ -170,9 +200,38 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
                 )}
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div>
+                <div className="relative">
                   <label className="mb-0.5 block text-xs text-stone-600">Nom *</label>
-                  <input value={med.nom} onChange={e => updateMed(i, 'nom', e.target.value)} required className={inputClass} />
+                  <input
+                    ref={(el) => { inputRefs.current[i] = el }}
+                    value={med.nom}
+                    onChange={e => {
+                      const val = e.target.value
+                      updateMed(i, 'nom', val)
+                      if (debounceRef.current[i]) clearTimeout(debounceRef.current[i])
+                      debounceRef.current[i] = setTimeout(() => searchMedications(i, val), 300)
+                    }}
+                    onFocus={() => { if (med.nom.trim().length >= 2) searchMedications(i, med.nom) }}
+                    onBlur={() => setTimeout(() => setOpenDropdown(curr => curr === i ? null : curr), 200)}
+                    required
+                    className={inputClass}
+                    autoComplete="off"
+                  />
+                  {openDropdown === i && suggestions[i]?.length > 0 && (
+                    <div className="absolute left-0 top-full z-20 mt-1 w-full rounded-lg border border-stone-200 bg-white py-1 shadow-lg">
+                      {suggestions[i].map((s, si) => (
+                        <button
+                          key={si}
+                          type="button"
+                          onMouseDown={(e) => { e.preventDefault(); updateMed(i, 'nom', s.nom); updateMed(i, 'dci', s.dci); updateMed(i, 'posologie', s.posologie); updateMed(i, 'duree', s.duree); setOpenDropdown(null) }}
+                          className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-stone-700 transition-colors duration-200 hover:bg-primary-50"
+                        >
+                          <span className="font-medium">{s.nom}</span>
+                          <span className="text-xs text-stone-400">{s.count !== undefined && `×${s.count}`}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="mb-0.5 block text-xs text-stone-600">DCI</label>

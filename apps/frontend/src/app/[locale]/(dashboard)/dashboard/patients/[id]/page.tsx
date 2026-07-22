@@ -195,7 +195,7 @@ export default async function PatientDetailPage({ params }: Props) {
       {canViewClinical && (
         <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <ConsultationForm patientId={patient.id} consultations={consultations} isPediatrie={isPediatrie} doctorInfo={doctorInfo} patientInfo={patientInfo} />
-          <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} doctorInfo={doctorInfo} patientInfo={patientInfo} />
+          <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} tenantId={tenantId} doctorInfo={doctorInfo} patientInfo={patientInfo} />
         </div>
       )}
 
