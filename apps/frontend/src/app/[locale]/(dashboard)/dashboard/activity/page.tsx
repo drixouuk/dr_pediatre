@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import ActivityView from '@/components/dashboard/ActivityView'
@@ -91,7 +92,7 @@ export default async function ActivityPage({ searchParams }: Props) {
   const { period: periodParam } = await searchParams
   const period: Period = (['day', 'week', 'month', 'year'] as const).includes(periodParam as any) ? (periodParam as Period) : 'week'
   const user = await requireAuth()
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
   const startDate = getStartDate(period)
   const isoStart = formatISO(startDate)
 

@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { getTenantById } from '@/lib/payload'
 import { redirect } from 'next/navigation'
@@ -11,7 +12,7 @@ type Props = {
 export default async function DashboardLayout({ children }: Props) {
   const user = await requireAuth()
 
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
   if (tenantId) {
     const tenant = await getTenantById(tenantId)
     const tier = tenant?.settings?.activeTier

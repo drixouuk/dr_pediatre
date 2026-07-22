@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import BookingListView from '@/components/dashboard/BookingListView'
@@ -22,7 +23,7 @@ type CalBooking = {
 
 export default async function RendezVousPage() {
   const user = await requireAuth()
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)

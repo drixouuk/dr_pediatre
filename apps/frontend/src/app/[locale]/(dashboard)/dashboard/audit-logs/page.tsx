@@ -1,5 +1,6 @@
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
+import { getTenantId } from '@/lib/tenant'
 
 type AuditLog = {
   id: string
@@ -24,7 +25,7 @@ export default async function AuditLogsPage() {
   }
 
   const data = await fetchCMS<{ docs: AuditLog[] }>(
-    `/api/audit-logs?where[tenant][equals]=${typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant}&sort=-timestamp&limit=100`,
+    `/api/audit-logs?where[tenant][equals]=${getTenantId(user)}&sort=-timestamp&limit=100`,
     { revalidate: 0 },
   )
   const logs = data?.docs ?? []

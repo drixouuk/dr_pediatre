@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
@@ -14,7 +15,7 @@ type Patient = {
 
 export default async function VaccinationAlerts() {
   const user = await requireAuth()
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
 
   const [patientsData, scheduleData, vaccinsData] = await Promise.all([
     fetchCMS<{ docs: Patient[] }>(`/api/patients?where[tenant][equals]=${tenantId}&limit=500&depth=0`, { revalidate: 60 }),

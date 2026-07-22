@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { getTenantById } from '@/lib/payload'
 import { Link } from '@/i18n/navigation'
@@ -10,7 +11,7 @@ export default async function DashboardPage() {
   const user = await requireAuth()
   const isSuperadmin = user.roles?.includes('superadmin')
 
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
   const tenant = tenantId ? await getTenantById(tenantId) : null
   const isPediatrie = tenant?.settings?.specialty === 'pediatrie'
 

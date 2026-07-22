@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { getTenantById, getDoctorProfile, getPracticeInfo } from '@/lib/payload'
@@ -90,7 +91,7 @@ export default async function PatientDetailPage({ params }: Props) {
 
   const canViewClinical = user.roles?.includes('doctor') || user.roles?.includes('tenant_admin') || user.roles?.includes('superadmin')
 
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
   const tenant = tenantId ? await getTenantById(tenantId) : null
   const isPediatrie = tenant?.settings?.specialty === 'pediatrie'
 
@@ -126,8 +127,8 @@ export default async function PatientDetailPage({ params }: Props) {
           { revalidate: 0 },
         )
       : Promise.resolve(null),
-    getDoctorProfile(tenantId, 'fr'),
-    getPracticeInfo(tenantId, 'fr'),
+    tenantId ? getDoctorProfile(tenantId, 'fr') : Promise.resolve(null),
+    tenantId ? getPracticeInfo(tenantId, 'fr') : Promise.resolve(null),
   ])
 
   if (!patient) notFound()

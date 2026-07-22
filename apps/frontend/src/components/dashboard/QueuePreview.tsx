@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
@@ -14,7 +15,7 @@ type QueueItem = {
 
 export default async function QueuePreview() {
   const user = await requireAuth()
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
 
   const data = await fetchCMS<{ docs: QueueItem[] }>(
     `/api/queue-items?where[tenant][equals]=${tenantId}&where[status][in]=waiting&where[status][in]=in_consultation&sort=arrivalTime&depth=1&limit=5`,

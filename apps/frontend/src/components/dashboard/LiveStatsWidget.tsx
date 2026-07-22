@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
@@ -16,7 +17,7 @@ type Props = {
 
 export default async function LiveStatsWidget({ clickable }: Props) {
   const user = await requireAuth()
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
   const baseWhere = `where[tenant][equals]=${tenantId}`
 
   const [scheduled, waiting, inConsultation, completed] = await Promise.all([

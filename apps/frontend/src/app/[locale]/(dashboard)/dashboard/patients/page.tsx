@@ -1,3 +1,4 @@
+import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
@@ -29,7 +30,7 @@ type Props = {
 export default async function PatientsListPage({ searchParams }: Props) {
   const { q } = await searchParams
   const user = await requireAuth()
-  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenantId = getTenantId(user)
 
   let apiPath = `/api/patients?sort=-updatedAt&limit=50`
   if (q?.trim()) {
