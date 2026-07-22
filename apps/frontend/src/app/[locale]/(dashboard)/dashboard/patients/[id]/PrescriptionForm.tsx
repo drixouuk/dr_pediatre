@@ -53,6 +53,25 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
   const router = useRouter()
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [filterQuery, setFilterQuery] = useState('')
+  const [filterDateFrom, setFilterDateFrom] = useState('')
+  const [filterDateTo, setFilterDateTo] = useState('')
+
+  const filteredPrescriptions = prescriptions.filter(p => {
+    if (filterQuery.trim()) {
+      const q = filterQuery.trim().toLowerCase()
+      const inMeds = p.medications?.some(m => m.nom?.toLowerCase().includes(q))
+      const inNotes = p.notes?.toLowerCase().includes(q)
+      if (!inMeds && !inNotes) return false
+    }
+    if (filterDateFrom && new Date(p.date) < new Date(filterDateFrom)) return false
+    if (filterDateTo) {
+      const end = new Date(filterDateTo)
+      end.setHours(23, 59, 59, 999)
+      if (new Date(p.date) > end) return false
+    }
+    return true
+  })
   const [medications, setMedications] = useState<Medication[]>([
     { nom: '', dci: '', posologie: '', duree: '' },
   ])
@@ -158,7 +177,12 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
   return (
     <div className="rounded-xl border border-stone-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-stone-100 px-4 py-3">
-        <h2 className="font-heading text-lg font-semibold text-stone-800">Ordonnances</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="font-heading text-lg font-semibold text-stone-800">Ordonnances</h2>
+          {prescriptions.length > 0 && (
+            <span className="text-xs text-stone-400">({filteredPrescriptions.length}/{prescriptions.length})</span>
+          )}
+        </div>
         {!showForm && (
           <button
             onClick={() => setShowForm(true)}
@@ -291,11 +315,45 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
         </form>
       )}
 
-      {prescriptions.length === 0 ? (
-        <p className="px-4 py-6 text-center text-sm text-stone-400">Aucune ordonnance.</p>
+      {prescriptions.length > 0 && (
+        <div className="border-b border-stone-100 px-4 py-3">
+          <div className="flex flex-wrap items-end gap-2">
+            <div className="min-w-[180px] flex-1">
+              <label className="mb-0.5 block text-xs text-stone-500">Rechercher</label>
+              <input type="text" value={filterQuery} onChange={e => setFilterQuery(e.target.value)}
+                placeholder="Médicament, notes..."
+                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm text-stone-700 placeholder:text-stone-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="mb-0.5 block text-xs text-stone-500">Du</label>
+              <input type="date" value={filterDateFrom} onChange={e => setFilterDateFrom(e.target.value)}
+                className="rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="mb-0.5 block text-xs text-stone-500">Au</label>
+              <input type="date" value={filterDateTo} onChange={e => setFilterDateTo(e.target.value)}
+                className="rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              />
+            </div>
+            {(filterQuery || filterDateFrom || filterDateTo) && (
+              <button onClick={() => { setFilterQuery(''); setFilterDateFrom(''); setFilterDateTo('') }}
+                className="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm text-stone-500 hover:text-stone-700 transition-colors duration-200">
+                Effacer
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {filteredPrescriptions.length === 0 ? (
+        <p className="px-4 py-6 text-center text-sm text-stone-400">
+          {prescriptions.length > 0 ? 'Aucune ordonnance ne correspond à la recherche.' : 'Aucune ordonnance.'}
+        </p>
       ) : (
         <div className="divide-y divide-stone-100">
-          {prescriptions.map(p => (
+          {filteredPrescriptions.map(p => (
             <div key={p.id} className="px-4 py-3">
               <div className="flex items-baseline justify-between">
                 <span className="text-sm font-medium text-stone-800">
