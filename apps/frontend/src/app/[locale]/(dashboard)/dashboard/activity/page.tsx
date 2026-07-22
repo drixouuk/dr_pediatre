@@ -58,6 +58,11 @@ function groupByPeriod<T extends Record<string, unknown>>(
 
 type Period = 'day' | 'week' | 'month' | 'year'
 
+function visitReasonLabel(reason: string): string {
+  const labels: Record<string, string> = { consultation: 'Consultation', controle: 'Contrôle', vaccin: 'Vaccin', urgence: 'Urgence' }
+  return labels[reason] || reason
+}
+
 function mergeChartData(
   consultations: { date: string; count: number }[],
   patients: { date: string; count: number }[],
@@ -90,7 +95,7 @@ export default async function ActivityPage({ searchParams }: Props) {
   const startDate = getStartDate(period)
   const isoStart = formatISO(startDate)
 
-  const [patientsData, consultationsData] = await Promise.all([
+  const [patientsData, consultationsData, queueData] = await Promise.all([
     fetchCMS<{ docs: { id: string; createdAt: string }[] }>(
       `/api/patients?where[tenant][equals]=${tenantId}&where[createdAt][greater_than_equal]=${isoStart}&limit=5000&depth=0`,
       { revalidate: 0 },
@@ -99,14 +104,37 @@ export default async function ActivityPage({ searchParams }: Props) {
       `/api/consultations?where[tenant][equals]=${tenantId}&where[date][greater_than_equal]=${isoStart}&limit=5000&depth=0`,
       { revalidate: 0 },
     ),
+    fetchCMS<{ docs: { id: string; visitReason: string; arrivalTime: string; status: string }[] }>(
+      `/api/queue-items?where[tenant][equals]=${tenantId}&where[arrivalTime][greater_than_equal]=${isoStart}&depth=0&limit=5000`,
+      { revalidate: 0 },
+    ),
   ])
 
   const patients = patientsData?.docs ?? []
   const consultations = consultationsData?.docs ?? []
+  const queueItems = queueData?.docs ?? []
 
   const consultationsByDay = groupByPeriod(consultations, 'date', period)
   const patientsByDay = groupByPeriod(patients, 'createdAt', period)
   const chartData = mergeChartData(consultationsByDay, patientsByDay)
+
+  const completedToday = queueItems.filter(i => i.status === 'completed').length
+
+  const reasonCounts: Record<string, number> = { consultation: 0, controle: 0, vaccin: 0, urgence: 0 }
+  for (const item of queueItems) {
+    if (reasonCounts[item.visitReason] !== undefined) reasonCounts[item.visitReason]++
+  }
+  const reasonData = Object.entries(reasonCounts)
+    .filter(([_, count]) => count > 0)
+    .map(([reason, count]) => ({ name: visitReasonLabel(reason), value: count }))
+
+  const hourlyCounts: Record<number, number> = {}
+  for (let h = 8; h <= 18; h++) hourlyCounts[h] = 0
+  for (const item of queueItems) {
+    const hour = new Date(item.arrivalTime).getHours()
+    if (hour >= 8 && hour <= 18) hourlyCounts[hour]++
+  }
+  const hourlyData = Object.entries(hourlyCounts).map(([hour, count]) => ({ hour: `${hour}h`, count }))
 
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
@@ -116,6 +144,9 @@ export default async function ActivityPage({ searchParams }: Props) {
           period={period}
           newPatients={patients.length}
           consultationsDone={consultations.length}
+          completedToday={completedToday}
+          reasonData={reasonData}
+          hourlyData={hourlyData}
           chartData={chartData}
         />
       </div>
