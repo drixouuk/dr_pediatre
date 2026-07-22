@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 
 type Consultation = {
@@ -31,6 +31,39 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
   const [perimetreCranien, setPerimetreCranien] = useState('')
   const [diagnostic, setDiagnostic] = useState('')
   const [codeActe, setCodeActe] = useState('')
+  const [savingTemplate, setSavingTemplate] = useState(false)
+  const [templates, setTemplates] = useState<{ id: string; name: string; motif?: string; examenClinique?: string; diagnostic?: string; codeActe?: string }[]>([])
+
+  useEffect(() => {
+    fetch('/api/cms-proxy/templates?where[type][equals]=consultation&depth=0&limit=50')
+      .then(r => r.json())
+      .then(j => setTemplates(j.docs ?? []))
+      .catch(() => {})
+  }, [])
+
+  const saveAsTemplate = async () => {
+    const name = prompt('Nom du modèle :')
+    if (!name?.trim()) return
+    setSavingTemplate(true)
+    const res = await fetch('/api/cms-proxy/templates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name.trim(),
+        type: 'consultation',
+        motif: motif || undefined,
+        examenClinique: examenClinique || undefined,
+        diagnostic: diagnostic || undefined,
+        codeActe: codeActe || undefined,
+      }),
+    })
+    if (res.ok) {
+      const t = await fetch('/api/cms-proxy/templates?where[type][equals]=consultation&depth=0&limit=50')
+      const j = await t.json()
+      setTemplates(j.docs ?? [])
+    }
+    setSavingTemplate(false)
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -85,6 +118,28 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
 
       {showForm && (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
+          {templates.length > 0 && (
+            <div className="flex items-center gap-2">
+              <select
+                defaultValue=""
+                onChange={(e) => {
+                  const t = templates.find(tmpl => tmpl.id === e.target.value)
+                  if (t) {
+                    setMotif(t.motif || '')
+                    setExamenClinique(t.examenClinique || '')
+                    setDiagnostic(t.diagnostic || '')
+                    setCodeActe(t.codeActe || '')
+                  }
+                }}
+                className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              >
+                <option value="">Charger un modèle...</option>
+                {templates.map(t => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
           <div>
             <label className="mb-1 block text-sm font-medium text-stone-700">Motif</label>
             <input value={motif} onChange={e => setMotif(e.target.value)} className={inputClass} />
@@ -117,9 +172,13 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
             <label className="mb-1 block text-sm font-medium text-stone-700">Code acte (NGAP)</label>
             <input value={codeActe} onChange={e => setCodeActe(e.target.value)} className={inputClass} />
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button type="submit" disabled={saving} className="rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:opacity-50">
               {saving ? 'Enregistrement…' : 'Enregistrer la consultation'}
+            </button>
+            <button type="button" onClick={saveAsTemplate} disabled={savingTemplate}
+              className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 disabled:opacity-50">
+              {savingTemplate ? 'Enregistrement…' : 'Sauvegarder comme modèle'}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="text-sm text-stone-500 hover:text-stone-700">
               Annuler

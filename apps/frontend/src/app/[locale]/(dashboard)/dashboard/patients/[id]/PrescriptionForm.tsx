@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 type Medication = {
@@ -8,6 +8,13 @@ type Medication = {
   dci: string
   posologie: string
   duree: string
+}
+
+type TemplateDoc = {
+  id: string
+  name: string
+  medications?: { nom: string; dci: string; posologie: string; duree: string }[]
+  notes?: string | null
 }
 
 type Prescription = {
@@ -41,6 +48,37 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
   const [consultationId, setConsultationId] = useState(
     consultations.length > 0 ? consultations[0].id : '',
   )
+  const [savingTemplate, setSavingTemplate] = useState(false)
+  const [templates, setTemplates] = useState<TemplateDoc[]>([])
+
+  useEffect(() => {
+    fetch('/api/cms-proxy/templates?where[type][equals]=prescription&depth=0&limit=50')
+      .then(r => r.json())
+      .then(j => setTemplates(j.docs ?? []))
+      .catch(() => {})
+  }, [])
+
+  const saveAsTemplate = async () => {
+    const name = prompt('Nom du modèle :')
+    if (!name?.trim()) return
+    setSavingTemplate(true)
+    const res = await fetch('/api/cms-proxy/templates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name.trim(),
+        type: 'prescription',
+        medications: medications.filter(m => m.nom.trim()),
+        notes: notes || undefined,
+      }),
+    })
+    if (res.ok) {
+      const t = await fetch('/api/cms-proxy/templates?where[type][equals]=prescription&depth=0&limit=50')
+      const j = await t.json()
+      setTemplates(j.docs ?? [])
+    }
+    setSavingTemplate(false)
+  }
 
   const updateMed = (i: number, field: keyof Medication, value: string) => {
     setMedications(prev => prev.map((m, j) => (j === i ? { ...m, [field]: value } : m)))
@@ -100,6 +138,26 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
 
       {showForm && (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
+          {templates.length > 0 && (
+            <div className="flex items-center gap-2">
+              <select
+                defaultValue=""
+                onChange={(e) => {
+                  const t = templates.find(tmpl => tmpl.id === e.target.value)
+                  if (t) {
+                    if (t.medications?.length) setMedications(t.medications)
+                    if (t.notes) setNotes(t.notes)
+                  }
+                }}
+                className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              >
+                <option value="">Charger un modèle...</option>
+                {templates.map(t => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
           {medications.map((med, i) => (
             <div key={i} className="rounded-lg border border-stone-200 bg-stone-50 p-3">
               <div className="mb-2 flex items-center justify-between">
@@ -158,9 +216,13 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
             </div>
           )}
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button type="submit" disabled={saving} className="rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:opacity-50">
               {saving ? 'Enregistrement…' : 'Enregistrer l\'ordonnance'}
+            </button>
+            <button type="button" onClick={saveAsTemplate} disabled={savingTemplate}
+              className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 disabled:opacity-50">
+              {savingTemplate ? 'Enregistrement…' : 'Sauvegarder comme modèle'}
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="text-sm text-stone-500 hover:text-stone-700">Annuler</button>
           </div>

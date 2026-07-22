@@ -22,6 +22,7 @@ import { SystemAlerts } from "./src/collections/SystemAlerts";
 import { VaccineSchedule } from "./src/collections/VaccineSchedule";
 import { Vaccinations } from "./src/collections/Vaccinations";
 import { CalBookings } from "./src/collections/CalBookings";
+import { Templates } from "./src/collections/Templates";
 import { seed } from "./src/seed";
 import { resolveTenant } from "./src/endpoints/resolve-tenant";
 
@@ -54,6 +55,7 @@ export default buildConfig({
     VaccineSchedule,
     Vaccinations,
     CalBookings,
+    Templates,
   ],
   db: postgresAdapter({
     pool: {
