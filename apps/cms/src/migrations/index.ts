@@ -9,6 +9,7 @@ import * as migration_20260722_add_specialty from './20260722_add_specialty';
 import * as migration_20260722_add_doctor_profile from './20260722_add_doctor_profile';
 import * as migration_20260722_add_queue_doctor from './20260722_add_queue_doctor';
 import * as migration_20260722_add_templates from './20260722_add_templates';
+import * as migration_20260722_add_clinical_fields from './20260722_add_clinical_fields';
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20260722_add_templates.up,
     down: migration_20260722_add_templates.down,
     name: '20260722_add_templates'
+  },
+  {
+    up: migration_20260722_add_clinical_fields.up,
+    down: migration_20260722_add_clinical_fields.down,
+    name: '20260722_add_clinical_fields'
   },
 ];

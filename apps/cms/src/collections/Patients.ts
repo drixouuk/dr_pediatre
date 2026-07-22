@@ -97,6 +97,51 @@ export const Patients: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'antecedents',
+      type: 'textarea',
+      label: 'Antécédents médicaux',
+      access: {
+        read: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+        update: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+      },
+    },
+    {
+      name: 'allergies',
+      type: 'textarea',
+      label: 'Allergies connues',
+      access: {
+        read: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+        update: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+      },
+    },
+    {
+      name: 'traitementsEnCours',
+      type: 'textarea',
+      label: 'Traitements en cours',
+      access: {
+        read: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+        update: ({ req: { user } }: any) => {
+          const roles: string[] = user?.roles ?? []
+          return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
+        },
+      },
+    },
+    {
       name: 'medicalNotes',
       type: 'textarea',
       // Accès réservé à superadmin / tenant_admin / doctor.

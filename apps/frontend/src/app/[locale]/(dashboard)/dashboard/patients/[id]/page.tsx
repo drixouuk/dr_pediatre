@@ -2,7 +2,7 @@ import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { getTenantById, getDoctorProfile, getPracticeInfo } from '@/lib/payload'
 import { notFound } from 'next/navigation'
-import PatientNotesForm from './PatientNotesForm'
+import PatientClinicalFields from './PatientClinicalFields'
 import AddToQueueButton from './AddToQueueButton'
 import ConsultationForm from './ConsultationForm'
 import PrescriptionForm from './PrescriptionForm'
@@ -22,6 +22,9 @@ type Patient = {
   phone?: string | null
   email?: string | null
   nationalId?: string | null
+  antecedents?: string
+  allergies?: string
+  traitementsEnCours?: string
   medicalNotes?: string
   createdAt: string
   updatedAt: string
@@ -175,7 +178,15 @@ export default async function PatientDetailPage({ params }: Props) {
       </div>
 
       <div className="mb-8">
-        <PatientNotesForm patientId={patient.id} initialNotes={patient.medicalNotes || ''} />
+        <PatientClinicalFields
+          patientId={patient.id}
+          initialData={canViewClinical ? {
+            medicalNotes: patient.medicalNotes,
+            antecedents: patient.antecedents,
+            allergies: patient.allergies,
+            traitementsEnCours: patient.traitementsEnCours,
+          } : null}
+        />
       </div>
 
       {canViewClinical && isPediatrie && (
