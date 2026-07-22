@@ -70,6 +70,7 @@ type SuccessData = { domain: string; email: string }
 export default function OnboardingFlow() {
   const [step, setStep] = useState(0)
   const [selectedTier, setSelectedTier] = useState<string | null>(null)
+  const [selectedSpecialty, setSelectedSpecialty] = useState('generaliste')
   const [success, setSuccess] = useState<SuccessData | null>(null)
 
   const isSelfService = selectedTier === 'vitrine' || selectedTier === 'rdv'
@@ -105,22 +106,41 @@ export default function OnboardingFlow() {
       <StepIndicator steps={steps} current={step} />
 
       {step === 0 && (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {tiers.map((t) => (
-            <TierCard
-              key={t.slug}
-              slug={t.slug}
-              name={t.name}
-              price={t.price}
-              features={t.features}
-              badge={t.badge}
-              ctaLabel={t.slug === 'dossier' || t.slug === 'clinique' ? 'Nous contacter' : 'Commencer'}
-              ctaVariant={t.slug === 'dossier' || t.slug === 'clinique' ? 'outline' : 'primary'}
-              isActive={selectedTier === t.slug}
-              onClick={() => handleTierClick(t.slug)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {tiers.map((t) => (
+              <TierCard
+                key={t.slug}
+                slug={t.slug}
+                name={t.name}
+                price={t.price}
+                features={t.features}
+                badge={t.badge}
+                ctaLabel={t.slug === 'dossier' || t.slug === 'clinique' ? 'Nous contacter' : 'Commencer'}
+                ctaVariant={t.slug === 'dossier' || t.slug === 'clinique' ? 'outline' : 'primary'}
+                isActive={selectedTier === t.slug}
+                onClick={() => handleTierClick(t.slug)}
+              />
+            ))}
+          </div>
+
+          {selectedTier && (selectedTier === 'dossier' || selectedTier === 'clinique') && (
+            <div className="mt-6 mx-auto max-w-xs">
+              <label className="mb-1 block text-sm font-medium text-stone-700">Spécialité</label>
+              <select
+                value={selectedSpecialty}
+                onChange={(e) => setSelectedSpecialty(e.target.value)}
+                className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none"
+              >
+                <option value="pediatrie">Pédiatrie</option>
+                <option value="generaliste">Médecine générale</option>
+                <option value="gynecologie">Gynécologie</option>
+                <option value="dermatologie">Dermatologie</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+          )}
+        </>
       )}
 
       {step === 1 && selected && isSelfService && (
@@ -132,6 +152,7 @@ export default function OnboardingFlow() {
           </div>
           <SignupForm
             tier={selected.slug as 'vitrine' | 'rdv'}
+            specialty={selectedSpecialty}
             onSuccess={handleSignupSuccess}
             onBack={() => setStep(0)}
           />

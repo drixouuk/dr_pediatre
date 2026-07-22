@@ -1,4 +1,5 @@
 import { requireAuth } from '@/lib/auth'
+import { getTenantById } from '@/lib/payload'
 import { Link } from '@/i18n/navigation'
 import LiveStatsWidget from '@/components/dashboard/LiveStatsWidget'
 import PatientSearchBar from '@/components/dashboard/PatientSearchBar'
@@ -8,6 +9,10 @@ import VaccinationAlerts from '@/components/dashboard/VaccinationAlerts'
 export default async function DashboardPage() {
   const user = await requireAuth()
   const isSuperadmin = user.roles?.includes('superadmin')
+
+  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenant = tenantId ? await getTenantById(tenantId) : null
+  const isPediatrie = tenant?.settings?.specialty === 'pediatrie'
 
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
@@ -43,9 +48,9 @@ export default async function DashboardPage() {
         <LiveStatsWidget clickable />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className={`mt-6 grid grid-cols-1 gap-6 ${isPediatrie ? 'lg:grid-cols-2' : ''}`}>
         <QueuePreview />
-        <VaccinationAlerts />
+        {isPediatrie && <VaccinationAlerts />}
       </div>
     </div>
   )

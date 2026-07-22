@@ -17,9 +17,10 @@ type Consultation = {
 type Props = {
   patientId: string
   consultations: Consultation[]
+  isPediatrie?: boolean
 }
 
-export default function ConsultationForm({ patientId, consultations }: Props) {
+export default function ConsultationForm({ patientId, consultations, isPediatrie }: Props) {
   const router = useRouter()
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -92,7 +93,7 @@ export default function ConsultationForm({ patientId, consultations }: Props) {
             <label className="mb-1 block text-sm font-medium text-stone-700">Examen clinique</label>
             <textarea rows={4} value={examenClinique} onChange={e => setExamenClinique(e.target.value)} className={inputClass} />
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className={`grid gap-4 ${isPediatrie ? 'grid-cols-3' : 'grid-cols-2'}`}>
             <div>
               <label className="mb-1 block text-sm font-medium text-stone-700">Poids (kg)</label>
               <input type="number" step="0.1" value={poids} onChange={e => setPoids(e.target.value)} className={inputClass} />
@@ -101,10 +102,12 @@ export default function ConsultationForm({ patientId, consultations }: Props) {
               <label className="mb-1 block text-sm font-medium text-stone-700">Taille (cm)</label>
               <input type="number" step="0.1" value={taille} onChange={e => setTaille(e.target.value)} className={inputClass} />
             </div>
-            <div>
-              <label className="mb-1 block text-sm font-medium text-stone-700">PC (cm)</label>
-              <input type="number" step="0.1" value={perimetreCranien} onChange={e => setPerimetreCranien(e.target.value)} className={inputClass} />
-            </div>
+            {isPediatrie && (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-stone-700">PC (cm)</label>
+                <input type="number" step="0.1" value={perimetreCranien} onChange={e => setPerimetreCranien(e.target.value)} className={inputClass} />
+              </div>
+            )}
           </div>
           <div>
             <label className="mb-1 block text-sm font-medium text-stone-700">Diagnostic</label>

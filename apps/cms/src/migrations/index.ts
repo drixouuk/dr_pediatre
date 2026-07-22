@@ -5,6 +5,7 @@ import * as migration_20260717_205700 from './20260717_205700';
 import * as migration_20260720_add_patient_contact_fields from './20260720_add_patient_contact_fields';
 import * as migration_20260721_add_vaccine_schedule_vaccinations from './20260721_add_vaccine_schedule_vaccinations';
 import * as migration_20260721_add_calbookings from './20260721_add_calbookings';
+import * as migration_20260722_add_specialty from './20260722_add_specialty';
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20260721_add_calbookings.up,
     down: migration_20260721_add_calbookings.down,
     name: '20260721_add_calbookings'
+  },
+  {
+    up: migration_20260722_add_specialty.up,
+    down: migration_20260722_add_specialty.down,
+    name: '20260722_add_specialty'
   },
 ];

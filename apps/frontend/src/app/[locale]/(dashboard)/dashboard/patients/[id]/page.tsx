@@ -1,5 +1,6 @@
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
+import { getTenantById } from '@/lib/payload'
 import { notFound } from 'next/navigation'
 import PatientNotesForm from './PatientNotesForm'
 import AddToQueueButton from './AddToQueueButton'
@@ -85,6 +86,10 @@ export default async function PatientDetailPage({ params }: Props) {
 
   const canViewClinical = user.roles?.includes('doctor') || user.roles?.includes('tenant_admin') || user.roles?.includes('superadmin')
 
+  const tenantId = typeof user.tenant === 'object' ? (user.tenant as any).id : user.tenant
+  const tenant = tenantId ? await getTenantById(tenantId) : null
+  const isPediatrie = tenant?.settings?.specialty === 'pediatrie'
+
   const [patient, consultationsData, prescriptionsData, documentsData, scheduleData, vaccinationsData] = await Promise.all([
     fetchCMS<Patient>(`/api/patients/${id}`, { revalidate: 0 }),
     canViewClinical
@@ -105,13 +110,13 @@ export default async function PatientDetailPage({ params }: Props) {
           { revalidate: 0 },
         )
       : Promise.resolve(null),
-    canViewClinical
+    canViewClinical && isPediatrie
       ? fetchCMS<{ docs: VaccineScheduleEntry[] }>(
           '/api/vaccine-schedule?sort=ageMonths&limit=100&depth=0',
           { revalidate: 60 },
         )
       : Promise.resolve(null),
-    canViewClinical
+    canViewClinical && isPediatrie
       ? fetchCMS<{ docs: VaccinationData[] }>(
           `/api/vaccinations?where[patient][equals]=${id}&depth=0&limit=100`,
           { revalidate: 0 },
@@ -154,11 +159,11 @@ export default async function PatientDetailPage({ params }: Props) {
         <PatientNotesForm patientId={patient.id} initialNotes={patient.medicalNotes || ''} />
       </div>
 
-      {canViewClinical && (
+      {canViewClinical && isPediatrie && (
         <GrowthChart consultations={consultations} />
       )}
 
-      {canViewClinical && (
+      {canViewClinical && isPediatrie && (
         <VaccinationRecord
           patientId={patient.id}
           schedule={vaccineSchedule}
@@ -170,7 +175,7 @@ export default async function PatientDetailPage({ params }: Props) {
 
       {canViewClinical && (
         <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <ConsultationForm patientId={patient.id} consultations={consultations} />
+          <ConsultationForm patientId={patient.id} consultations={consultations} isPediatrie={isPediatrie} />
           <PrescriptionForm patientId={patient.id} prescriptions={prescriptions} consultations={consultations} />
         </div>
       )}

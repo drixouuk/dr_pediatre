@@ -86,6 +86,7 @@ export type Tenant = {
   settings: {
     defaultLocale: string
     activeTier: string
+    specialty: string
   }
   calcomSettings: CalComSettings | null
 }

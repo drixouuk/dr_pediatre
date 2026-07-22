@@ -7,6 +7,7 @@ const BASE_DOMAIN = process.env.NEXT_PUBLIC_ONBOARDING_BASE_DOMAIN || '.dr-tabib
 
 type Props = {
   tier: 'vitrine' | 'rdv'
+  specialty?: string
   onSuccess: (data: { domain: string; email: string }) => void
   onBack: () => void
 }
@@ -19,7 +20,7 @@ type FieldErrors = {
   subdomain?: string
 }
 
-export default function SignupForm({ tier, onSuccess, onBack }: Props) {
+export default function SignupForm({ tier, specialty, onSuccess, onBack }: Props) {
   const [form, setForm] = useState({
     name: '',
     fullName: '',
@@ -67,6 +68,7 @@ export default function SignupForm({ tier, onSuccess, onBack }: Props) {
       phone: form.phone || undefined,
       fullName: form.fullName,
     }
+    if (specialty) body.specialty = specialty
     if (tier === 'rdv') {
       body.eventSlug = form.eventSlug || 'consultation'
       body.username = form.username || undefined

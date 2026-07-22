@@ -67,6 +67,7 @@ async function seedTenant(payload: Payload) {
       settings: {
         defaultLocale: "fr",
         activeTier: "dossier",
+        specialty: "pediatrie",
       },
       calcomSettings: {
         eventSlug: "consultation-pediatrique",

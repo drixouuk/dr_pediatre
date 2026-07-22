@@ -19,7 +19,7 @@ async function cmsPost(path: string, data: unknown, token?: string) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { domain, name, email, password, tier = 'vitrine', phone } = body
+    const { domain, name, email, password, tier = 'vitrine', phone, specialty } = body
 
     if (!domain || !name || !email || !password) {
       return NextResponse.json(
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     const tenantRes = await cmsPost('/tenants', {
       name,
       domain,
-      settings: { defaultLocale: 'fr', activeTier: tier },
+      settings: { defaultLocale: 'fr', activeTier: tier, specialty: specialty || 'generaliste' },
       calcomSettings: {
         eventSlug: body.eventSlug || 'consultation',
         username: body.username || '',

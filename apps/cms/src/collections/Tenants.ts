@@ -77,6 +77,14 @@ export const Tenants: CollectionConfig = {
           options: ['vitrine', 'rdv', 'dossier', 'clinique'],
           defaultValue: 'vitrine',
         },
+        {
+          name: 'specialty',
+          type: 'select',
+          options: ['pediatrie', 'generaliste', 'gynecologie', 'dermatologie', 'autre'],
+          defaultValue: 'generaliste',
+          label: 'Spécialité du cabinet',
+          admin: { description: 'Détermine les modules cliniques affichés dans le dossier patient' },
+        },
       ],
     },
     {
