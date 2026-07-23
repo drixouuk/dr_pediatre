@@ -230,7 +230,7 @@ export default async function PatientDetailPage({ params }: Props) {
       </div>
 
       {canViewClinical && isPediatrie && (
-        <GrowthChart consultations={consultations} />
+        <GrowthChart consultations={consultations} patientBirthDate={patient.birthDate} patientGender={patient.gender} />
       )}
 
       {canViewClinical && isPediatrie && (
