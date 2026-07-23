@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function NewPatientPage() {
@@ -16,6 +16,14 @@ export default function NewPatientPage() {
   const [email, setEmail] = useState('')
   const [nationalId, setNationalId] = useState('')
   const [addToQueue, setAddToQueue] = useState(true)
+  const [patientSource, setPatientSource] = useState('')
+  const [patientSourceDetail, setPatientSourceDetail] = useState('')
+  const [referringIds, setReferringIds] = useState<string[]>([])
+  const [referringOptions, setReferringOptions] = useState<{ id: string; name: string }[]>([])
+  useEffect(() => {
+    fetch('/api/cms-proxy/referring-practitioners?depth=0&limit=200')
+      .then(r => r.json()).then(j => setReferringOptions(j.docs ?? []))
+  }, [])
 
   const inputClass = 'w-full rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-800 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none'
 
@@ -32,6 +40,9 @@ export default function NewPatientPage() {
       phone: phone || undefined,
       email: email || undefined,
       nationalId: nationalId || undefined,
+      patientSource: patientSource || undefined,
+      patientSourceDetail: patientSourceDetail || undefined,
+      referringPractitioners: referringIds.length > 0 ? referringIds : undefined,
     }
 
     const res = await fetch('/api/cms-proxy/patients', {
@@ -164,6 +175,36 @@ export default function NewPatientPage() {
             type="text"
             className={inputClass}
           />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-stone-700">Provenance</label>
+          <select value={patientSource} onChange={e => setPatientSource(e.target.value)} className={inputClass}>
+            <option value="">Non renseigné</option>
+            <option value="referring_practitioner">Médecin référent</option>
+            <option value="google">Google</option>
+            <option value="facebook">Facebook</option>
+            <option value="instagram">Instagram</option>
+            <option value="autre_patient">Recommandé par un autre patient</option>
+            <option value="connaissance">Connaissance / Bouche-à-oreille</option>
+            <option value="professionnel_sante">Professionnel de santé</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+
+        {patientSource === 'referring_practitioner' && (
+          <div>
+            <label className="mb-1 block text-sm font-medium text-stone-700">Médecin référent</label>
+            <select value={referringIds[0] || ''} onChange={e => setReferringIds(e.target.value ? [e.target.value] : [])} className={inputClass}>
+              <option value="">Sélectionner…</option>
+              {referringOptions.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+            </select>
+          </div>
+        )}
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-stone-700">Détail <span className="text-stone-400 font-normal">(optionnel)</span></label>
+          <input value={patientSourceDetail} onChange={e => setPatientSourceDetail(e.target.value)} type="text" placeholder="Ex: Groupe Facebook mamans Agadir, Dr. Martin..." className={inputClass} />
         </div>
 
         {error && <p className="text-sm font-medium text-red-600">{error}</p>}

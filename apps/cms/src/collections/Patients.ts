@@ -217,6 +217,28 @@ export const Patients: CollectionConfig = {
       },
     },
     {
+      name: 'patientSource',
+      type: 'select',
+      options: [
+        { label: 'Médecin référent', value: 'referring_practitioner' },
+        { label: 'Google', value: 'google' },
+        { label: 'Facebook', value: 'facebook' },
+        { label: 'Instagram', value: 'instagram' },
+        { label: 'Recommandé par un autre patient', value: 'autre_patient' },
+        { label: 'Connaissance / Bouche-à-oreille', value: 'connaissance' },
+        { label: 'Professionnel de santé', value: 'professionnel_sante' },
+        { label: 'Autre', value: 'autre' },
+      ],
+      label: 'Provenance du patient',
+      admin: { description: 'Comment le patient a-t-il connu le cabinet ?' },
+    },
+    {
+      name: 'patientSourceDetail',
+      type: 'text',
+      label: 'Détail de la provenance',
+      admin: { description: 'Nom du médecin, nom du patient référent, groupe Facebook, etc.' },
+    },
+    {
       name: 'referringPractitioners',
       type: 'relationship',
       relationTo: 'referring-practitioners',

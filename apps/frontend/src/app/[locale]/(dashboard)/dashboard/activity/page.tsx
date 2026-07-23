@@ -121,6 +121,19 @@ export default async function ActivityPage({ searchParams }: Props) {
 
   const completedToday = queueItems.filter(i => i.status === 'completed').length
 
+  const sourceCounts: Record<string, number> = {}
+  for (const p of patients) {
+    const src = (p as any).patientSource
+    if (src) sourceCounts[src] = (sourceCounts[src] || 0) + 1
+  }
+  const sourceLabels: Record<string, string> = {
+    referring_practitioner: 'Médecin réf.', google: 'Google', facebook: 'Facebook', instagram: 'Instagram',
+    autre_patient: 'Patient', connaissance: 'Bouche-à-oreille', professionnel_sante: 'Pro. santé', autre: 'Autre',
+  }
+  const sourceData = Object.entries(sourceCounts)
+    .map(([key, count]) => ({ name: sourceLabels[key] || key, value: count }))
+    .filter(d => d.value > 0)
+
   const reasonCounts: Record<string, number> = { consultation: 0, controle: 0, vaccin: 0, urgence: 0 }
   for (const item of queueItems) {
     if (reasonCounts[item.visitReason] !== undefined) reasonCounts[item.visitReason]++
@@ -148,6 +161,7 @@ export default async function ActivityPage({ searchParams }: Props) {
           completedToday={completedToday}
           reasonData={reasonData}
           hourlyData={hourlyData}
+          sourceData={sourceData}
           chartData={chartData}
         />
       </div>

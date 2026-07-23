@@ -4,6 +4,7 @@ import { fetchCMS } from '@/lib/cms-fetch'
 import ProfileEditor from './ProfileEditor'
 import ChangePasswordForm from './ChangePasswordForm'
 import ManageAccounts from './ManageAccounts'
+import ReferringPractitionersManager from './ReferringPractitionersManager'
 
 export default async function SettingsPage() {
   const user = await requireAuth()
@@ -32,6 +33,7 @@ export default async function SettingsPage() {
         <ProfileEditor userId={user.id} initialName={user.name || ''} initialEmail={user.email} initialPhone={practicePhone} />
         <ChangePasswordForm userId={user.id} />
         {isAdmin && <ManageAccounts users={tenantUsers} currentUserId={user.id} />}
+        {isAdmin && <ReferringPractitionersManager />}
       </div>
     </div>
   )

@@ -11,6 +11,7 @@ type Props = {
   completedToday: number
   reasonData: { name: string; value: number }[]
   hourlyData: { hour: string; count: number }[]
+  sourceData?: { name: string; value: number }[]
   chartData: { date: string; consultations: number; newPatients: number }[]
 }
 
@@ -19,9 +20,10 @@ const SECONDARY = '#D97706'
 const LIGHT_GRID = '#E7E5E4'
 const LIGHT_TEXT = '#A8A29E'
 const PIE_COLORS = ['#0F766E', '#D97706', '#7C3AED', '#EF4444']
+const SOURCE_COLORS = ['#0F766E', '#D97706', '#2563EB', '#7C3AED', '#EC4899', '#F97316', '#84CC16', '#64748B']
 
 export default function ActivityView({
-  period, newPatients, consultationsDone, completedToday, reasonData, hourlyData, chartData,
+  period, newPatients, consultationsDone, completedToday, reasonData, hourlyData, sourceData, chartData,
 }: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -134,6 +136,23 @@ export default function ActivityView({
                 </BarChart>
               </ResponsiveContainer>
             </div>
+          </div>
+        </div>
+      )}
+
+      {sourceData && sourceData.length > 0 && (
+        <div className="mb-6">
+          <h3 className="mb-2 font-heading text-sm font-semibold text-stone-700">Provenance des patients</h3>
+          <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+            <ResponsiveContainer width="100%" height={220}>
+              <PieChart>
+                <Pie data={sourceData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}
+                  label={({ name, value }: any) => `${name}: ${value}`} labelLine={false}>
+                  {sourceData.map((_entry: any, i: number) => <Cell key={i} fill={SOURCE_COLORS[i % SOURCE_COLORS.length]} />)}
+                </Pie>
+                <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
       )}
