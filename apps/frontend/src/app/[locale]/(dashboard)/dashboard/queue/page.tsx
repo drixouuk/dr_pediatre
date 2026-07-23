@@ -1,4 +1,4 @@
-import { getTenantId } from '@/lib/tenant'
+import { getTenantId, getDoctorProfileId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { getTenantById } from '@/lib/payload'
 import LiveStatsWidget from '@/components/dashboard/LiveStatsWidget'
@@ -9,9 +9,7 @@ export default async function QueuePage() {
   const tenantId = getTenantId(user)
   const tenant = tenantId ? await getTenantById(tenantId) : null
   const isClinique = tenant?.settings?.activeTier === 'clinique'
-  const currentDoctorId = typeof user.doctorProfile === 'object'
-    ? (user.doctorProfile as any).id
-    : user.doctorProfile
+  const currentDoctorId = getDoctorProfileId(user)
 
   return (
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">

@@ -10,15 +10,15 @@ type Props = {
 
 export default function LayoutShell({ children, header, footer }: Props) {
   const pathname = usePathname()
-  const isDashboard = pathname.startsWith('/dashboard')
+  const hideShell = pathname.startsWith('/dashboard') || pathname.startsWith('/login') || pathname.startsWith('/onboarding')
 
   return (
     <>
-      {!isDashboard && header}
-      <div className={isDashboard ? 'flex flex-1 flex-col' : 'flex flex-1 flex-col pt-16 md:pt-20'}>
+      {!hideShell && header}
+      <div className={hideShell ? 'flex flex-1 flex-col' : 'flex flex-1 flex-col pt-16 md:pt-20'}>
         {children}
       </div>
-      {!isDashboard && footer}
+      {!hideShell && footer}
     </>
   )
 }
