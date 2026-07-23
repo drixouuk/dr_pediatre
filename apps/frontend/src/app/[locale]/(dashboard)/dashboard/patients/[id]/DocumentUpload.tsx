@@ -30,10 +30,12 @@ export default function DocumentUpload({ patientId, documents }: Props) {
   const [saving, setSaving] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [documentType, setDocumentType] = useState('radio')
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!file) return
+    setError('')
     setSaving(true)
 
     const fd = new FormData()
@@ -51,6 +53,8 @@ export default function DocumentUpload({ patientId, documents }: Props) {
       setFile(null)
       setDocumentType('radio')
       router.refresh()
+    } else {
+      setError("Erreur lors de l'upload. Veuillez réessayer.")
     }
     setSaving(false)
   }
@@ -102,6 +106,7 @@ export default function DocumentUpload({ patientId, documents }: Props) {
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="text-sm text-stone-500 hover:text-stone-700">Annuler</button>
           </div>
+          {error && <p className="text-sm text-red-600">{error}</p>}
         </form>
       )}
 

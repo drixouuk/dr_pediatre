@@ -7,8 +7,6 @@ import { generatePrescriptionPDF, type DoctorInfo, type PatientInfo } from '@/li
 type MedicationSuggestion = {
   nom: string
   dci: string
-  posologie: string
-  duree: string
   count: number
 }
 
@@ -79,6 +77,7 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
   const [consultationId, setConsultationId] = useState(
     consultations.length > 0 ? consultations[0].id : '',
   )
+  const [error, setError] = useState('')
   const [savingTemplate, setSavingTemplate] = useState(false)
   const [templates, setTemplates] = useState<TemplateDoc[]>([])
   const [suggestions, setSuggestions] = useState<Record<number, MedicationSuggestion[]>>({})
@@ -146,6 +145,7 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
     setSaving(true)
 
     const body: Record<string, unknown> = {
@@ -168,6 +168,8 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
       setMedications([{ nom: '', dci: '', posologie: '', duree: '' }])
       setNotes('')
       router.refresh()
+    } else {
+      setError("Erreur lors de l'enregistrement. Veuillez réessayer.")
     }
     setSaving(false)
   }
@@ -247,7 +249,7 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
                         <button
                           key={si}
                           type="button"
-                          onMouseDown={(e) => { e.preventDefault(); updateMed(i, 'nom', s.nom); updateMed(i, 'dci', s.dci); updateMed(i, 'posologie', s.posologie); updateMed(i, 'duree', s.duree); setOpenDropdown(null) }}
+                          onMouseDown={(e) => { e.preventDefault(); updateMed(i, 'nom', s.nom); updateMed(i, 'dci', s.dci); setOpenDropdown(null) }}
                           className="flex w-full items-center justify-between px-3 py-2 text-left text-sm text-stone-700 transition-colors duration-200 hover:bg-primary-50"
                         >
                           <span className="font-medium">{s.nom}</span>
@@ -312,6 +314,7 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
             </button>
             <button type="button" onClick={() => setShowForm(false)} className="text-sm text-stone-500 hover:text-stone-700">Annuler</button>
           </div>
+          {error && <p className="text-sm text-red-600">{error}</p>}
         </form>
       )}
 

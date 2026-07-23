@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
   const data = await res.json()
   const prescriptions: PrescriptionDoc[] = data.docs ?? []
 
-  const seen = new Map<string, { nom: string; dci: string; posologie: string; duree: string; count: number }>()
+  const seen = new Map<string, { nom: string; dci: string; count: number }>()
 
   for (const p of prescriptions) {
     for (const m of p.medications ?? []) {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
       const key = nomLower
       if (!seen.has(key)) {
-        seen.set(key, { nom: m.nom.trim(), dci: m.dci?.trim() || '', posologie: m.posologie?.trim() || '', duree: m.duree?.trim() || '', count: 1 })
+        seen.set(key, { nom: m.nom.trim(), dci: m.dci?.trim() || '', count: 1 })
       } else {
         const entry = seen.get(key)!
         entry.count++

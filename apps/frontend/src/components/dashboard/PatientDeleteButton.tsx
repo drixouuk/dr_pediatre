@@ -36,21 +36,20 @@ export default function PatientDeleteButton({ patientId, patientName }: Props) {
 
   if (confirming) {
     return (
-      <div className="flex items-center gap-1 px-3 py-2">
-        <button
-          onClick={handleDelete}
-          disabled={deleting}
-          className="text-sm font-medium text-red-600 hover:text-red-700 disabled:opacity-50"
-        >
-          {deleting ? '…' : 'Confirmer ?'}
-        </button>
-        <button
-          onClick={() => { setConfirming(false); setError('') }}
-          className="text-sm text-stone-400 hover:text-stone-600"
-        >
-          Annuler
-        </button>
-        {error && <span className="text-xs text-red-500">{error}</span>}
+      <div className="px-3 py-2">
+        <p className="text-sm font-medium text-red-700">Supprimer {patientName} ?</p>
+        <p className="mt-1 text-xs text-stone-500">L'historique clinique (consultations, prescriptions, documents) sera définitivement perdu.</p>
+        <div className="mt-2 flex items-center gap-2">
+          <button onClick={handleDelete} disabled={deleting}
+            className="text-sm font-medium text-red-600 hover:text-red-700 disabled:opacity-50">
+            {deleting ? 'Suppression…' : 'Supprimer définitivement'}
+          </button>
+          <button onClick={() => { setConfirming(false); setError('') }}
+            className="text-sm text-stone-400 hover:text-stone-600">
+            Annuler
+          </button>
+        </div>
+        {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
       </div>
     )
   }

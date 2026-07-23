@@ -31,6 +31,7 @@ export default function PatientClinicalFields({ patientId, initialData }: Props)
   })
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState('')
 
   if (!initialData) {
     return (
@@ -43,6 +44,7 @@ export default function PatientClinicalFields({ patientId, initialData }: Props)
   const handleSave = async () => {
     setSaving(true)
     setSaved(false)
+    setError('')
     const res = await fetch(`/api/cms-proxy/patients/${patientId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -51,6 +53,8 @@ export default function PatientClinicalFields({ patientId, initialData }: Props)
     if (res.ok) {
       setSaved(true)
       router.refresh()
+    } else {
+      setError("Erreur lors de l'enregistrement. Veuillez réessayer.")
     }
     setSaving(false)
   }
@@ -103,6 +107,7 @@ export default function PatientClinicalFields({ patientId, initialData }: Props)
           {saving ? 'Enregistrement…' : 'Enregistrer les modifications'}
         </button>
         {saved && <span className="text-sm text-green-600">Enregistré ✓</span>}
+        {error && <span className="text-sm text-red-600">{error}</span>}
       </div>
     </div>
   )

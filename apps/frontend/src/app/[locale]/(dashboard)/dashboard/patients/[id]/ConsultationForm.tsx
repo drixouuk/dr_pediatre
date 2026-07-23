@@ -51,6 +51,7 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
   const [perimetreCranien, setPerimetreCranien] = useState('')
   const [diagnostic, setDiagnostic] = useState('')
   const [codeActe, setCodeActe] = useState('')
+  const [error, setError] = useState('')
   const [savingTemplate, setSavingTemplate] = useState(false)
   const [templates, setTemplates] = useState<{ id: string; name: string; motif?: string; examenClinique?: string; diagnostic?: string; codeActe?: string }[]>([])
 
@@ -87,6 +88,7 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    setError('')
     setSaving(true)
 
     const body: Record<string, unknown> = {
@@ -116,6 +118,8 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
       setDiagnostic('')
       setCodeActe('')
       router.refresh()
+    } else {
+      setError("Erreur lors de l'enregistrement. Veuillez réessayer.")
     }
     setSaving(false)
   }
@@ -209,6 +213,7 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
               Annuler
             </button>
           </div>
+          {error && <p className="text-sm text-red-600">{error}</p>}
         </form>
       )}
 
