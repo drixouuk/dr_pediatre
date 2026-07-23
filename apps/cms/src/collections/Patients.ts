@@ -14,21 +14,73 @@ export const Patients: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }: any) => {
-      if (user?.roles?.includes('superadmin')) return true
-      const id = tenantId(user)
-      if (!id) return false
-      return { tenant: { equals: id } }
+      if (!user) return false
+      const roles: string[] = user.roles ?? []
+      if (roles.includes('superadmin') || roles.includes('tenant_admin')) return true
+      const tid = tenantId(user)
+      if (!tid) return false
+      if (roles.includes('doctor')) {
+        return {
+          and: [
+            { tenant: { equals: tid } },
+            {
+              or: [
+                { followedBy: { in: [user.id] } },
+                { sharedWith: { in: [user.id] } },
+                { and: [{ followedBy: { exists: false } }, { sharedWith: { exists: false } }] },
+              ],
+            },
+          ],
+        }
+      }
+      return { tenant: { equals: tid } }
     },
-    create: ({ req: { user } }: any): boolean => !!tenantId(user),
+    create: ({ req: { user } }: any): boolean => {
+      const roles: string[] = user?.roles ?? []
+      if (roles.includes('superadmin') || roles.includes('tenant_admin')) return true
+      if (roles.includes('doctor')) return !!tenantId(user)
+      return false
+    },
     update: ({ req: { user } }: any) => {
-      const id = tenantId(user)
-      if (!id) return false
-      return { tenant: { equals: id } }
+      const tid = tenantId(user)
+      if (!tid) return false
+      const roles: string[] = user?.roles ?? []
+      if (roles.includes('superadmin') || roles.includes('tenant_admin')) return true
+      if (roles.includes('doctor')) {
+        return {
+          and: [
+            { tenant: { equals: tid } },
+            {
+              or: [
+                { followedBy: { in: [user.id] } },
+                { sharedWith: { in: [user.id] } },
+                { and: [{ followedBy: { exists: false } }, { sharedWith: { exists: false } }] },
+              ],
+            },
+          ],
+        }
+      }
+      return false
     },
     delete: ({ req: { user } }: any) => {
-      const id = tenantId(user)
-      if (!id) return false
-      return { tenant: { equals: id } }
+      const tid = tenantId(user)
+      if (!tid) return false
+      const roles: string[] = user?.roles ?? []
+      if (roles.includes('superadmin') || roles.includes('tenant_admin')) return true
+      if (roles.includes('doctor')) {
+        return {
+          and: [
+            { tenant: { equals: tid } },
+            {
+              or: [
+                { followedBy: { in: [user.id] } },
+                { and: [{ followedBy: { exists: false } }, { sharedWith: { exists: false } }] },
+              ],
+            },
+          ],
+        }
+      }
+      return false
     },
   },
   hooks: {
@@ -38,6 +90,9 @@ export const Patients: CollectionConfig = {
       ({ req, data, operation }: any) => {
         if (operation === 'create' && req.user?.tenant) {
           data.tenant = typeof req.user.tenant === 'object' ? req.user.tenant.id : req.user.tenant
+        }
+        if (operation === 'create' && req.user && (!data?.followedBy || data.followedBy.length === 0)) {
+          data.followedBy = [req.user.id]
         }
         return data
       },
@@ -165,6 +220,22 @@ export const Patients: CollectionConfig = {
       hasMany: true,
       label: 'Médecins référents',
       admin: { description: 'Praticiens ayant adressé ce patient' },
+    },
+    {
+      name: 'followedBy',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+      label: 'Suivi par',
+      admin: { description: 'Médecins responsables du suivi de ce patient' },
+    },
+    {
+      name: 'sharedWith',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+      label: 'Partagé avec',
+      admin: { description: 'Médecins ayant reçu un accès ponctuel à ce dossier' },
     },
   ],
 }

@@ -14,6 +14,7 @@ import * as migration_20260722_add_substitute_role from './20260722_add_substitu
 import * as migration_20260723_add_contact_messages from './20260723_add_contact_messages';
 import * as migration_20260723_add_referring_practitioners from './20260723_add_referring_practitioners';
 import * as migration_20260723_add_vaccination_extensions from './20260723_add_vaccination_extensions';
+import * as migration_20260723_add_patient_scoped_access from './20260723_add_patient_scoped_access';
 
 export const migrations = [
   {
@@ -95,5 +96,10 @@ export const migrations = [
     up: migration_20260723_add_vaccination_extensions.up,
     down: migration_20260723_add_vaccination_extensions.down,
     name: '20260723_add_vaccination_extensions'
+  },
+  {
+    up: migration_20260723_add_patient_scoped_access.up,
+    down: migration_20260723_add_patient_scoped_access.down,
+    name: '20260723_add_patient_scoped_access'
   },
 ];

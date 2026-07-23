@@ -11,6 +11,7 @@ import DocumentUpload from './DocumentUpload'
 import GrowthChart from './GrowthChart'
 import VaccinationRecord from '@/components/dashboard/VaccinationRecord'
 import ReferringPractitionersWidget from './ReferringPractitionersWidget'
+import SharePatientWidget from './SharePatientWidget'
 
 import { computeAge } from '@/lib/age'
 import type { DoctorInfo, PatientInfo } from '@/lib/generate-pdf'
@@ -95,7 +96,6 @@ export default async function PatientDetailPage({ params }: Props) {
   const tenantId = getTenantId(user)
   const tenant = tenantId ? await getTenantById(tenantId) : null
   const isPediatrie = tenant?.settings?.specialty === 'pediatrie'
-
   const [patient, consultationsData, prescriptionsData, documentsData, scheduleData, vaccinationsData, doctor, practiceInfo] = await Promise.all([
     fetchCMS<Patient>(`/api/patients/${id}`, { revalidate: 0 }),
     canViewClinical
@@ -133,6 +133,16 @@ export default async function PatientDetailPage({ params }: Props) {
   ])
 
   if (!patient) notFound()
+
+  const isClinique = tenant?.settings?.activeTier === 'clinique'
+  const isDoctor = user.roles?.includes('doctor')
+
+  const sharedWithIds: string[] = (patient as any).sharedWith
+    ? Array.isArray((patient as any).sharedWith) ? (patient as any).sharedWith.map((s: any) => typeof s === 'object' ? s.id : s) : []
+    : []
+  const followedByIds: string[] = (patient as any).followedBy
+    ? Array.isArray((patient as any).followedBy) ? (patient as any).followedBy.map((f: any) => typeof f === 'object' ? f.id : f) : []
+    : []
 
   const consultations = consultationsData?.docs ?? []
   const prescriptions = prescriptionsData?.docs ?? []
@@ -195,6 +205,17 @@ export default async function PatientDetailPage({ params }: Props) {
             : []} />
         </div>
       </div>
+
+      {isClinique && isDoctor && (
+        <div className="mb-8">
+          <SharePatientWidget
+            patientId={patient.id}
+            sharedWithIds={sharedWithIds}
+            isClinique={isClinique}
+            currentUserId={user.id}
+          />
+        </div>
+      )}
 
       <div className="mb-8">
         <PatientClinicalFields
