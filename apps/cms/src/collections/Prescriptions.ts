@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { auditReadHook, auditWriteHook } from '../hooks/logPatientAccess'
 
 export const Prescriptions: CollectionConfig = {
   slug: 'prescriptions',
@@ -55,6 +56,8 @@ export const Prescriptions: CollectionConfig = {
         return data
       },
     ],
+    afterRead: [auditReadHook('prescriptions')],
+    afterChange: [auditWriteHook('prescriptions')],
   },
   fields: [
     {

@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { logPatientReadAccess, logPatientWriteAccess } from '../hooks/logPatientAccess'
+import { auditReadHook, auditWriteHook } from '../hooks/logPatientAccess'
 
 function tenantId(user: any): string | undefined {
   if (!user?.tenant) return undefined
@@ -32,8 +32,8 @@ export const Patients: CollectionConfig = {
     },
   },
   hooks: {
-    afterRead: [logPatientReadAccess],
-    afterChange: [logPatientWriteAccess],
+    afterRead: [auditReadHook('patients')],
+    afterChange: [auditWriteHook('patients')],
     beforeChange: [
       ({ req, data, operation }: any) => {
         if (operation === 'create' && req.user?.tenant) {
