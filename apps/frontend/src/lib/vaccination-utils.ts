@@ -11,7 +11,8 @@ export type VaccinationData = {
   id: string
   vaccineName: string
   doseLabel: string
-  dateAdministered: string
+  dateAdministered?: string | null
+  status?: 'administered' | 'contraindicated' | 'refused'
 }
 
 export type AlertStatus = 'overdue' | 'upcoming'
@@ -50,7 +51,11 @@ export function computePatientAlerts(
     if (entry.notes?.includes('Filles uniquement') && isBoy) continue
 
     const done = vaccinations.some(
-      (v) => v.vaccineName === entry.vaccineName && v.doseLabel === entry.doseLabel,
+      (v) =>
+        v.vaccineName === entry.vaccineName &&
+        v.doseLabel === entry.doseLabel &&
+        v.status !== 'contraindicated' &&
+        v.status !== 'refused',
     )
     if (done) continue
 

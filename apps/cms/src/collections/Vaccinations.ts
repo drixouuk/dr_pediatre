@@ -91,11 +91,38 @@ export const Vaccinations: CollectionConfig = {
       label: 'Dose',
     },
     {
+      name: 'status',
+      type: 'select',
+      defaultValue: 'administered',
+      required: true,
+      options: [
+        { label: 'Administré', value: 'administered' },
+        { label: 'Contre-indiqué', value: 'contraindicated' },
+        { label: 'Refusé (parents)', value: 'refused' },
+      ],
+      label: 'Statut',
+    },
+    {
       name: 'dateAdministered',
       type: 'date',
-      required: true,
-      defaultValue: () => new Date().toISOString(),
       label: 'Date d\'administration',
+      admin: { date: { pickerAppearance: 'dayOnly' } },
+    },
+    {
+      name: 'administrationRoute',
+      type: 'select',
+      options: [
+        { label: 'Intramusculaire (IM)', value: 'IM' },
+        { label: 'Sous-cutanée (SC)', value: 'SC' },
+        { label: 'Orale', value: 'oral' },
+        { label: 'Intradermique', value: 'intradermal' },
+      ],
+      label: 'Voie d\'administration',
+    },
+    {
+      name: 'lotNumber',
+      type: 'text',
+      label: 'Numéro de lot',
     },
     {
       name: 'practitioner',

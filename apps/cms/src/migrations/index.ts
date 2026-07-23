@@ -13,6 +13,7 @@ import * as migration_20260722_add_clinical_fields from './20260722_add_clinical
 import * as migration_20260722_add_substitute_role from './20260722_add_substitute_role';
 import * as migration_20260723_add_contact_messages from './20260723_add_contact_messages';
 import * as migration_20260723_add_referring_practitioners from './20260723_add_referring_practitioners';
+import * as migration_20260723_add_vaccination_extensions from './20260723_add_vaccination_extensions';
 
 export const migrations = [
   {
@@ -89,5 +90,10 @@ export const migrations = [
     up: migration_20260723_add_referring_practitioners.up,
     down: migration_20260723_add_referring_practitioners.down,
     name: '20260723_add_referring_practitioners'
+  },
+  {
+    up: migration_20260723_add_vaccination_extensions.up,
+    down: migration_20260723_add_vaccination_extensions.down,
+    name: '20260723_add_vaccination_extensions'
   },
 ];
