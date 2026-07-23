@@ -11,6 +11,7 @@ import * as migration_20260722_add_queue_doctor from './20260722_add_queue_docto
 import * as migration_20260722_add_templates from './20260722_add_templates';
 import * as migration_20260722_add_clinical_fields from './20260722_add_clinical_fields';
 import * as migration_20260722_add_substitute_role from './20260722_add_substitute_role';
+import * as migration_20260723_add_contact_messages from './20260723_add_contact_messages';
 
 export const migrations = [
   {
@@ -77,5 +78,10 @@ export const migrations = [
     up: migration_20260722_add_substitute_role.up,
     down: migration_20260722_add_substitute_role.down,
     name: '20260722_add_substitute_role'
+  },
+  {
+    up: migration_20260723_add_contact_messages.up,
+    down: migration_20260723_add_contact_messages.down,
+    name: '20260723_add_contact_messages'
   },
 ];
