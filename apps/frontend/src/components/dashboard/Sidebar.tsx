@@ -6,6 +6,7 @@ import {
   ListOrdered,
   BarChart3,
   Calendar,
+  Settings,
   FileText,
   ShieldAlert,
   LogOut,
@@ -50,6 +51,7 @@ export default function Sidebar({ user, tenant, onNavigate }: Props) {
     { label: 'File d\'attente', href: '/dashboard/queue', icon: <ListOrdered className="size-4" /> },
     { label: 'Activité', href: '/dashboard/activity', icon: <BarChart3 className="size-4" /> },
     { label: 'Rendez-vous', href: '/dashboard/rendez-vous', icon: <Calendar className="size-4" /> },
+    { label: 'Paramètres', href: '/dashboard/settings', icon: <Settings className="size-4" /> },
   ]
 
   const adminItems: NavItem[] = []

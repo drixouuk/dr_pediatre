@@ -19,6 +19,17 @@ export const Users: CollectionConfig = {
 
       return callerTenantId === targetTenantId
     },
+    update: ({ req: { user }, id }: any) => {
+      const roles: string[] = user?.roles ?? []
+      if (roles.includes('superadmin')) return true
+      if (user?.id === id) return true
+      if (roles.includes('tenant_admin')) {
+        const tid = typeof user.tenant === 'object' ? user.tenant.id : user.tenant
+        if (!tid) return false
+        return { tenant: { equals: tid } }
+      }
+      return false
+    },
     read: ({ req: { user } }: any) => {
       if ((user?.roles as string[])?.includes('superadmin')) return true
       if (!user?.tenant) return false
