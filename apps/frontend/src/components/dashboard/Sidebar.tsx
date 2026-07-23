@@ -36,6 +36,12 @@ export default function Sidebar({ user, tenant, onNavigate }: Props) {
     doctor: 'Médecin',
     secretary: 'Secrétaire',
   }
+  const tierLabels: Record<string, string> = {
+    vitrine: 'Site vitrine',
+    rdv: 'RDV en ligne',
+    dossier: 'Cabinet individuel',
+    clinique: 'Cabinet de groupe',
+  }
   const roleLabel = user.roles?.map((r) => roleLabels[r] || r).join(', ')
 
   const navItems: NavItem[] = [
@@ -59,7 +65,7 @@ export default function Sidebar({ user, tenant, onNavigate }: Props) {
     <div className="flex flex-col h-full">
       <div className="flex flex-col px-4 pt-6 pb-4">
         <h2 className="font-heading text-sm font-medium text-stone-800 leading-tight">{tenant?.name || 'Cabinet'}</h2>
-        {tenant && <p className="mt-0.5 text-xs text-stone-500">{tenant.settings?.activeTier || ''}</p>}
+        {tenant && <p className="mt-0.5 text-xs text-stone-500">{tierLabels[tenant.settings?.activeTier] || tenant.settings?.activeTier || ''}</p>}
       </div>
 
       <SidebarNav items={navItems} adminItems={adminItems} onNavigate={onNavigate} />
@@ -73,6 +79,18 @@ export default function Sidebar({ user, tenant, onNavigate }: Props) {
             {user.roles?.includes('substitute') && user.accessExpiresAt && (
               <p className="mt-0.5 text-xs text-warning">Accès jusqu'au {new Date(user.accessExpiresAt).toLocaleDateString('fr-FR')}</p>
             )}
+            {user.roles?.includes('substitute') && user.accessExpiresAt && (() => {
+              const expiresAt = new Date(user.accessExpiresAt)
+              const hoursLeft = (expiresAt.getTime() - Date.now()) / 3600000
+              if (hoursLeft > 0 && hoursLeft <= 2) {
+                return (
+                  <p className="mt-1 text-xs font-medium text-warning bg-warning/10 rounded px-2 py-1">
+                    Expire dans {hoursLeft < 1 ? `${Math.round(hoursLeft * 60)} min` : `${Math.round(hoursLeft)}h`}
+                  </p>
+                )
+              }
+              return null
+            })()}
           </div>
         </div>
         <form action="/api/auth/logout" method="POST" className="mt-3">

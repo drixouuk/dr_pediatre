@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Link } from '@/i18n/navigation'
 import { Clock, ArrowRight, Check } from 'lucide-react'
@@ -74,6 +74,8 @@ export default function WaitingRoomList({ tenantId, isClinique, currentDoctorId 
   const [loading, setLoading] = useState(true)
   const [selectedDoctorId, setSelectedDoctorId] = useState<string | undefined>(currentDoctorId)
   const [doctors, setDoctors] = useState<{ id: string; name: string }[]>([])
+  const [undoItem, setUndoItem] = useState<QueueItem | null>(null)
+  const undoTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const fetchQueue = async () => {
     setLoading(true)
@@ -119,9 +121,29 @@ export default function WaitingRoomList({ tenantId, isClinique, currentDoctorId 
     })
 
     if (res.ok) {
+      if (nextStatus === 'completed') {
+        const item = items.find(i => i.id === id)
+        if (item) {
+          setUndoItem(item)
+          if (undoTimeoutRef.current) clearTimeout(undoTimeoutRef.current)
+          undoTimeoutRef.current = setTimeout(() => setUndoItem(null), 5000)
+        }
+      }
       router.refresh()
       fetchQueue()
     }
+  }
+
+  const undoComplete = async () => {
+    if (!undoItem) return
+    if (undoTimeoutRef.current) clearTimeout(undoTimeoutRef.current)
+    await fetch(`/api/cms-proxy/queue-items/${undoItem.id}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'in_consultation' }),
+    })
+    setUndoItem(null)
+    router.refresh()
+    fetchQueue()
   }
 
   const activeItems = items.filter((i) => i.status === 'waiting' || i.status === 'in_consultation')
@@ -149,6 +171,14 @@ export default function WaitingRoomList({ tenantId, isClinique, currentDoctorId 
         </div>
       </div>
 
+      {undoItem && (
+        <div className="flex items-center justify-between bg-primary-50 px-4 py-2 text-sm">
+          <span className="text-primary-700">{undoItem.patient?.fullName} — consultation terminée</span>
+          <button onClick={undoComplete} className="font-medium text-primary-700 hover:text-primary-800 underline">
+            Annuler
+          </button>
+        </div>
+      )}
       {loading && items.length === 0 ? (
         <div className="px-4 py-8 text-center text-sm text-stone-400">Chargement…</div>
       ) : activeItems.length === 0 ? (

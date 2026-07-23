@@ -54,7 +54,7 @@ export default function ActivityView({
         ))}
       </div>
 
-      <div className="mb-6 grid grid-cols-3 gap-4">
+      <div className="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
           <div className="flex items-center gap-3">
             <span className="flex size-10 items-center justify-center rounded-lg bg-primary-50 text-primary-700"><UserPlus className="size-5" /></span>

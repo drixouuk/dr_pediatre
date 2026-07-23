@@ -79,6 +79,8 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
   )
   const [error, setError] = useState('')
   const [savingTemplate, setSavingTemplate] = useState(false)
+  const [showTemplateSave, setShowTemplateSave] = useState(false)
+  const [templateName, setTemplateName] = useState('')
   const [templates, setTemplates] = useState<TemplateDoc[]>([])
   const [suggestions, setSuggestions] = useState<Record<number, MedicationSuggestion[]>>({})
   const [openDropdown, setOpenDropdown] = useState<number | null>(null)
@@ -110,14 +112,13 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
   }, [])
 
   const saveAsTemplate = async () => {
-    const name = prompt('Nom du modèle :')
-    if (!name?.trim()) return
+    if (!templateName.trim()) return
     setSavingTemplate(true)
     const res = await fetch('/api/cms-proxy/templates', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: name.trim(),
+        name: templateName.trim(),
         type: 'prescription',
         medications: medications.filter(m => m.nom.trim()),
         notes: notes || undefined,
@@ -128,6 +129,8 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
       const j = await t.json()
       setTemplates(j.docs ?? [])
     }
+    setShowTemplateSave(false)
+    setTemplateName('')
     setSavingTemplate(false)
   }
 
@@ -308,10 +311,26 @@ export default function PrescriptionForm({ patientId, prescriptions, consultatio
             <button type="submit" disabled={saving} className="rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:opacity-50">
               {saving ? 'Enregistrement…' : 'Enregistrer l\'ordonnance'}
             </button>
-            <button type="button" onClick={saveAsTemplate} disabled={savingTemplate}
-              className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 disabled:opacity-50">
-              {savingTemplate ? 'Enregistrement…' : 'Sauvegarder comme modèle'}
-            </button>
+            {!showTemplateSave ? (
+              <button type="button" onClick={() => setShowTemplateSave(true)}
+                className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50">
+                Sauvegarder comme modèle
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <input value={templateName} onChange={e => setTemplateName(e.target.value)}
+                  placeholder="Nom du modèle" autoFocus
+                  className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none" />
+                <button type="button" onClick={saveAsTemplate} disabled={savingTemplate || !templateName.trim()}
+                  className="rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:opacity-50">
+                  Enregistrer
+                </button>
+                <button type="button" onClick={() => { setShowTemplateSave(false); setTemplateName('') }}
+                  className="text-sm text-stone-500 hover:text-stone-700">
+                  Annuler
+                </button>
+              </div>
+            )}
             <button type="button" onClick={() => setShowForm(false)} className="text-sm text-stone-500 hover:text-stone-700">Annuler</button>
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}

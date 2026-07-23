@@ -53,6 +53,8 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
   const [codeActe, setCodeActe] = useState('')
   const [error, setError] = useState('')
   const [savingTemplate, setSavingTemplate] = useState(false)
+  const [showTemplateSave, setShowTemplateSave] = useState(false)
+  const [templateName, setTemplateName] = useState('')
   const [templates, setTemplates] = useState<{ id: string; name: string; motif?: string; examenClinique?: string; diagnostic?: string; codeActe?: string }[]>([])
 
   useEffect(() => {
@@ -63,14 +65,13 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
   }, [])
 
   const saveAsTemplate = async () => {
-    const name = prompt('Nom du modèle :')
-    if (!name?.trim()) return
+    if (!templateName.trim()) return
     setSavingTemplate(true)
     const res = await fetch('/api/cms-proxy/templates', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name: name.trim(),
+        name: templateName.trim(),
         type: 'consultation',
         motif: motif || undefined,
         examenClinique: examenClinique || undefined,
@@ -83,6 +84,8 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
       const j = await t.json()
       setTemplates(j.docs ?? [])
     }
+    setShowTemplateSave(false)
+    setTemplateName('')
     setSavingTemplate(false)
   }
 
@@ -205,10 +208,26 @@ export default function ConsultationForm({ patientId, consultations, isPediatrie
             <button type="submit" disabled={saving} className="rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:opacity-50">
               {saving ? 'Enregistrement…' : 'Enregistrer la consultation'}
             </button>
-            <button type="button" onClick={saveAsTemplate} disabled={savingTemplate}
-              className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50 disabled:opacity-50">
-              {savingTemplate ? 'Enregistrement…' : 'Sauvegarder comme modèle'}
-            </button>
+            {!showTemplateSave ? (
+              <button type="button" onClick={() => setShowTemplateSave(true)}
+                className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-600 hover:bg-stone-50">
+                Sauvegarder comme modèle
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <input value={templateName} onChange={e => setTemplateName(e.target.value)}
+                  placeholder="Nom du modèle" autoFocus
+                  className="rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm text-stone-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none" />
+                <button type="button" onClick={saveAsTemplate} disabled={savingTemplate || !templateName.trim()}
+                  className="rounded-lg bg-primary-700 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 disabled:opacity-50">
+                  Enregistrer
+                </button>
+                <button type="button" onClick={() => { setShowTemplateSave(false); setTemplateName('') }}
+                  className="text-sm text-stone-500 hover:text-stone-700">
+                  Annuler
+                </button>
+              </div>
+            )}
             <button type="button" onClick={() => setShowForm(false)} className="text-sm text-stone-500 hover:text-stone-700">
               Annuler
             </button>

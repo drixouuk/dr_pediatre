@@ -159,18 +159,22 @@ export default async function PatientDetailPage({ params }: Props) {
     <div className="mx-auto max-w-container px-4 py-12 md:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="font-heading text-3xl font-bold text-stone-800">{patient.fullName}</h1>
-        <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-stone-500">
-          <span>CIN : {patient.nationalId || 'Non renseigné'}</span>
-          {patient.birthDate && (
-            <>
-              <span>Né(e) le {new Date(patient.birthDate).toLocaleDateString('fr-FR')}</span>
-              <span className="font-medium text-stone-700">{computeAge(patient.birthDate)}</span>
-            </>
-          )}
-          {patient.address && <span>Adresse : {patient.address}</span>}
-          {patient.phone && <span>Tél : {patient.phone}</span>}
-          {patient.email && <span>Email : {patient.email}</span>}
-          <span>Créé le {new Date(patient.createdAt).toLocaleDateString('fr-FR')}</span>
+        <div className="mt-1 space-y-1 text-sm">
+          <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-stone-500">
+            <span>CIN : {patient.nationalId || 'Non renseigné'}</span>
+            {patient.birthDate && (
+              <>
+                <span>Né(e) le {new Date(patient.birthDate).toLocaleDateString('fr-FR')}</span>
+                <span className="font-medium text-stone-700">{computeAge(patient.birthDate)}</span>
+              </>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-stone-500">
+            {patient.address && <span>{patient.address}</span>}
+            {patient.phone && <span>{patient.phone}</span>}
+            {patient.email && <span>{patient.email}</span>}
+            <span className="text-stone-400">Créé le {new Date(patient.createdAt).toLocaleDateString('fr-FR')}</span>
+          </div>
         </div>
       </div>
 

@@ -54,7 +54,7 @@ export default function AddToQueueButton({ patientId }: Props) {
   if (done) {
     return (
       <div className="rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700">
-        Patient ajouté à la file d'attente. <Link href="/dashboard" className="underline">Voir le tableau de bord</Link>
+        Patient ajouté à la file d'attente. <Link href="/dashboard/queue" className="underline">Voir la file d'attente</Link>
       </div>
     )
   }
