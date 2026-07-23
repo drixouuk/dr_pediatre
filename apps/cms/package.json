@@ -8,6 +8,7 @@
     "build": "payload generate:importMap && next build",
     "start": "next start",
     "seed": "tsx --env-file=.env src/seed-cli.ts",
+    "seed-demo": "tsx --env-file=.env src/seed-demo-runner.ts",
     "generate:types": "payload generate:types"
   },
   "dependencies": {
