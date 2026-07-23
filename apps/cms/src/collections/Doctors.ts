@@ -3,11 +3,9 @@ import type { CollectionConfig, Field, Access } from 'payload'
 export const tenantAccess: Access = ({ req: { user } }) => {
   if (user?.roles?.includes('superadmin')) return true
   if (!user?.tenant) return false
-  return {
-    tenant: {
-      equals: typeof user.tenant === 'object' ? user.tenant.id : user.tenant,
-    },
-  }
+  const tid = user.tenant ? (typeof user.tenant === 'object' ? user.tenant.id : user.tenant) : undefined
+  if (!tid) return false
+  return { tenant: { equals: tid } }
 }
 
 export const tenantField: Field = {

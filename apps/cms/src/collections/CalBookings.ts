@@ -10,7 +10,7 @@ export const CalBookings: CollectionConfig = {
   access: {
     read: ({ req: { user } }: any) => {
       if (user?.roles?.includes('superadmin')) return true
-      const tid = typeof user?.tenant === 'object' ? user.tenant.id : user?.tenant
+      const tid = user?.tenant ? (typeof user.tenant === 'object' ? user.tenant.id : user.tenant) : undefined
       if (!tid) return false
       return { tenant: { equals: tid } }
     },

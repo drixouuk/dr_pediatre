@@ -31,12 +31,9 @@ export const Tenants: CollectionConfig = {
       const roles: string[] = user?.roles ?? []
       if (roles.includes('superadmin')) return true
       if (!user?.tenant) return false
-      return {
-        id: {
-          equals:
-            typeof user.tenant === 'object' ? user.tenant.id : user.tenant,
-        },
-      }
+      const tid = user?.tenant ? (typeof user.tenant === 'object' ? user.tenant.id : user.tenant) : undefined
+      if (!tid) return false
+      return { id: { equals: tid } }
     },
     update: ({ req: { user }, id }: any): boolean => {
       if ((user?.roles as string[])?.includes('superadmin')) return true

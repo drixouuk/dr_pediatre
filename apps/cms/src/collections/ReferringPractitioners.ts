@@ -10,7 +10,7 @@ export const ReferringPractitioners: CollectionConfig = {
   access: {
     read: ({ req: { user } }: any) => {
       if (user?.roles?.includes('superadmin')) return true
-      const tid = typeof user?.tenant === 'object' ? user.tenant.id : user?.tenant
+      const tid = user?.tenant ? (typeof user.tenant === 'object' ? user.tenant.id : user.tenant) : undefined
       if (!tid) return false
       return { tenant: { equals: tid } }
     },
@@ -19,12 +19,12 @@ export const ReferringPractitioners: CollectionConfig = {
       return roles.includes('superadmin') || roles.includes('tenant_admin') || roles.includes('doctor')
     },
     update: ({ req: { user } }: any) => {
-      const tid = typeof user?.tenant === 'object' ? user.tenant.id : user?.tenant
+      const tid = user?.tenant ? (typeof user.tenant === 'object' ? user.tenant.id : user.tenant) : undefined
       if (!tid) return false
       return { tenant: { equals: tid } }
     },
     delete: ({ req: { user } }: any) => {
-      const tid = typeof user?.tenant === 'object' ? user.tenant.id : user?.tenant
+      const tid = user?.tenant ? (typeof user.tenant === 'object' ? user.tenant.id : user.tenant) : undefined
       if (!tid) return false
       return { tenant: { equals: tid } }
     },
