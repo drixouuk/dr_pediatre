@@ -20,7 +20,7 @@ export const Patients: CollectionConfig = {
       const tid = tenantId(user)
       if (!tid) return false
       if (roles.includes('doctor')) {
-        return {
+        const filter: any = {
           and: [
             { tenant: { equals: tid } },
             {
@@ -32,6 +32,7 @@ export const Patients: CollectionConfig = {
             },
           ],
         }
+        return filter
       }
       return { tenant: { equals: tid } }
     },
@@ -47,7 +48,7 @@ export const Patients: CollectionConfig = {
       const roles: string[] = user?.roles ?? []
       if (roles.includes('superadmin') || roles.includes('tenant_admin')) return true
       if (roles.includes('doctor')) {
-        return {
+        const filter: any = {
           and: [
             { tenant: { equals: tid } },
             {
@@ -59,6 +60,7 @@ export const Patients: CollectionConfig = {
             },
           ],
         }
+        return filter
       }
       return false
     },
@@ -68,7 +70,7 @@ export const Patients: CollectionConfig = {
       const roles: string[] = user?.roles ?? []
       if (roles.includes('superadmin') || roles.includes('tenant_admin')) return true
       if (roles.includes('doctor')) {
-        return {
+        const filter: any = {
           and: [
             { tenant: { equals: tid } },
             {
@@ -79,6 +81,7 @@ export const Patients: CollectionConfig = {
             },
           ],
         }
+        return filter
       }
       return false
     },
