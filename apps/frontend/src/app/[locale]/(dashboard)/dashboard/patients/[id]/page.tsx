@@ -10,6 +10,7 @@ import PrescriptionForm from './PrescriptionForm'
 import DocumentUpload from './DocumentUpload'
 import GrowthChart from './GrowthChart'
 import VaccinationRecord from '@/components/dashboard/VaccinationRecord'
+import ReferringPractitionersWidget from './ReferringPractitionersWidget'
 
 import { computeAge } from '@/lib/age'
 import type { DoctorInfo, PatientInfo } from '@/lib/generate-pdf'
@@ -180,6 +181,19 @@ export default async function PatientDetailPage({ params }: Props) {
 
       <div className="mb-8">
         <AddToQueueButton patientId={patient.id} />
+      </div>
+
+      <div className="mb-8 rounded-xl border border-stone-200 bg-white shadow-sm">
+        <div className="border-b border-stone-100 px-4 py-3">
+          <h2 className="font-heading text-lg font-semibold text-stone-800">Médecins référents</h2>
+        </div>
+        <div className="px-4 py-3">
+          <ReferringPractitionersWidget patientId={patient.id} initialIds={(patient as any).referringPractitioners
+            ? Array.isArray((patient as any).referringPractitioners)
+              ? (patient as any).referringPractitioners.map((r: any) => typeof r === 'object' ? r.id : r)
+              : []
+            : []} />
+        </div>
       </div>
 
       <div className="mb-8">

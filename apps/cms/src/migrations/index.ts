@@ -12,6 +12,7 @@ import * as migration_20260722_add_templates from './20260722_add_templates';
 import * as migration_20260722_add_clinical_fields from './20260722_add_clinical_fields';
 import * as migration_20260722_add_substitute_role from './20260722_add_substitute_role';
 import * as migration_20260723_add_contact_messages from './20260723_add_contact_messages';
+import * as migration_20260723_add_referring_practitioners from './20260723_add_referring_practitioners';
 
 export const migrations = [
   {
@@ -83,5 +84,10 @@ export const migrations = [
     up: migration_20260723_add_contact_messages.up,
     down: migration_20260723_add_contact_messages.down,
     name: '20260723_add_contact_messages'
+  },
+  {
+    up: migration_20260723_add_referring_practitioners.up,
+    down: migration_20260723_add_referring_practitioners.down,
+    name: '20260723_add_referring_practitioners'
   },
 ];

@@ -158,5 +158,13 @@ export const Patients: CollectionConfig = {
         },
       },
     },
+    {
+      name: 'referringPractitioners',
+      type: 'relationship',
+      relationTo: 'referring-practitioners',
+      hasMany: true,
+      label: 'Médecins référents',
+      admin: { description: 'Praticiens ayant adressé ce patient' },
+    },
   ],
 }
