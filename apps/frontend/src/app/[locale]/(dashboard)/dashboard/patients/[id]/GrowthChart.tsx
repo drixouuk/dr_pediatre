@@ -60,6 +60,17 @@ export default function GrowthChart({ consultations, patientBirthDate, patientGe
       return { ...p, age, tColor: percentileColor(percentile), tPct: percentile }
     })
 
+  // Compute percentile-enriched data for PC
+  const pcData = points
+    .filter(p => p.pc != null && patientBirthDate && gender)
+    .map(p => {
+      const age = ageAtDate(patientBirthDate!, p.rawDate)
+      const table = getReferenceTable(age, gender as 'boy' | 'girl', 'pc')
+      if (table.length === 0) return { ...p, pcColor: PRIMARY, pcPct: null }
+      const { percentile } = computeMeasurementZScore(p.pc!, age, table)
+      return { ...p, age, pcColor: percentileColor(percentile), pcPct: percentile }
+    })
+
   // Generate reference curves from the latest point's age
   const lastAge = points.length > 0 && patientBirthDate ? ageAtDate(patientBirthDate, points[points.length - 1].rawDate) : null
 
@@ -69,6 +80,10 @@ export default function GrowthChart({ consultations, patientBirthDate, patientGe
 
   const heightCurves = lastAge != null && gender
     ? (() => { const t = getReferenceTable(lastAge, gender as 'boy' | 'girl', 'height'); return t.length > 0 ? generateReferenceCurves(t) : null })()
+    : null
+
+  const pcCurves = lastAge != null && gender
+    ? (() => { const t = getReferenceTable(lastAge, gender as 'boy' | 'girl', 'pc'); return t.length > 0 ? generateReferenceCurves(t) : null })()
     : null
 
   const chartProps = { margin: { top: 4, right: 4, bottom: 0, left: 0 } }
@@ -134,13 +149,27 @@ export default function GrowthChart({ consultations, patientBirthDate, patientGe
   const renderPCChart = () => (
     <div className="rounded-xl border border-stone-200 bg-white p-3 shadow-sm">
       <p className="mb-1 text-xs font-medium text-stone-500">Périmètre crânien (cm)</p>
-      <ResponsiveContainer width="100%" height={180}>
-        <LineChart data={points} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+      <ResponsiveContainer width="100%" height={220}>
+        <LineChart data={pcData.length > 0 ? pcData : points} {...chartProps}>
           <CartesianGrid strokeDasharray="3 3" stroke={LIGHT_GRID} />
-          <XAxis dataKey="date" tick={{ fontSize: 10, fill: LIGHT_TEXT }} interval="preserveStartEnd" />
-          <YAxis tick={{ fontSize: 10, fill: LIGHT_TEXT }} width={32} domain={['dataMin - 1', 'dataMax + 1']} />
-          <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }} labelFormatter={() => ''} />
-          <Line type="monotone" dataKey="pc" stroke={PRIMARY} strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 4 }} />
+          <XAxis dataKey="age" type="number" domain={['dataMin', 'dataMax']} tick={{ fontSize: 10, fill: LIGHT_TEXT }} label={{ value: 'Âge (mois)', position: 'insideBottom', offset: -5, fontSize: 10, fill: LIGHT_TEXT }} />
+          <YAxis tick={{ fontSize: 10, fill: LIGHT_TEXT }} width={32} />
+          {pcCurves && <>
+            <Line data={pcCurves} dataKey="p97" stroke="#F97316" strokeWidth={1} strokeDasharray="4 4" dot={false} name="97e perc." />
+            <Line data={pcCurves} dataKey="p50" stroke="#A8A29E" strokeWidth={1.5} dot={false} name="Médiane" />
+            <Line data={pcCurves} dataKey="p3" stroke="#EF4444" strokeWidth={1} strokeDasharray="4 4" dot={false} name="3e perc." />
+          </>}
+          <Line type="monotone" dataKey="pc" stroke={PRIMARY} strokeWidth={2}
+            dot={(props: any) => { const e = props.payload; return <circle cx={props.cx} cy={props.cy} r={4} fill={e.pcColor || PRIMARY} stroke="white" strokeWidth={1.5} /> }}
+            name="Patient" />
+          <Tooltip
+            contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${LIGHT_GRID}` }}
+            labelFormatter={(label: any) => `${label} mois`}
+            formatter={(value: any, _name: any, props: any) => {
+              if (props?.payload?.pcPct != null) return [`${value} cm (${props.payload.pcPct}e perc.)`, 'Patient']
+              return [value, 'Patient']
+            }} />
+          <Legend wrapperStyle={{ fontSize: 11 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>
