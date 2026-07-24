@@ -4,7 +4,7 @@ import { auditReadHook, auditWriteHook } from '../hooks/logPatientAccess'
 export const Consultations: CollectionConfig = {
   slug: 'consultations',
   admin: {
-    useAsTitle: 'id',
+    useAsTitle: 'date',
     defaultColumns: ['patient', 'date', 'motif', 'practitioner'],
     group: 'Dossier médical',
   },
