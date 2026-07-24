@@ -1,0 +1,51 @@
+# Version control
+.git/
+.gitignore
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build artifacts
+.next/
+**/.next/
+dist/
+**/dist/
+out/
+**/out/
+build/
+**/build/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Local databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
+# Logs
+*.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Project-specific noise
+home/
+__pycache__/
+*.pyc
+
+# Agent configs (not needed at runtime)
+.kilo/
+.kilocode/
+.roo/
+.playwright-mcp/
+.github/prompts/
+
+# Docs & design
+docs/
+design-system/
