@@ -2,10 +2,9 @@ import { getTenantId } from '@/lib/tenant'
 import { requireAuth } from '@/lib/auth'
 import { fetchCMS } from '@/lib/cms-fetch'
 import { Link } from '@/i18n/navigation'
-import PatientActionsDropdown from '@/components/dashboard/PatientActionsDropdown'
 import ImportPatientsButton from './ImportPatientsButton'
+import PatientTable from './PatientTable'
 import { Download } from 'lucide-react'
-import { computeAge } from '@/lib/age'
 
 type Patient = {
   id: string
@@ -111,58 +110,7 @@ export default async function PatientsListPage({ searchParams }: Props) {
         <ImportPatientsButton />
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-sm">
-        <table className="min-w-[640px] w-full text-left text-sm">
-          <thead className="border-b border-stone-200 bg-stone-50 text-xs uppercase text-stone-500">
-            <tr>
-              <th className="px-4 py-3 font-medium">Nom</th>
-              <th className="px-4 py-3 font-medium">Âge</th>
-              <th className="px-4 py-3 font-medium">Dernière consultation</th>
-              <th className="px-4 py-3 font-medium">Date de naissance</th>
-              <th className="px-4 py-3 font-medium">CIN</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-stone-100">
-            {patients.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-stone-400">
-                  {q ? 'Aucun patient trouvé pour cette recherche.' : 'Aucun patient pour le moment.'}
-                </td>
-              </tr>
-            ) : (
-              patients.map((p) => (
-                <tr key={p.id} className="hover:bg-stone-50">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <PatientActionsDropdown patientId={p.id} patientName={p.fullName} />
-                      <Link
-                        href={`/dashboard/patients/${p.id}`}
-                        className="font-medium text-stone-800 hover:text-primary-600 transition-colors duration-200"
-                      >
-                        {p.fullName}
-                      </Link>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-stone-500">
-                    {p.birthDate ? computeAge(p.birthDate) : '—'}
-                  </td>
-                  <td className="px-4 py-3 text-stone-500">
-                    {lastConsultations[p.id]
-                      ? new Date(lastConsultations[p.id]).toLocaleDateString('fr-FR')
-                      : '—'}
-                  </td>
-                  <td className="px-4 py-3 text-stone-500">
-                    {p.birthDate
-                      ? new Date(p.birthDate).toLocaleDateString('fr-FR')
-                      : '—'}
-                  </td>
-                  <td className="px-4 py-3 text-stone-500">{p.nationalId || '—'}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      <PatientTable patients={patients} lastConsultations={lastConsultations} q={q} />
     </div>
   )
 }
