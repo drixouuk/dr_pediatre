@@ -21,9 +21,7 @@ COPY --from=deps /app/node_modules /app/node_modules
 COPY --from=deps /app/apps/cms/node_modules /app/apps/cms/node_modules
 COPY --from=builder /app/apps/cms/.next /app/apps/cms/.next
 COPY --from=builder /app/apps/cms/next.config.ts /app/apps/cms/
-COPY --from=builder /app/apps/cms/public /app/apps/cms/public
 COPY --from=builder /app/apps/cms/package.json /app/apps/cms/
-COPY --from=builder /app/apps/cms/dist /app/apps/cms/dist
 COPY package.json pnpm-workspace.yaml /app/
 ENV NODE_ENV=production
 EXPOSE 3000
